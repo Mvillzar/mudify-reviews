@@ -102,11 +102,24 @@ exports.handler = async (event) => {
       return {
         statusCode: 500,
         headers: corsHeaders,
-        body: JSON.stringify({ error: `GitHub PUT error ${putRes.status}: ${err.message || JSON.stringify(err)}` }),
+        body: JSON.stringify({
+          error: `GitHub PUT error ${putRes.status}: ${err.message || JSON.stringify(err)}`,
+          debug_url: apiUrl,
+          debug_sha_found: !!sha,
+          debug_owner: owner,
+          debug_repo: repo,
+          debug_path: filePath,
+        }),
       };
     }
   } catch (e) {
     return { statusCode: 500, headers: corsHeaders, body: JSON.stringify({ error: 'Network error updating GitHub: ' + e.message }) };
+  }
+
+  // Trigger Netlify rebuild via build hook
+  const buildHook = process.env.NETLIFY_BUILD_HOOK;
+  if (buildHook) {
+    await fetch(buildHook, { method: 'POST' }).catch(() => {});
   }
 
   return {
