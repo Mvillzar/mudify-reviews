@@ -1,0 +1,77 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Panel de acceso en /admin
+publish_mode: simple
+
+media_folder: "."
+public_folder: "/"
+
+locale: es
+
+collections:
+  - name: "reviews"
+    label: "Reviews"
+    label_singular: "Review"
+    files:
+      - name: "all_reviews"
+        label: "Gestionar Reviews"
+        file: "data/reviews.json"
+        fields:
+          - label: "Reviews"
+            name: "reviews"
+            widget: "list"
+            summary: "{{fields.author}} — {{fields.title}} ({{fields.rating}}★)"
+            fields:
+              - label: "Visible en la página"
+                name: "published"
+                widget: "boolean"
+                default: true
+                hint: "Activa para mostrar · Desactiva para ocultar"
+              - label: "Título del review"
+                name: "title"
+                widget: "string"
+              - label: "Nombre del autor"
+                name: "author"
+                widget: "string"
+              - label: "Iniciales (avatar)"
+                name: "initials"
+                widget: "string"
+                hint: "2 letras — ej: TB"
+                pattern: ['.{1,3}', "Máximo 3 caracteres"]
+              - label: "Rating"
+                name: "rating"
+                widget: "number"
+                min: 1
+                max: 5
+                step: 1
+                value_type: "int"
+              - label: "Categoría de producto"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "General", value: "general" }
+                  - { label: "Suspension / Lift Kits", value: "suspension" }
+                  - { label: "Coilovers", value: "coilovers" }
+                  - { label: "Shocks / Struts", value: "shocks" }
+                  - { label: "Control Arms", value: "control-arms" }
+                  - { label: "Old Man Emu (OME)", value: "ome" }
+              - label: "Fecha"
+                name: "date"
+                widget: "string"
+                hint: "Ej: Jan 14, 2026"
+              - label: "Texto del review"
+                name: "text"
+                widget: "text"
+              - label: "Tipo de badge"
+                name: "badge_type"
+                widget: "select"
+                options:
+                  - { label: "✓ Positivo (verde)", value: "pos" }
+                  - { label: "⚠ Negativo (rojo)", value: "neg" }
+                  - { label: "⚡ Neutral (amarillo)", value: "neu" }
+              - label: "Texto del badge"
+                name: "badge_text"
+                widget: "string"
+                hint: "Ej: ✓ Verified Purchase"

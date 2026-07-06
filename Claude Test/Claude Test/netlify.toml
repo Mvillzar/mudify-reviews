@@ -1,0 +1,39 @@
+# ─── Mudify Reviews — Netlify Config ────────────────────────────
+# Deploy: arrastra esta carpeta a netlify.com/drop
+# Custom domain: Netlify → Domain management → Add domain → reviews.mudify.com
+# DNS: añade un CNAME record en tu DNS → reviews → [tu-sitio].netlify.app
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# ── Cache: HTML sin cache (actualizaciones instantáneas) ──────────
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# ── Cache: Imágenes 1 año ─────────────────────────────────────────
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ── Security + permite que Wix haga embed via iframe (Opción 2) ──
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options  = "nosniff"
+    Referrer-Policy         = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "frame-ancestors 'self' https://*.wix.com https://*.wixsite.com https://*.wixstudio.com"
+
+# ── Redirige cualquier ruta desconocida al index ──────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mudify Reviews — Admin</title>
+<style>
+/* ── TOKENS ─────────────────────────────────────── */
+:root {
+  --sb: #0F100F;
+  --sb-hover: rgba(255,255,255,.06);
+  --sb-active: #E94141;
+  --bg: #F0EFEC;
+  --surface: #FFFFFF;
+  --accent: #E94141;
+  --accent-d: #C73333;
+  --accent-bg: rgba(233,65,65,.08);
+  --success: #1A7A4A;
+  --success-bg: #E6F4ED;
+  --warning-bg: #FEF6E4;
+  --danger-bg: #FEF0F0;
+  --t1: #161514;
+  --t2: #6B6966;
+  --t3: #9E9C99;
+  --border: #DDDBD8;
+  --border-focus: #5C5F62;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.1);
+  --r: 6px;
+  --sw: 224px;
+  --ui: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono: 'SF Mono','Fira Mono','Courier New',monospace;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html,body { height:100%; font-family:var(--ui); font-size:14px; color:var(--t1); background:var(--bg); -webkit-font-smoothing:antialiased }
+img { display:block; max-width:100% }
+button,input,select,textarea { font-family:inherit; font-size:inherit }
+button { cursor:pointer }
+a { color:var(--accent); text-decoration:none }
+
+/* ── GATE ───────────────────────────────────────── */
+#gate {
+  position:fixed; inset:0; background:#0A0A0A;
+  display:flex; align-items:center; justify-content:center; z-index:9999;
+}
+.gate-card {
+  width:100%; max-width:360px; padding:48px 40px;
+  background:#141414; border:1px solid #1F1F1F;
+  border-radius:var(--r);
+}
+.gate-logo {
+  height:32px; filter:brightness(0) invert(1);
+  margin:0 auto 36px; display:block;
+}
+.gate-label {
+  font-size:.65rem; letter-spacing:.18em; text-transform:uppercase;
+  color:#3D3D3D; text-align:center; margin-bottom:28px;
+}
+.gate-field {
+  width:100%; padding:11px 14px;
+  background:#1C1C1C; border:1px solid #2A2A2A;
+  color:#fff; border-radius:var(--r); outline:none;
+  margin-bottom:10px; transition:border-color .15s;
+}
+.gate-field:focus { border-color:#E94141 }
+.gate-field::placeholder { color:#3D3D3D }
+.gate-submit {
+  width:100%; padding:11px; background:var(--accent);
+  color:#fff; border:none; border-radius:var(--r);
+  font-weight:600; font-size:.88rem; letter-spacing:.04em;
+  transition:background .15s;
+}
+.gate-submit:hover { background:var(--accent-d) }
+#gate-err {
+  font-size:.8rem; color:#FF6B6B; text-align:center;
+  margin-top:8px; min-height:18px;
+}
+
+/* ── APP SHELL ──────────────────────────────────── */
+#app { display:none; height:100vh; overflow:hidden }
+.app-layout { display:flex; height:100vh }
+
+/* ── SIDEBAR ────────────────────────────────────── */
+#sidebar {
+  width:var(--sw); flex-shrink:0;
+  background:var(--sb); display:flex; flex-direction:column;
+  overflow-y:auto; overflow-x:hidden;
+}
+.sb-head {
+  padding:20px 18px 12px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.sb-logo-wrap { display:flex; align-items:center; gap:10px; margin-bottom:4px }
+.sb-logo { height:24px; filter:brightness(0) invert(1) }
+.sb-site-label {
+  font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
+  color:#2D2D2D; padding-top:6px;
+}
+.sb-section-label {
+  font-size:.62rem; letter-spacing:.18em; text-transform:uppercase;
+  color:#2D2D2D; padding:20px 18px 6px;
+}
+.sb-nav { flex:1; padding:4px 10px }
+.sb-item {
+  display:flex; align-items:center; gap:11px;
+  padding:9px 10px; border-radius:5px;
+  color:rgba(255,255,255,.45); font-size:.85rem; font-weight:500;
+  cursor:pointer; transition:color .12s, background .12s;
+  text-decoration:none; user-select:none; margin-bottom:2px;
+  border:none; background:none; width:100%; text-align:left;
+}
+.sb-item:hover { background:var(--sb-hover); color:rgba(255,255,255,.8) }
+.sb-item.active { background:rgba(233,65,65,.14); color:#fff }
+.sb-item.active .sb-icon { color:var(--accent) }
+.sb-icon { width:17px; height:17px; flex-shrink:0; opacity:.8 }
+.sb-item.active .sb-icon { opacity:1 }
+.sb-badge {
+  margin-left:auto; background:var(--accent); color:#fff;
+  font-size:.65rem; font-weight:700; padding:2px 7px; border-radius:20px;
+}
+.sb-divider { height:1px; background:rgba(255,255,255,.06); margin:10px 10px }
+.sb-footer { padding:14px 10px 20px }
+.sb-footer-item {
+  display:flex; align-items:center; gap:11px;
+  padding:8px 10px; border-radius:5px;
+  color:rgba(255,255,255,.3); font-size:.82rem;
+  cursor:pointer; border:none; background:none; width:100%; text-align:left;
+  transition:color .12s, background .12s;
+}
+.sb-footer-item:hover { color:rgba(255,255,255,.7); background:var(--sb-hover) }
+.sb-site-link {
+  font-size:.72rem; color:#2D2D2D; padding:6px 10px;
+  display:flex; align-items:center; gap:7px; letter-spacing:.01em;
+  transition:color .12s; white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis; text-decoration:none;
+}
+.sb-site-link:hover { color:#555 }
+
+/* ── MAIN ───────────────────────────────────────── */
+#main { flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden }
+
+/* ── TOPBAR ─────────────────────────────────────── */
+#topbar {
+  height:56px; background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:12px;
+  padding:0 24px; flex-shrink:0; z-index:10;
+}
+.tb-title {
+  font-size:.95rem; font-weight:600; color:var(--t1); flex:1;
+}
+.tb-sub { font-size:.82rem; color:var(--t2); margin-left:6px; font-weight:400 }
+.btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 14px; border-radius:var(--r);
+  font-size:.82rem; font-weight:600; letter-spacing:.01em;
+  border:1px solid transparent; transition:all .12s; white-space:nowrap;
+}
+.btn-primary { background:var(--accent); color:#fff; border-color:var(--accent) }
+.btn-primary:hover { background:var(--accent-d); border-color:var(--accent-d) }
+.btn-primary:disabled { opacity:.45; cursor:default }
+.btn-secondary { background:var(--surface); color:var(--t1); border-color:var(--border) }
+.btn-secondary:hover { border-color:#b0adaa }
+.btn-ghost { background:transparent; color:var(--t2); border-color:transparent }
+.btn-ghost:hover { background:var(--bg); color:var(--t1) }
+.btn-danger { background:transparent; color:#C0392B; border-color:#F0C0C0 }
+.btn-danger:hover { background:var(--danger-bg) }
+.btn-sm { padding:5px 10px; font-size:.78rem }
+.btn-xs { padding:3px 8px; font-size:.72rem; border-radius:4px }
+.btn-icon { padding:6px; border-radius:var(--r) }
+
+/* ── CONTENT ────────────────────────────────────── */
+#content { flex:1; overflow-y:auto; overflow-x:hidden }
+.view { display:none; padding:24px; min-height:100% }
+.view.active { display:block }
+
+/* ── CARDS ──────────────────────────────────────── */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); box-shadow:var(--shadow);
+}
+.card-header {
+  padding:14px 18px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card-title {
+  font-size:.82rem; font-weight:600; letter-spacing:.02em; color:var(--t1);
+}
+.card-body { padding:18px }
+.card-body + .card-body { border-top:1px solid var(--border) }
+
+/* ── DASHBOARD ──────────────────────────────────── */
+.dash-welcome {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px 28px; margin-bottom:20px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  box-shadow:var(--shadow);
+}
+.dash-welcome-text h2 {
+  font-size:1.2rem; font-weight:700; color:var(--t1); margin-bottom:4px;
+}
+.dash-welcome-text p { font-size:.86rem; color:var(--t2) }
+.dash-stat-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;
+}
+.dash-stat {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:20px 22px; box-shadow:var(--shadow);
+}
+.dash-stat-label {
+  font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--t3); margin-bottom:10px;
+}
+.dash-stat-num {
+  font-family:var(--ui); font-size:2.4rem; line-height:1;
+  letter-spacing:-0.06em; color:var(--t1); font-weight:800;
+}
+.dash-stat-num.accent { color:var(--accent) }
+.dash-stat-num.success { color:var(--success) }
+.dash-stat-desc { font-size:.78rem; color:var(--t3); margin-top:5px }
+.dash-actions-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;
+}
+.dash-action {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 16px; box-shadow:var(--shadow);
+  cursor:pointer; transition:border-color .12s, box-shadow .12s; text-align:left;
+  width:100%; display:flex; flex-direction:column; gap:10px;
+}
+.dash-action:hover {
+  border-color:#C9C6C2; box-shadow:var(--shadow-md); transform:translateY(-1px);
+}
+.dash-action-icon {
+  width:32px; height:32px; border-radius:6px;
+  background:var(--bg); display:flex; align-items:center; justify-content:center;
+  color:var(--t2);
+}
+.dash-action.red .dash-action-icon { background:var(--accent-bg); color:var(--accent) }
+.dash-action-label {
+  font-size:.82rem; font-weight:600; color:var(--t1);
+}
+.dash-action-desc { font-size:.76rem; color:var(--t3) }
+
+/* ── SECTION PANELS (Shopify-style) ─────────────── */
+.sections-header {
+  font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--t3); margin-bottom:10px; padding-left:2px;
+}
+.section-panel {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); margin-bottom:8px; box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.section-panel.open { border-color:#C9C6C2 }
+.section-panel-header {
+  display:flex; align-items:center; gap:12px; padding:13px 16px;
+  cursor:pointer; user-select:none; transition:background .1s;
+}
+.section-panel-header:hover { background:var(--bg) }
+.section-panel.open .section-panel-header { background:var(--bg) }
+.section-panel-drag {
+  display:flex; flex-direction:column; gap:3px; flex-shrink:0; opacity:.3;
+}
+.section-panel-drag span {
+  display:block; width:14px; height:2px; background:var(--t1); border-radius:1px;
+}
+.section-panel-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--success); border:1.5px solid var(--success); flex-shrink:0;
+}
+.section-panel-name {
+  font-size:.88rem; font-weight:600; color:var(--t1); flex:1;
+}
+.section-panel-meta { font-size:.76rem; color:var(--t3) }
+.section-chevron {
+  width:16px; height:16px; color:var(--t3); flex-shrink:0;
+  transition:transform .2s;
+}
+.section-panel.open .section-chevron { transform:rotate(180deg) }
+.section-panel-body { display:none; padding:18px 18px 20px; border-top:1px solid var(--border) }
+.section-panel.open .section-panel-body { display:block }
+
+/* ── FORM FIELDS ────────────────────────────────── */
+.field-group { margin-bottom:16px }
+.field-group:last-child { margin-bottom:0 }
+.field-row { display:grid; gap:14px; margin-bottom:16px }
+.field-row.cols2 { grid-template-columns:1fr 1fr }
+.field-row.cols3 { grid-template-columns:1fr 1fr 1fr }
+.field-label {
+  display:block; font-size:.76rem; font-weight:600;
+  color:var(--t2); margin-bottom:5px; letter-spacing:.02em;
+}
+.field-hint { font-size:.72rem; color:var(--t3); margin-top:3px }
+.field-input,
+.field-select,
+.field-textarea {
+  width:100%; padding:8px 11px;
+  border:1px solid var(--border); border-radius:var(--r);
+  background:var(--surface); color:var(--t1); outline:none;
+  transition:border-color .12s; line-height:1.5;
+}
+.field-input:focus,.field-select:focus,.field-textarea:focus {
+  border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(92,95,98,.08);
+}
+.field-textarea { resize:vertical; min-height:72px }
+.field-row-inline {
+  display:flex; align-items:flex-start; gap:12px;
+}
+
+/* ── TOGGLE ─────────────────────────────────────── */
+.toggle-wrap { display:flex; align-items:center; gap:9px; cursor:pointer }
+.toggle { position:relative; width:34px; height:19px; flex-shrink:0 }
+.toggle input { opacity:0; position:absolute; width:0; height:0 }
+.toggle-track {
+  position:absolute; inset:0; background:#D5D3D0;
+  border-radius:20px; transition:background .15s;
+}
+.toggle input:checked + .toggle-track { background:var(--success) }
+.toggle-thumb {
+  position:absolute; width:13px; height:13px;
+  background:#fff; border-radius:50%;
+  top:3px; left:3px; transition:transform .15s; pointer-events:none;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle input:checked ~ .toggle-thumb { transform:translateX(15px) }
+.toggle-label { font-size:.84rem; color:var(--t1) }
+
+/* ── REVIEWS LIST ───────────────────────────────── */
+.reviews-toolbar {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:16px; flex-wrap:wrap;
+}
+.reviews-count { font-size:.82rem; color:var(--t2); flex:1 }
+.filter-chips { display:flex; gap:6px }
+.chip {
+  padding:4px 12px; border-radius:20px; font-size:.76rem; font-weight:600;
+  border:1px solid var(--border); background:var(--surface); color:var(--t2);
+  cursor:pointer; transition:all .12s;
+}
+.chip:hover { border-color:#b0adaa; color:var(--t1) }
+.chip.active { background:var(--t1); border-color:var(--t1); color:#fff }
+.reviews-table {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden;
+}
+.rt-head {
+  display:grid;
+  grid-template-columns: 40px 1fr 100px 180px 90px 88px;
+  gap:0; padding:9px 14px;
+  background:var(--bg); border-bottom:1px solid var(--border);
+  font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--t3);
+}
+.rt-row {
+  display:grid;
+  grid-template-columns: 40px 1fr 100px 180px 90px 88px;
+  gap:0; padding:0 14px;
+  border-bottom:1px solid var(--border); align-items:center;
+  min-height:48px; transition:background .1s;
+}
+.rt-row:last-child { border-bottom:none }
+.rt-row:hover { background:#FAFAF9 }
+.rt-row.hidden-review { opacity:.55 }
+.rt-cell { padding:10px 6px; font-size:.84rem; color:var(--t1); min-width:0 }
+.rt-cell.mono {
+  font-family:var(--mono); font-size:.78rem; color:var(--t2);
+}
+.rt-cell.actions { display:flex; align-items:center; gap:5px; justify-content:flex-end }
+.rt-author { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.rt-title { color:var(--t2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding-right:8px }
+.rt-stars { color:#C47A00; font-family:var(--mono); font-size:.82rem; letter-spacing:.5px }
+.rt-expand {
+  display:none; border-top:1px solid var(--border);
+  background:#FAFAF9; padding:18px 20px 20px;
+}
+.rt-expand.open { display:block }
+.expand-header {
+  font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:14px;
+}
+.expand-actions {
+  display:flex; align-items:center; gap:8px;
+  margin-top:16px; padding-top:14px; border-top:1px solid var(--border);
+}
+.expand-wrap {
+  border-bottom:1px solid var(--border);
+}
+.expand-wrap:last-child { border-bottom:none }
+.status-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+}
+.status-dot.on { background:var(--success) }
+.status-dot.off { background:#D5D3D0 }
+
+/* ── ADD FORM ────────────────────────────────────── */
+.add-form-wrap {
+  background:var(--surface); border:1px solid var(--border);
+  border-top:3px solid var(--accent); border-radius:var(--r);
+  margin-bottom:14px; box-shadow:var(--shadow); overflow:hidden;
+}
+.add-form-header {
+  padding:12px 18px; display:flex; align-items:center; justify-content:space-between;
+  background:var(--bg); border-bottom:1px solid var(--border);
+}
+.add-form-title {
+  font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent);
+}
+.add-form-body { padding:18px 18px 20px }
+
+/* ── SAVE BAR ────────────────────────────────────── */
+.save-bar-wrap {
+  position:sticky; bottom:0; left:0; right:0;
+  background:rgba(240,239,236,.95); backdrop-filter:blur(8px);
+  border-top:1px solid var(--border); padding:12px 24px;
+  display:flex; align-items:center; gap:12px; z-index:20;
+  margin:0 -24px -24px;
+}
+.save-status { font-size:.82rem; color:var(--t3) }
+.save-status.ok { color:var(--success) }
+.save-status.err { color:#C0392B }
+.save-status.saving { color:var(--accent) }
+
+/* ── TOAST ───────────────────────────────────────── */
+#toast {
+  position:fixed; top:20px; right:20px; z-index:9999;
+  display:flex; flex-direction:column; gap:8px; pointer-events:none;
+}
+.toast-item {
+  background:var(--t1); color:#fff; padding:11px 16px;
+  border-radius:var(--r); font-size:.84rem; font-weight:500;
+  box-shadow:var(--shadow-md); display:flex; align-items:center; gap:10px;
+  min-width:240px; max-width:340px;
+  animation:toastIn .22s ease;
+}
+.toast-item.success { background:#1A7A4A }
+.toast-item.error { background:#C0392B }
+@keyframes toastIn {
+  from { opacity:0; transform:translateX(16px) }
+  to   { opacity:1; transform:translateX(0) }
+}
+
+/* ── EMPTY STATE ─────────────────────────────────── */
+.empty-state {
+  text-align:center; padding:60px 20px;
+  color:var(--t3); font-size:.88rem;
+}
+.empty-state strong {
+  display:block; font-size:1rem; color:var(--t2); margin-bottom:6px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media(max-width:900px) {
+  :root { --sw: 0px }
+  #sidebar { display:none }
+  .dash-actions-grid { grid-template-columns:1fr 1fr }
+  .rt-head,.rt-row { grid-template-columns:40px 1fr 80px 68px }
+  .rt-cell:nth-child(4),.rt-cell:nth-child(5),.rt-head span:nth-child(4),.rt-head span:nth-child(5) { display:none }
+}
+@media(max-width:600px) {
+  .dash-stat-grid { grid-template-columns:1fr 1fr }
+  .field-row.cols2,.field-row.cols3 { grid-template-columns:1fr }
+}
+</style>
+</head>
+<body>
+
+<!-- ── GATE ──────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-card">
+    <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="gate-logo" alt="Mudify">
+    <p class="gate-label">Panel de administración</p>
+    <form onsubmit="login(event)">
+      <input type="password" id="pwd" class="gate-field" placeholder="Contraseña" autocomplete="current-password">
+      <button type="submit" class="gate-submit">Iniciar sesión</button>
+      <p id="gate-err"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ── APP ───────────────────────────────────────── -->
+<div id="app">
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <div class="sb-head">
+        <div class="sb-logo-wrap">
+          <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="sb-logo" alt="Mudify">
+        </div>
+        <p class="sb-site-label">Reviews Admin</p>
+      </div>
+
+      <p class="sb-section-label">Navegación</p>
+      <nav class="sb-nav">
+        <button class="sb-item active" data-view="dashboard" onclick="nav('dashboard',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/>
+            <rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/>
+          </svg>
+          Dashboard
+        </button>
+        <button class="sb-item" data-view="pagina" onclick="nav('pagina',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="2" width="14" height="16" rx="2"/>
+            <line x1="6" y1="7" x2="14" y2="7"/><line x1="6" y1="10" x2="14" y2="10"/><line x1="6" y1="13" x2="11" y2="13"/>
+          </svg>
+          Página
+        </button>
+        <button class="sb-item" data-view="reviews" onclick="nav('reviews',this)" id="sb-reviews">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M10 2l2.39 4.84L18 7.64l-4 3.9.94 5.46L10 14.27l-4.94 2.73L6 11.54 2 7.64l5.61-.8L10 2z"/>
+          </svg>
+          Reviews
+          <span class="sb-badge" id="sb-badge">—</span>
+        </button>
+      </nav>
+
+      <div class="sb-divider"></div>
+      <div class="sb-footer">
+        <a href="https://mudify-reviews.netlify.app" target="_blank" class="sb-site-link">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M10 2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-6M14 2h4v4M10 10L18 2"/>
+          </svg>
+          Ver el sitio
+        </a>
+        <button class="sb-footer-item" onclick="logout()">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M13 3h4a1 1 0 011 1v12a1 1 0 01-1 1h-4M8 15l-4-5 4-5M4 10h10"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div id="main">
+      <header id="topbar">
+        <div class="tb-title" id="tb-title">Dashboard</div>
+        <div id="tb-actions"></div>
+      </header>
+
+      <main id="content">
+
+        <!-- ── DASHBOARD ─────────────────────────── -->
+        <div id="v-dashboard" class="view active">
+          <div class="dash-welcome">
+            <div class="dash-welcome-text">
+              <h2>Bienvenido a Reviews Admin</h2>
+              <p id="dash-sub">Gestiona los reviews y la configuración de la página desde aquí.</p>
+            </div>
+            <a href="https://mudify-reviews.netlify.app" target="_blank" class="btn btn-secondary">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-6M14 2h4v4M10 10L18 2"/>
+              </svg>
+              Ver el sitio
+            </a>
+          </div>
+
+          <div class="dash-stat-grid">
+            <div class="dash-stat">
+              <div class="dash-stat-label">Reviews activos</div>
+              <div class="dash-stat-num success" id="d-active">—</div>
+              <div class="dash-stat-desc">Visibles en la página</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-label">Reviews ocultos</div>
+              <div class="dash-stat-num" id="d-hidden">—</div>
+              <div class="dash-stat-desc">No visibles para visitantes</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-label">Total</div>
+              <div class="dash-stat-num accent" id="d-total">—</div>
+              <div class="dash-stat-desc">En la base de datos</div>
+            </div>
+          </div>
+
+          <div style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Accesos rápidos</div>
+          <div class="dash-actions-grid">
+            <button class="dash-action red" onclick="nav('reviews');showAddForm()">
+              <div class="dash-action-icon">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <div class="dash-action-label">Nuevo review</div>
+                <div class="dash-action-desc">Agregar a la colección</div>
+              </div>
+            </button>
+            <button class="dash-action" onclick="nav('pagina');openSection('hero')">
+              <div class="dash-action-icon">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 4h12M4 8h8M4 12h4"/>
+                </svg>
+              </div>
+              <div>
+                <div class="dash-action-label">Editar hero</div>
+                <div class="dash-action-desc">Descripción y botón CTA</div>
+              </div>
+            </button>
+            <button class="dash-action" onclick="nav('pagina');openSection('stats')">
+              <div class="dash-action-icon">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="10" width="3" height="8"/><rect x="9" y="6" width="3" height="12"/><rect x="15" y="2" width="3" height="16"/>
+                </svg>
+              </div>
+              <div>
+                <div class="dash-action-label">Estadísticas</div>
+                <div class="dash-action-desc">Números y etiquetas</div>
+              </div>
+            </button>
+            <button class="dash-action" onclick="nav('reviews')">
+              <div class="dash-action-icon">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M10 2l2.39 4.84L18 7.64l-4 3.9.94 5.46L10 14.27l-4.94 2.73L6 11.54 2 7.64l5.61-.8L10 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="dash-action-label">Gestionar reviews</div>
+                <div class="dash-action-desc">Editar, ocultar, eliminar</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── PÁGINA ─────────────────────────────── -->
+        <div id="v-pagina" class="view">
+          <p class="sections-header">Secciones de la página</p>
+
+          <!-- Hero section -->
+          <div class="section-panel open" id="sp-hero">
+            <div class="section-panel-header" onclick="toggleSection('hero')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Hero</span>
+              <span class="section-panel-meta">Título, descripción y botón principal</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 8l5 5 5-5"/>
+              </svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-group">
+                <label class="field-label">Descripción principal</label>
+                <textarea id="s-desc" class="field-textarea" rows="3"></textarea>
+                <p class="field-hint">Texto que aparece debajo del título en el hero de la página.</p>
+              </div>
+              <div class="field-row cols2">
+                <div>
+                  <label class="field-label">Texto del botón</label>
+                  <input id="s-cta-text" class="field-input" placeholder="Leave a Review">
+                </div>
+                <div>
+                  <label class="field-label">URL del botón</label>
+                  <input id="s-cta-url" class="field-input" placeholder="#contact o https://…">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats section -->
+          <div class="section-panel" id="sp-stats">
+            <div class="section-panel-header" onclick="toggleSection('stats')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Estadísticas</span>
+              <span class="section-panel-meta">Barra de métricas en el hero</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 8l5 5 5-5"/>
+              </svg>
+            </div>
+            <div class="section-panel-body" id="stats-fields"></div>
+          </div>
+
+          <!-- About section -->
+          <div class="section-panel" id="sp-about">
+            <div class="section-panel-header" onclick="toggleSection('about')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">About Mudify</span>
+              <span class="section-panel-meta">Descripción, marcas y vehículos</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-group">
+                <label class="field-label">Párrafo 1 <span style="font-weight:400;color:var(--t3)">— ¿Quiénes son?</span></label>
+                <textarea id="s-about-p1" class="field-textarea" rows="3"></textarea>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Párrafo 2 <span style="font-weight:400;color:var(--t3)">— Marcas y servicios</span></label>
+                <textarea id="s-about-p2" class="field-textarea" rows="2"></textarea>
+              </div>
+              <div class="field-row cols2">
+                <div>
+                  <label class="field-label">Marcas autorizadas <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
+                  <input id="s-about-brands" class="field-input" placeholder="Old Man Emu, Fox Shocks…">
+                </div>
+                <div>
+                  <label class="field-label">Plataformas de vehículos <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
+                  <input id="s-about-vehicles" class="field-input" placeholder="Toyota 4Runner, Tacoma…">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rating section -->
+          <div class="section-panel" id="sp-rating">
+            <div class="section-panel-header" onclick="toggleSection('rating')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Puntuación General</span>
+              <span class="section-panel-meta">Score, barras y estadísticas de rating</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-row cols2">
+                <div><label class="field-label">Puntuación</label><input id="s-rating-score" class="field-input" placeholder="4.3"></div>
+                <div><label class="field-label">Total de reviews</label><input id="s-rating-total" class="field-input" placeholder="445+"></div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
+                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Distribución por estrellas</div>
+                <div id="rating-bars-fields"></div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px">
+                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Tarjetas de resumen</div>
+                <div class="field-row cols3" style="margin-bottom:6px">
+                  <div><label class="field-label" style="color:var(--success)">Positivo %</label><input id="s-pos-pct" class="field-input" placeholder="82%"></div>
+                  <div><label class="field-label" style="color:#C0392B">Crítico %</label><input id="s-crit-pct" class="field-input" placeholder="10%"></div>
+                  <div><label class="field-label">Mixto %</label><input id="s-mix-pct" class="field-input" placeholder="8%"></div>
+                </div>
+                <div class="field-row cols3" style="margin-bottom:0">
+                  <div><label class="field-label">Etiqueta positivo</label><input id="s-pos-lbl" class="field-input" placeholder="Positive reviews…"></div>
+                  <div><label class="field-label">Etiqueta crítico</label><input id="s-crit-lbl" class="field-input" placeholder="Critical reviews…"></div>
+                  <div><label class="field-label">Etiqueta mixto</label><input id="s-mix-lbl" class="field-input" placeholder="Mixed reviews…"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlights section -->
+          <div class="section-panel" id="sp-highlights">
+            <div class="section-panel-header" onclick="toggleSection('highlights')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Temas de Reviews</span>
+              <span class="section-panel-meta">4 tarjetas "Lo que dicen los clientes"</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body" id="highlights-fields"></div>
+          </div>
+
+          <!-- Contact section -->
+          <div class="section-panel" id="sp-contact">
+            <div class="section-panel-header" onclick="toggleSection('contact')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Información de Contacto</span>
+              <span class="section-panel-meta">Teléfono, web, ubicación, financiamiento</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-row cols2"><div><label class="field-label">📞 Teléfono</label><input id="s-ct-phone" class="field-input" placeholder="(786) 699-8829"></div><div><label class="field-label">Nota del teléfono</label><input id="s-ct-phone-note" class="field-input"></div></div>
+              <div class="field-row cols2"><div><label class="field-label">🌐 Website</label><input id="s-ct-web" class="field-input" placeholder="mudify.com"></div><div><label class="field-label">Nota del website</label><input id="s-ct-web-note" class="field-input"></div></div>
+              <div class="field-row cols2"><div><label class="field-label">📍 Ubicación</label><input id="s-ct-loc" class="field-input" placeholder="Miami, Florida, USA"></div><div><label class="field-label">Nota de ubicación</label><input id="s-ct-loc-note" class="field-input"></div></div>
+              <div class="field-row cols2" style="margin-bottom:0"><div><label class="field-label">💳 Financiamiento</label><input id="s-ct-fin" class="field-input" placeholder="Affirm & Snap Finance"></div><div><label class="field-label">Nota de financiamiento</label><input id="s-ct-fin-note" class="field-input"></div></div>
+            </div>
+          </div>
+
+          <!-- FAQ section -->
+          <div class="section-panel" id="sp-faq">
+            <div class="section-panel-header" onclick="toggleSection('faq')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Preguntas Frecuentes (FAQ)</span>
+              <span class="section-panel-meta">Preguntas y respuestas de la página</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div id="faq-fields"></div>
+              <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="addFaqItem()">
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+                Agregar pregunta
+              </button>
+            </div>
+          </div>
+
+          <div class="save-bar-wrap">
+            <button class="btn btn-primary" id="btn-save-pagina" onclick="saveSettings()">Guardar cambios</button>
+            <span class="save-status" id="st-pagina"></span>
+          </div>
+        </div>
+
+        <!-- ── REVIEWS ────────────────────────────── -->
+        <div id="v-reviews" class="view">
+
+          <!-- Add form -->
+          <div class="add-form-wrap" id="add-form" style="display:none">
+            <div class="add-form-header">
+              <span class="add-form-title">Nuevo review</span>
+              <button class="btn btn-ghost btn-sm" onclick="hideAddForm()">Cancelar</button>
+            </div>
+            <div class="add-form-body">
+              <div class="field-row cols3">
+                <div><label class="field-label">Autor</label><input id="nf-author" class="field-input" placeholder="Jack B."></div>
+                <div><label class="field-label">Iniciales</label><input id="nf-initials" class="field-input" placeholder="JB" maxlength="3"></div>
+                <div><label class="field-label">Fecha</label><input id="nf-date" class="field-input" placeholder="Jan 12, 2026"></div>
+              </div>
+              <div class="field-row cols3">
+                <div>
+                  <label class="field-label">Calificación</label>
+                  <select id="nf-rating" class="field-select">
+                    <option value="5">★★★★★  5 estrellas</option>
+                    <option value="4">★★★★☆  4 estrellas</option>
+                    <option value="3">★★★☆☆  3 estrellas</option>
+                    <option value="2">★★☆☆☆  2 estrellas</option>
+                    <option value="1">★☆☆☆☆  1 estrella</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label">Categoría</label>
+                  <select id="nf-category" class="field-select">
+                    <option value="general">General</option>
+                    <option value="suspension">Suspension / Lift Kits</option>
+                    <option value="coilovers">Coilovers</option>
+                    <option value="shocks">Shocks / Struts</option>
+                    <option value="control-arms">Control Arms</option>
+                    <option value="ome">Old Man Emu (OME)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label">Visibilidad</label>
+                  <select id="nf-published" class="field-select">
+                    <option value="true">Visible</option>
+                    <option value="false">Oculto</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-row cols2">
+                <div><label class="field-label">Título del review</label><input id="nf-title" class="field-input" placeholder="Amazing Experience"></div>
+                <div>
+                  <label class="field-label">Badge</label>
+                  <div class="field-row" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0">
+                    <select id="nf-badge-type" class="field-select">
+                      <option value="pos">✓ Positivo</option>
+                      <option value="neu">⚡ Neutral</option>
+                      <option value="neg">⚠ Negativo</option>
+                    </select>
+                    <input id="nf-badge-text" class="field-input" placeholder="✓ Verified Purchase">
+                  </div>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Texto del review</label>
+                <textarea id="nf-text" class="field-textarea" placeholder="Describe la experiencia del cliente…"></textarea>
+              </div>
+              <button class="btn btn-primary" onclick="addReview()">Agregar review</button>
+            </div>
+          </div>
+
+          <!-- Reviews table -->
+          <div class="reviews-table" id="reviews-table">
+            <div class="rt-head">
+              <span></span>
+              <span>Autor / Título</span>
+              <span>Estrellas</span>
+              <span>Categoría · Fecha</span>
+              <span>Estado</span>
+              <span></span>
+            </div>
+            <div id="reviews-body"></div>
+          </div>
+
+          <div class="save-bar-wrap">
+            <button class="btn btn-primary" id="btn-save-reviews" onclick="saveReviews()">Guardar cambios</button>
+            <span class="save-status" id="st-reviews">Sin cambios pendientes</span>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ── State ────────────────────────────────────────
+let reviews = [];
+let settings = {};
+let adminPwd = '';
+let reviewFilter = 'all';
+let dirtyReviews = false;
+
+// ── Auth ─────────────────────────────────────────
+function login(e) {
+  e.preventDefault();
+  const pwd = document.getElementById('pwd').value;
+  if (!pwd) return;
+  adminPwd = pwd;
+  sessionStorage.setItem('_ap', pwd);
+  openApp();
+}
+
+function logout() {
+  sessionStorage.removeItem('_ap');
+  location.reload();
+}
+
+function openApp() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadData();
+}
+
+const _s = sessionStorage.getItem('_ap');
+if (_s) { adminPwd = _s; document.addEventListener('DOMContentLoaded', openApp); }
+
+// ── Data ─────────────────────────────────────────
+async function loadData() {
+  try {
+    const [rr, sr] = await Promise.all([
+      fetch('/data/reviews.json?t=' + Date.now()),
+      fetch('/data/settings.json?t=' + Date.now())
+    ]);
+    const rd = await rr.json();
+    reviews = rd.reviews || [];
+    settings = await sr.json().catch(() => defaultSettings());
+  } catch(e) {
+    reviews = [];
+    settings = defaultSettings();
+  }
+  updateDashboard();
+  renderSettings();
+  renderReviews();
+}
+
+function defaultSettings() {
+  return {
+    hero: { description:'', cta_text:'Leave a Review', cta_url:'#contact' },
+    stats: [
+      { number:'4.3/5', label:'Average Rating' },
+      { number:'445+',  label:'Verified Reviews' },
+      { number:'82%',   label:'Positive Reviews' }
+    ],
+    about: { paragraph1:'', paragraph2:'', brands:'', vehicles:'' },
+    rating: {
+      score:'4.3', total:'445+',
+      pct_5:'62', pct_4:'20', pct_3:'8', pct_2:'5', pct_1:'5',
+      positive_pct:'82%', positive_lbl:'Positive reviews (4–5 stars)',
+      critical_pct:'10%', critical_lbl:'Critical reviews (1–2 stars)',
+      mixed_pct:'8%', mixed_lbl:'Mixed reviews (3 stars)'
+    },
+    highlights: [
+      { icon:'🎧', title:'Responsive Service', body:'Staff described as knowledgeable, patient, and proactive.', tag:'Most mentioned' },
+      { icon:'📦', title:'Fast Shipping', body:'Buyers frequently note well-packaged deliveries.', tag:'40%+ reviews' },
+      { icon:'🔧', title:'Product Expertise', body:'Customers value honest, vehicle-specific advice.', tag:'Key differentiator' },
+      { icon:'⚠️', title:'Stock Delays', body:'A minority flag inventory gaps or fulfillment delays.', tag:'~10% of reviews' }
+    ],
+    contact: {
+      phone:'(786) 699-8829', phone_note:'Available during business hours · Miami, FL',
+      website:'mudify.com', website_note:'Shop all off-road & overlanding accessories',
+      location:'Miami, Florida, USA', location_note:'Ships nationwide · US-based retailer',
+      financing:'Affirm & Snap Finance', financing_note:'Military & first-responder discounts available'
+    },
+    faq: [
+      { q:'Is Mudify a legitimate and trustworthy company?', a:'Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL.' },
+      { q:"How is Mudify's customer service quality?", a:"Mudify's customer service is consistently their highest-rated attribute." }
+    ]
+  };
+}
+
+// ── Navigation ───────────────────────────────────
+function nav(view, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('v-' + view).classList.add('active');
+  const navBtn = btn || document.querySelector('[data-view="' + view + '"]');
+  if (navBtn) navBtn.classList.add('active');
+
+  const titles = { dashboard:'Dashboard', pagina:'Página', reviews:'Reviews' };
+  document.getElementById('tb-title').textContent = titles[view] || view;
+
+  // Topbar actions
+  const actions = document.getElementById('tb-actions');
+  if (view === 'reviews') {
+    actions.innerHTML = '<button class="btn btn-primary" onclick="showAddForm()"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg> Nuevo review</button>';
+  } else {
+    actions.innerHTML = '';
+  }
+}
+
+// ── Dashboard ────────────────────────────────────
+function updateDashboard() {
+  const active = reviews.filter(r => r.published !== false).length;
+  const hidden = reviews.length - active;
+  document.getElementById('d-active').textContent = active;
+  document.getElementById('d-hidden').textContent = hidden;
+  document.getElementById('d-total').textContent = reviews.length;
+  document.getElementById('sb-badge').textContent = active;
+}
+
+// ── Settings (Página) ────────────────────────────
+function renderSettings() {
+  const h = settings.hero || {};
+  document.getElementById('s-desc').value = h.description || '';
+  document.getElementById('s-cta-text').value = h.cta_text || '';
+  document.getElementById('s-cta-url').value = h.cta_url || '';
+
+  // About
+  const ab = settings.about || {};
+  const g = id => document.getElementById(id);
+  if(g('s-about-p1')) g('s-about-p1').value = ab.paragraph1 || '';
+  if(g('s-about-p2')) g('s-about-p2').value = ab.paragraph2 || '';
+  if(g('s-about-brands')) g('s-about-brands').value = ab.brands || '';
+  if(g('s-about-vehicles')) g('s-about-vehicles').value = ab.vehicles || '';
+
+  // Rating
+  const rt = settings.rating || {};
+  if(g('s-rating-score')) g('s-rating-score').value = rt.score || '';
+  if(g('s-rating-total')) g('s-rating-total').value = rt.total || '';
+  const rbf = g('rating-bars-fields');
+  if(rbf) rbf.innerHTML = [5,4,3,2,1].map(n => `
+    <div style="display:grid;grid-template-columns:34px 80px auto 1fr;gap:10px;align-items:center;margin-bottom:8px">
+      <label class="field-label" style="text-align:right;margin:0">${n}★</label>
+      <input id="s-pct${n}" class="field-input" style="text-align:center" value="${esc(rt['pct_'+n]||'')}" placeholder="0">
+      <span style="font-size:.78rem;color:var(--t3)">%</span>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="height:100%;background:var(--accent);opacity:.6;width:${rt['pct_'+n]||0}%"></div>
+      </div>
+    </div>`).join('');
+  if(g('s-pos-pct')) g('s-pos-pct').value = rt.positive_pct || '';
+  if(g('s-pos-lbl')) g('s-pos-lbl').value = rt.positive_lbl || '';
+  if(g('s-crit-pct')) g('s-crit-pct').value = rt.critical_pct || '';
+  if(g('s-crit-lbl')) g('s-crit-lbl').value = rt.critical_lbl || '';
+  if(g('s-mix-pct')) g('s-mix-pct').value = rt.mixed_pct || '';
+  if(g('s-mix-lbl')) g('s-mix-lbl').value = rt.mixed_lbl || '';
+
+  // Highlights
+  renderHighlightsFields();
+
+  // Contact
+  const ct = settings.contact || {};
+  if(g('s-ct-phone')) g('s-ct-phone').value = ct.phone || '';
+  if(g('s-ct-phone-note')) g('s-ct-phone-note').value = ct.phone_note || '';
+  if(g('s-ct-web')) g('s-ct-web').value = ct.website || '';
+  if(g('s-ct-web-note')) g('s-ct-web-note').value = ct.website_note || '';
+  if(g('s-ct-loc')) g('s-ct-loc').value = ct.location || '';
+  if(g('s-ct-loc-note')) g('s-ct-loc-note').value = ct.location_note || '';
+  if(g('s-ct-fin')) g('s-ct-fin').value = ct.financing || '';
+  if(g('s-ct-fin-note')) g('s-ct-fin-note').value = ct.financing_note || '';
+
+  // FAQ
+  renderFaqFields();
+
+  const sf = document.getElementById('stats-fields');
+  sf.innerHTML = (settings.stats || []).map((s, i) => `
+    <div style="display:grid;grid-template-columns:48px 1fr 1fr;gap:12px;align-items:end;padding:10px 0;${i < (settings.stats.length - 1) ? 'border-bottom:1px solid var(--border)' : ''}">
+      <div>
+        <label class="field-label">Stat ${i+1}</label>
+        <div style="font-size:.8rem;color:var(--t3);padding-top:10px;font-family:var(--mono)">#${i+1}</div>
+      </div>
+      <div>
+        <label class="field-label">Número</label>
+        <input id="sn-${i}" class="field-input" value="${esc(s.number)}" placeholder="445+">
+      </div>
+      <div>
+        <label class="field-label">Etiqueta</label>
+        <input id="sl-${i}" class="field-input" value="${esc(s.label)}" placeholder="Verified Reviews">
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleSection(id) {
+  document.getElementById('sp-' + id).classList.toggle('open');
+}
+
+function openSection(id) {
+  document.getElementById('sp-' + id).classList.add('open');
+  setTimeout(() => {
+    document.getElementById('sp-' + id).scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 100);
+}
+
+function renderHighlightsFields() {
+  const hls = settings.highlights || [];
+  const hf = document.getElementById('highlights-fields');
+  if (!hf) return;
+  hf.innerHTML = hls.map((h, i) => `
+    <div style="padding:14px 0;${i < hls.length-1?'border-bottom:1px solid var(--border)':''}">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tarjeta ${i+1}</div>
+      <div class="field-row cols2" style="margin-bottom:8px">
+        <div><label class="field-label">Icono (emoji)</label><input id="hl-icon-${i}" class="field-input" value="${esc(h.icon)}" placeholder="🎧"></div>
+        <div><label class="field-label">Título</label><input id="hl-title-${i}" class="field-input" value="${esc(h.title)}"></div>
+      </div>
+      <div class="field-row cols2" style="margin-bottom:0">
+        <div><label class="field-label">Descripción</label><textarea id="hl-body-${i}" class="field-textarea" rows="2">${esc(h.body)}</textarea></div>
+        <div><label class="field-label">Tag</label><input id="hl-tag-${i}" class="field-input" value="${esc(h.tag)}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderFaqFields() {
+  const faqs = settings.faq || [];
+  const ff = document.getElementById('faq-fields');
+  if (!ff) return;
+  ff.innerHTML = faqs.map((f, i) => `
+    <div style="padding:14px 0;${i < faqs.length-1?'border-bottom:1px solid var(--border)':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">Pregunta ${i+1}</span>
+        <button class="btn btn-danger btn-xs" onclick="removeFaqItem(${i})">✕ Eliminar</button>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Pregunta</label>
+        <input id="fq-q-${i}" class="field-input" value="${esc(f.q)}">
+      </div>
+      <div class="field-group" style="margin-bottom:0">
+        <label class="field-label">Respuesta</label>
+        <textarea id="fq-a-${i}" class="field-textarea" rows="3">${esc(f.a)}</textarea>
+      </div>
+    </div>`).join('');
+}
+
+function addFaqItem() {
+  settings.faq = settings.faq || [];
+  settings.faq.push({ q:'', a:'' });
+  renderFaqFields();
+  const ff = document.getElementById('faq-fields');
+  if (ff && ff.lastElementChild) ff.lastElementChild.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function removeFaqItem(i) {
+  if (!settings.faq) return;
+  settings.faq.splice(i, 1);
+  renderFaqFields();
+}
+
+// ── Reviews ──────────────────────────────────────
+const CATS = {
+  general:'General', suspension:'Suspension', coilovers:'Coilovers',
+  shocks:'Shocks', 'control-arms':'Control Arms', ome:'Old Man Emu'
+};
+
+function renderReviews() {
+  updateDashboard();
+  const body = document.getElementById('reviews-body');
+  let list = reviews;
+  if (reviewFilter === 'active') list = reviews.filter(r => r.published !== false);
+  if (reviewFilter === 'hidden') list = reviews.filter(r => r.published === false);
+
+  if (!list.length) {
+    body.innerHTML = '<div class="empty-state"><strong>No hay reviews</strong>Agrega el primero con "+ Nuevo review"</div>';
+    return;
+  }
+
+  body.innerHTML = list.map((r, visIdx) => {
+    const i = reviews.indexOf(r);
+    const pub = r.published !== false;
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    return `
+      <div class="expand-wrap">
+        <div class="rt-row ${!pub ? 'hidden-review' : ''}" id="rr-${i}">
+          <div class="rt-cell">
+            <label class="toggle" title="${pub?'Ocultar':'Mostrar'}">
+              <input type="checkbox" ${pub?'checked':''} onchange="togglePub(${i},this.checked)">
+              <div class="toggle-track"></div><div class="toggle-thumb"></div>
+            </label>
+          </div>
+          <div class="rt-cell" style="min-width:0">
+            <div class="rt-author">${esc(r.author)}</div>
+            <div class="rt-title">${esc(r.title)}</div>
+          </div>
+          <div class="rt-cell mono rt-stars">${stars}</div>
+          <div class="rt-cell mono" style="font-size:.76rem;color:var(--t3)">
+            ${CATS[r.category]||r.category}<br>${esc(r.date)}
+          </div>
+          <div class="rt-cell">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.76rem;color:${pub?'var(--success)':'var(--t3)'}">
+              <span class="status-dot ${pub?'on':'off'}"></span>${pub?'Activo':'Oculto'}
+            </span>
+          </div>
+          <div class="rt-cell actions">
+            <button class="btn btn-secondary btn-xs" id="ebtn-${i}" onclick="toggleExpand(${i})">Editar</button>
+            <button class="btn btn-danger btn-xs" onclick="delReview(${i})">✕</button>
+          </div>
+        </div>
+        <div class="rt-expand" id="ef-${i}">
+          ${buildEditForm(r, i)}
+        </div>
+      </div>`;
+  }).join('');
+
+  // Update filter chips counts
+  const all = reviews.length;
+  const act = reviews.filter(r => r.published !== false).length;
+  const hid = all - act;
+  document.getElementById('rf-all').textContent  = `Todos (${all})`;
+  document.getElementById('rf-act').textContent  = `Activos (${act})`;
+  document.getElementById('rf-hid').textContent  = `Ocultos (${hid})`;
+}
+
+function buildEditForm(r, i) {
+  const cats = Object.entries(CATS).map(([v,l]) => `<option value="${v}"${r.category===v?' selected':''}>${l}</option>`).join('');
+  const ratings = [5,4,3,2,1].map(n => `<option value="${n}"${r.rating===n?' selected':''}>${'★'.repeat(n)}${'☆'.repeat(5-n)}  ${n}</option>`).join('');
+  const badges = [['pos','✓ Positivo'],['neu','⚡ Neutral'],['neg','⚠ Negativo']].map(([v,l]) => `<option value="${v}"${r.badge_type===v?' selected':''}>${l}</option>`).join('');
+
+  return `
+    <div class="expand-header">Editando: ${esc(r.author)}</div>
+    <div class="field-row cols3">
+      <div><label class="field-label">Autor</label><input id="ef-author-${i}" class="field-input" value="${esc(r.author)}"></div>
+      <div><label class="field-label">Iniciales</label><input id="ef-initials-${i}" class="field-input" value="${esc(r.initials)}" maxlength="3"></div>
+      <div><label class="field-label">Fecha</label><input id="ef-date-${i}" class="field-input" value="${esc(r.date)}"></div>
+    </div>
+    <div class="field-row cols3">
+      <div><label class="field-label">Calificación</label><select id="ef-rating-${i}" class="field-select">${ratings}</select></div>
+      <div><label class="field-label">Categoría</label><select id="ef-category-${i}" class="field-select">${cats}</select></div>
+      <div><label class="field-label">Visibilidad</label>
+        <select id="ef-pub-${i}" class="field-select">
+          <option value="true"${r.published!==false?' selected':''}>Visible</option>
+          <option value="false"${r.published===false?' selected':''}>Oculto</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row cols2">
+      <div><label class="field-label">Título</label><input id="ef-title-${i}" class="field-input" value="${esc(r.title)}"></div>
+      <div><label class="field-label">Badge</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <select id="ef-btype-${i}" class="field-select">${badges}</select>
+          <input id="ef-btext-${i}" class="field-input" value="${esc(r.badge_text)}">
+        </div>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Texto del review</label>
+      <textarea id="ef-text-${i}" class="field-textarea" rows="3">${esc(r.text)}</textarea>
+    </div>
+    <div class="expand-actions">
+      <button class="btn btn-primary btn-sm" onclick="saveEdit(${i})">Guardar cambio</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleExpand(${i})">Cancelar</button>
+    </div>`;
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleExpand(i) {
+  const ef = document.getElementById('ef-' + i);
+  const btn = document.getElementById('ebtn-' + i);
+  const isOpen = ef.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.rt-expand.open').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('[id^="ebtn-"]').forEach(b => b.textContent = 'Editar');
+  if (!isOpen) {
+    ef.classList.add('open');
+    btn.textContent = 'Cerrar';
+  }
+}
+
+function togglePub(i, checked) {
+  reviews[i].published = checked;
+  markDirty();
+  renderReviews();
+}
+
+function saveEdit(i) {
+  reviews[i] = {
+    published:  document.getElementById('ef-pub-' + i).value === 'true',
+    title:      document.getElementById('ef-title-' + i).value,
+    author:     document.getElementById('ef-author-' + i).value,
+    initials:   document.getElementById('ef-initials-' + i).value,
+    rating:     parseInt(document.getElementById('ef-rating-' + i).value),
+    category:   document.getElementById('ef-category-' + i).value,
+    date:       document.getElementById('ef-date-' + i).value,
+    text:       document.getElementById('ef-text-' + i).value,
+    badge_type: document.getElementById('ef-btype-' + i).value,
+    badge_text: document.getElementById('ef-btext-' + i).value,
+  };
+  markDirty();
+  renderReviews();
+  toast('Cambio guardado localmente — recuerda guardar todo', 'info');
+}
+
+function delReview(i) {
+  if (!confirm(`¿Eliminar el review de "${reviews[i].author}"?`)) return;
+  reviews.splice(i, 1);
+  markDirty();
+  renderReviews();
+}
+
+function markDirty() {
+  dirtyReviews = true;
+  setStatus('reviews', 'Cambios pendientes', 'pending');
+}
+
+// ── Add review ───────────────────────────────────
+function showAddForm() {
+  const f = document.getElementById('add-form');
+  f.style.display = 'block';
+  const today = new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date());
+  document.getElementById('nf-date').value = today;
+  document.getElementById('nf-badge-text').value = '✓ Verified Purchase';
+  f.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function hideAddForm() {
+  document.getElementById('add-form').style.display = 'none';
+}
+
+function addReview() {
+  const author = document.getElementById('nf-author').value.trim();
+  const title  = document.getElementById('nf-title').value.trim();
+  const text   = document.getElementById('nf-text').value.trim();
+  if (!author || !title || !text) {
+    toast('Completa Autor, Título y Texto del review', 'error');
+    return;
+  }
+  const initials = document.getElementById('nf-initials').value.trim() ||
+    author.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+  reviews.unshift({
+    published:  document.getElementById('nf-published').value === 'true',
+    title, author, initials,
+    rating:     parseInt(document.getElementById('nf-rating').value),
+    category:   document.getElementById('nf-category').value,
+    date:       document.getElementById('nf-date').value,
+    text,
+    badge_type: document.getElementById('nf-badge-type').value,
+    badge_text: document.getElementById('nf-badge-text').value,
+  });
+
+  ['author','initials','date','title','text','badge-text'].forEach(id => {
+    const el = document.getElementById('nf-' + id);
+    if (el) el.value = '';
+  });
+
+  hideAddForm();
+  markDirty();
+  renderReviews();
+  toast('Review agregado — guarda para publicar', 'success');
+}
+
+// ── Filter ───────────────────────────────────────
+function setFilter(f) {
+  reviewFilter = f;
+  document.querySelectorAll('.chip[data-f]').forEach(c => {
+    c.classList.toggle('active', c.dataset.f === f);
+  });
+  renderReviews();
+}
+
+// ── Save ─────────────────────────────────────────
+async function saveReviews() {
+  const btn = document.getElementById('btn-save-reviews');
+  btn.disabled = true;
+  setStatus('reviews', 'Guardando…', 'saving');
+
+  const res = await callSave('reviews', { reviews });
+  btn.disabled = false;
+
+  if (res.ok) {
+    dirtyReviews = false;
+    setStatus('reviews', '✓ Publicado', 'ok');
+    toast('Reviews guardados. El sitio se actualiza en ~30 segundos.', 'success');
+  } else {
+    setStatus('reviews', '✗ ' + (res.error||'Error'), 'err');
+    toast(res.error || 'Error al guardar', 'error');
+  }
+}
+
+async function saveSettings() {
+  const btn = document.getElementById('btn-save-pagina');
+  btn.disabled = true;
+  setStatus('pagina', 'Guardando…', 'saving');
+
+  const g = id => document.getElementById(id)?.value || '';
+  const sc = (settings.stats || []).length;
+
+  const newSettings = {
+    hero: {
+      description: g('s-desc'),
+      cta_text:    g('s-cta-text'),
+      cta_url:     g('s-cta-url'),
+    },
+    stats: Array.from({length:sc}, (_,i) => ({
+      number: g('sn-'+i),
+      label:  g('sl-'+i),
+    })),
+    about: {
+      paragraph1: g('s-about-p1'),
+      paragraph2: g('s-about-p2'),
+      brands:     g('s-about-brands'),
+      vehicles:   g('s-about-vehicles'),
+    },
+    rating: {
+      score: g('s-rating-score'), total: g('s-rating-total'),
+      pct_5: g('s-pct5'), pct_4: g('s-pct4'), pct_3: g('s-pct3'),
+      pct_2: g('s-pct2'), pct_1: g('s-pct1'),
+      positive_pct: g('s-pos-pct'), positive_lbl: g('s-pos-lbl'),
+      critical_pct: g('s-crit-pct'), critical_lbl: g('s-crit-lbl'),
+      mixed_pct:    g('s-mix-pct'),  mixed_lbl:    g('s-mix-lbl'),
+    },
+    highlights: (settings.highlights || []).map((_,i) => ({
+      icon:  g('hl-icon-'+i),
+      title: g('hl-title-'+i),
+      body:  document.getElementById('hl-body-'+i)?.value || '',
+      tag:   g('hl-tag-'+i),
+    })),
+    contact: {
+      phone:          g('s-ct-phone'),
+      phone_note:     g('s-ct-phone-note'),
+      website:        g('s-ct-web'),
+      website_note:   g('s-ct-web-note'),
+      location:       g('s-ct-loc'),
+      location_note:  g('s-ct-loc-note'),
+      financing:      g('s-ct-fin'),
+      financing_note: g('s-ct-fin-note'),
+    },
+    faq: (settings.faq || []).map((_,i) => ({
+      q: g('fq-q-'+i),
+      a: document.getElementById('fq-a-'+i)?.value || '',
+    })),
+  };
+
+  const res = await callSave('settings', newSettings);
+  btn.disabled = false;
+
+  if (res.ok) {
+    settings = newSettings;
+    setStatus('pagina', '✓ Publicado', 'ok');
+    toast('Configuración guardada. El sitio se actualiza en ~30 segundos.', 'success');
+  } else {
+    setStatus('pagina', '✗ ' + (res.error||'Error'), 'err');
+    toast(res.error || 'Error al guardar', 'error');
+  }
+}
+
+async function callSave(file, data) {
+  try {
+    const r = await fetch('/.netlify/functions/save-data', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password:adminPwd, file, data })
+    });
+    const j = await r.json();
+    return r.ok ? {ok:true} : {ok:false, error:j.error};
+  } catch(e) {
+    return {ok:false, error:'Error de red: ' + e.message};
+  }
+}
+
+// ── UI helpers ───────────────────────────────────
+function setStatus(which, msg, type) {
+  const el = document.getElementById('st-' + which);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'save-status ' + (type==='pending'?'':type==='ok'?'ok':type==='err'?'err':type==='saving'?'saving':'');
+}
+
+function toast(msg, type='info') {
+  const t = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = 'toast-item ' + (type==='success'?'success':type==='error'?'error':'');
+  el.innerHTML = `<span>${msg}</span>`;
+  t.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// Initialize filter chips for Reviews view after DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Inject filter bar before table in v-reviews
+  const reviewsView = document.getElementById('v-reviews');
+  const table = document.getElementById('reviews-table');
+  const toolbar = document.createElement('div');
+  toolbar.className = 'reviews-toolbar';
+  toolbar.innerHTML = `
+    <span class="reviews-count" id="rc-count"></span>
+    <div class="filter-chips">
+      <button class="chip active" data-f="all" id="rf-all" onclick="setFilter('all')">Todos</button>
+      <button class="chip" data-f="active" id="rf-act" onclick="setFilter('active')">Activos</button>
+      <button class="chip" data-f="hidden" id="rf-hid" onclick="setFilter('hidden')">Ocultos</button>
+    </div>`;
+  reviewsView.insertBefore(toolbar, document.getElementById('add-form'));
+});
+</script>
+</body>
+</html>
