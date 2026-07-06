@@ -5,6 +5,7 @@
 
 [build]
   publish = "."
+  functions = "netlify/functions"
 
 # ── Cache: HTML sin cache (actualizaciones instantáneas) ──────────
 [[headers]]

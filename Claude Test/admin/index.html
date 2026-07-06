@@ -1,12 +1,633 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mudify Reviews — Admin</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mudify Reviews — Admin</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#E94141;--red-d:#c73333;--red-bg:rgba(233,65,65,.08);
+  --bg:#f2f2f2;--card:#fff;--ink:#1a1a1a;--mid:#555;--muted:#888;
+  --border:#ddd;--divider:#eee;
+  --green:#1a7a4a;--green-bg:#e8f5ed;
+}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5}
+a{color:var(--red);cursor:pointer;text-decoration:none}
+input,select,textarea,button{font-family:inherit;font-size:inherit;line-height:inherit}
+
+/* ── GATE ── */
+#gate{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:9999}
+.gate-box{background:#111;border:1px solid #222;padding:48px 40px;width:100%;max-width:360px;text-align:center}
+.gate-logo{height:34px;width:auto;filter:brightness(0) invert(1);margin:0 auto 32px;display:block}
+.gate-box h2{font-size:1rem;font-weight:700;color:#fff;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.gate-box p{font-size:.83rem;color:#555;margin-bottom:24px}
+.gate-input{width:100%;padding:12px 16px;background:#1a1a1a;border:1px solid #333;color:#fff;font-size:.95rem;outline:none;margin-bottom:10px;border-radius:2px}
+.gate-input:focus{border-color:var(--red)}
+.gate-btn{width:100%;padding:12px;background:var(--red);color:#fff;border:none;font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.gate-btn:hover{background:var(--red-d)}
+#gate-err{color:#ff6b6b;font-size:.8rem;margin-top:8px;display:none;min-height:20px}
+
+/* ── PANEL ── */
+#panel{display:none;min-height:100vh;padding-bottom:72px}
+
+/* ── HEADER ── */
+#admin-header{background:#000;border-bottom:2px solid var(--red);padding:0 20px;display:flex;align-items:center;gap:14px;height:54px;position:sticky;top:0;z-index:100}
+.header-logo{height:24px;filter:brightness(0) invert(1);flex-shrink:0}
+.header-title{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#444;flex:1}
+.header-badge{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--red-bg);color:var(--red);border:1px solid rgba(233,65,65,.3);padding:3px 9px}
+.header-logout{background:none;border:1px solid #2a2a2a;color:#555;padding:6px 13px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;flex-shrink:0;border-radius:2px}
+.header-logout:hover{border-color:#fff;color:#fff}
+
+/* ── TABS ── */
+#tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;display:flex;position:sticky;top:54px;z-index:99}
+.tab-btn{padding:13px 18px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+.tab-btn:hover:not(.active){color:var(--ink)}
+
+/* ── TAB PANELS ── */
+.tab-panel{padding:20px;max-width:860px;margin:0 auto;display:none}
+.tab-panel.active{display:block}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.toolbar-info{font-size:.82rem;color:var(--muted)}
+.toolbar-info strong{color:var(--ink)}
+.btn-add{background:var(--red);color:#fff;border:none;padding:9px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;display:flex;align-items:center;gap:6px}
+.btn-add:hover{background:var(--red-d)}
+
+/* ── FORM ── */
+.review-form{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--red);padding:18px 20px;margin-bottom:14px}
+.review-form h3{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.fg{display:grid;gap:10px;margin-bottom:10px}
+.fg-2{grid-template-columns:1fr 1fr}
+.fg-3{grid-template-columns:1fr 1fr 1fr}
+.ff{display:flex;flex-direction:column;gap:3px}
+.ff.full{grid-column:1/-1}
+.ff label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ff input,.ff select,.ff textarea{border:1px solid var(--border);padding:7px 9px;font-size:.88rem;outline:none;background:#fff;color:var(--ink);border-radius:2px;width:100%}
+.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--red)}
+.ff textarea{resize:vertical;min-height:76px}
+.form-actions{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--divider)}
+.btn-confirm{background:var(--ink);color:#fff;border:none;padding:8px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.btn-confirm:hover{background:#333}
+.btn-cancel{background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;padding:8px 4px}
+.btn-cancel:hover{color:var(--red)}
+
+/* ── REVIEW CARD ── */
+.review-card{background:var(--card);border:1px solid var(--border);margin-bottom:6px;border-radius:2px;overflow:hidden}
+.rc-row{display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:48px}
+.toggle{position:relative;display:inline-block;width:34px;height:19px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:#ccc;border-radius:20px;transition:background .2s}
+.toggle input:checked + .toggle-track{background:var(--green)}
+.toggle-thumb{position:absolute;height:13px;width:13px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:transform .2s;pointer-events:none}
+.toggle input:checked ~ .toggle-thumb{transform:translateX(15px)}
+.rc-author{font-weight:700;font-size:.86rem;color:var(--ink);min-width:80px;flex-shrink:0}
+.rc-stars{color:#c47a00;font-size:.82rem;letter-spacing:1px;flex-shrink:0}
+.rc-title{font-size:.84rem;color:var(--mid);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-date{font-size:.72rem;color:var(--muted);flex-shrink:0;white-space:nowrap}
+.rc-hidden{font-size:.67rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#f0f0f0;border:1px solid var(--border);padding:2px 7px;flex-shrink:0;border-radius:2px}
+.rc-actions{display:flex;gap:5px;flex-shrink:0;margin-left:auto}
+.btn-edit-rc{background:none;border:1px solid var(--border);color:var(--mid);padding:4px 9px;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.btn-edit-rc:hover,.btn-edit-rc.open{border-color:var(--ink);background:var(--ink);color:#fff}
+.btn-del-rc{background:none;border:1px solid #f0c0c0;color:#c0392b;padding:4px 9px;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.btn-del-rc:hover{background:#fef0f0}
+.rc-editform{display:none;border-top:1px solid var(--divider);background:#fafafa;padding:14px 20px 18px}
+
+/* ── SETTINGS ── */
+.settings-block{background:var(--card);border:1px solid var(--border);margin-bottom:16px;border-radius:2px;overflow:hidden}
+.settings-block-header{padding:11px 18px;background:var(--bg);border-bottom:1px solid var(--border);font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--mid)}
+.settings-block-body{padding:18px 20px}
+.stat-row-editor{display:grid;grid-template-columns:60px 1fr 1fr;gap:10px;align-items:end;padding:8px 0;border-bottom:1px solid var(--divider)}
+.stat-row-editor:last-child{border-bottom:none}
+.stat-idx{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:9px}
+
+/* ── SAVE BAR ── */
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);padding:11px 20px;display:flex;align-items:center;gap:14px;z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.07)}
+.btn-save{background:var(--red);color:#fff;border:none;padding:10px 24px;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;flex-shrink:0}
+.btn-save:hover{background:var(--red-d)}
+.btn-save:disabled{opacity:.45;cursor:default;pointer-events:none}
+.save-status{font-size:.82rem}
+.save-status.ok{color:var(--green)}
+.save-status.err{color:#c0392b}
+.save-status.pending{color:var(--muted)}
+.save-status.saving{color:var(--red)}
+
+@media(max-width:580px){
+  .fg-2,.fg-3{grid-template-columns:1fr}
+  .rc-title,.rc-date{display:none}
+  .gate-box{padding:36px 24px}
+}
+</style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<!-- ── GATE ── -->
+<div id="gate">
+  <div class="gate-box">
+    <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="gate-logo" alt="Mudify">
+    <h2>Panel de Administración</h2>
+    <p>Ingresa la contraseña para continuar</p>
+    <form onsubmit="login(event)" autocomplete="off">
+      <input type="password" id="pwd" class="gate-input" placeholder="Contraseña" autocomplete="current-password">
+      <button type="submit" class="gate-btn">Entrar →</button>
+      <p id="gate-err"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ── PANEL ── -->
+<div id="panel">
+
+  <div id="admin-header">
+    <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="header-logo" alt="Mudify">
+    <span class="header-title">Reviews Admin</span>
+    <span class="header-badge" id="header-badge">Cargando…</span>
+    <button class="header-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <div id="tab-bar">
+    <button class="tab-btn active" data-tab="reviews" onclick="showTab('reviews')">Reviews</button>
+    <button class="tab-btn" data-tab="settings" onclick="showTab('settings')">Configuración de página</button>
+  </div>
+
+  <!-- ─── TAB: Reviews ─── -->
+  <div id="tab-reviews" class="tab-panel active">
+
+    <div class="toolbar">
+      <div class="toolbar-info" id="reviews-info">Cargando…</div>
+      <button class="btn-add" onclick="toggleAddForm()">
+        <span id="add-btn-label">+ Nuevo Review</span>
+      </button>
+    </div>
+
+    <!-- Add form -->
+    <div id="add-form" style="display:none">
+      <div class="review-form">
+        <h3>Nuevo Review</h3>
+        <div class="fg fg-3">
+          <div class="ff"><label>Autor</label><input id="nf-author" placeholder="Jack B."></div>
+          <div class="ff"><label>Iniciales (avatar)</label><input id="nf-initials" placeholder="JB" maxlength="3"></div>
+          <div class="ff"><label>Fecha</label><input id="nf-date" placeholder="Jan 12, 2026"></div>
+        </div>
+        <div class="fg fg-3">
+          <div class="ff"><label>Calificación</label>
+            <select id="nf-rating">
+              <option value="5">★★★★★  5</option>
+              <option value="4">★★★★☆  4</option>
+              <option value="3">★★★☆☆  3</option>
+              <option value="2">★★☆☆☆  2</option>
+              <option value="1">★☆☆☆☆  1</option>
+            </select>
+          </div>
+          <div class="ff"><label>Categoría de producto</label>
+            <select id="nf-category">
+              <option value="general">General</option>
+              <option value="suspension">Suspension / Lift Kits</option>
+              <option value="coilovers">Coilovers</option>
+              <option value="shocks">Shocks / Struts</option>
+              <option value="control-arms">Control Arms</option>
+              <option value="ome">Old Man Emu (OME)</option>
+            </select>
+          </div>
+          <div class="ff"><label>Visibilidad</label>
+            <select id="nf-published">
+              <option value="true">✓ Visible</option>
+              <option value="false">— Oculto</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg fg-2">
+          <div class="ff"><label>Título del review</label><input id="nf-title" placeholder="Amazing Experience"></div>
+          <div class="ff"><label>Tipo de badge</label>
+            <select id="nf-badge-type">
+              <option value="pos">✓ Positivo (verde)</option>
+              <option value="neu">⚡ Neutral (amarillo)</option>
+              <option value="neg">⚠ Negativo (rojo)</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <div class="ff full"><label>Texto del badge</label><input id="nf-badge-text" placeholder="✓ Verified Purchase"></div>
+        </div>
+        <div class="fg">
+          <div class="ff full"><label>Texto del review</label><textarea id="nf-text" placeholder="Describe la experiencia del cliente…"></textarea></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-confirm" onclick="addReview()">Agregar Review</button>
+          <button class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews list -->
+    <div id="reviews-list"></div>
+
+    <!-- Save bar -->
+    <div class="save-bar">
+      <button class="btn-save" id="btn-save-reviews" onclick="saveReviews()">Guardar cambios</button>
+      <span class="save-status pending" id="status-reviews">Sin cambios pendientes</span>
+    </div>
+
+  </div><!-- /tab-reviews -->
+
+  <!-- ─── TAB: Settings ─── -->
+  <div id="tab-settings" class="tab-panel">
+
+    <div class="settings-block">
+      <div class="settings-block-header">Texto del Hero</div>
+      <div class="settings-block-body">
+        <div class="ff" style="margin-bottom:14px">
+          <label>Descripción principal</label>
+          <textarea id="s-desc" rows="3"></textarea>
+        </div>
+        <div class="fg fg-2">
+          <div class="ff">
+            <label>Texto del botón CTA</label>
+            <input id="s-cta-text" type="text" placeholder="Leave a Review">
+          </div>
+          <div class="ff">
+            <label>URL del botón CTA</label>
+            <input id="s-cta-url" type="text" placeholder="#contact o https://…">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-block">
+      <div class="settings-block-header">Estadísticas (barra inferior del hero)</div>
+      <div class="settings-block-body" id="stats-editor"></div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;padding-bottom:24px">
+      <button class="btn-save" id="btn-save-settings" onclick="saveSettings()">Guardar configuración</button>
+      <span class="save-status" id="status-settings"></span>
+    </div>
+
+  </div><!-- /tab-settings -->
+
+</div><!-- /panel -->
+
+<script>
+// ─── State ───────────────────────────────────────────
+let reviews = [];
+let settings = {};
+let adminPassword = '';
+let dirty = false;
+
+// ─── Auth ────────────────────────────────────────────
+function login(e) {
+  e.preventDefault();
+  const pwd = document.getElementById('pwd').value;
+  if (!pwd) return;
+  adminPassword = pwd;
+  sessionStorage.setItem('_mp', pwd);
+  openPanel();
+}
+
+function logout() {
+  sessionStorage.removeItem('_mp');
+  location.reload();
+}
+
+function openPanel() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  loadData();
+}
+
+// Auto-login if session exists
+const _saved = sessionStorage.getItem('_mp');
+if (_saved) { adminPassword = _saved; document.addEventListener('DOMContentLoaded', openPanel); }
+
+// ─── Data loading ─────────────────────────────────────
+async function loadData() {
+  try {
+    const [rRes, sRes] = await Promise.all([
+      fetch('/data/reviews.json?t=' + Date.now()),
+      fetch('/data/settings.json?t=' + Date.now()),
+    ]);
+    const rData = await rRes.json();
+    reviews = rData.reviews || [];
+    settings = await sRes.json().catch(() => defaultSettings());
+  } catch (e) {
+    reviews = [];
+    settings = defaultSettings();
+  }
+  renderReviews();
+  renderSettings();
+  setStatus('reviews', 'Sin cambios pendientes', 'pending');
+}
+
+function defaultSettings() {
+  return {
+    hero: { description: '', cta_text: 'Leave a Review', cta_url: '#contact' },
+    stats: [
+      { number: '4.3/5', label: 'Average Rating' },
+      { number: '445+',  label: 'Verified Reviews' },
+      { number: '82%',   label: 'Positive Reviews' },
+    ],
+  };
+}
+
+// ─── Render reviews list ──────────────────────────────
+function renderReviews() {
+  const active = reviews.filter(r => r.published !== false).length;
+  document.getElementById('reviews-info').innerHTML =
+    `<strong>${reviews.length}</strong> reviews — <strong style="color:var(--green)">${active} activos</strong>, ${reviews.length - active} ocultos`;
+  document.getElementById('header-badge').textContent = `${active} activos`;
+
+  const list = document.getElementById('reviews-list');
+  if (!reviews.length) {
+    list.innerHTML = '<p style="text-align:center;padding:48px 20px;color:var(--muted)">No hay reviews. Agrega el primero con el botón de arriba.</p>';
+    return;
+  }
+
+  list.innerHTML = reviews.map((r, i) => {
+    const pub = r.published !== false;
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    return `<div class="review-card" id="rc-${i}">
+      <div class="rc-row">
+        <label class="toggle" title="${pub ? 'Ocultar' : 'Mostrar'}">
+          <input type="checkbox" ${pub ? 'checked' : ''} onchange="togglePub(${i},this.checked)">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+        <span class="rc-author">${esc(r.author)}</span>
+        <span class="rc-stars">${stars}</span>
+        <span class="rc-title">${esc(r.title)}</span>
+        <span class="rc-date">${esc(r.date)}</span>
+        ${!pub ? '<span class="rc-hidden">Oculto</span>' : ''}
+        <div class="rc-actions">
+          <button class="btn-edit-rc" id="ebtn-${i}" onclick="toggleEdit(${i})">Editar</button>
+          <button class="btn-del-rc" onclick="delReview(${i})">✕</button>
+        </div>
+      </div>
+      <div class="rc-editform" id="ef-${i}">
+        ${buildEditForm(r, i)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildEditForm(r, i) {
+  const cats = [
+    ['general','General'],['suspension','Suspension / Lift Kits'],['coilovers','Coilovers'],
+    ['shocks','Shocks / Struts'],['control-arms','Control Arms'],['ome','Old Man Emu (OME)'],
+  ];
+  const catOpts = cats.map(([v,l]) => `<option value="${v}"${r.category===v?' selected':''}>${l}</option>`).join('');
+  const ratingOpts = [5,4,3,2,1].map(n =>
+    `<option value="${n}"${r.rating===n?' selected':''}>${'★'.repeat(n)}${'☆'.repeat(5-n)}  ${n}</option>`
+  ).join('');
+  const badgeOpts = [
+    ['pos','✓ Positivo (verde)'],['neu','⚡ Neutral (amarillo)'],['neg','⚠ Negativo (rojo)']
+  ].map(([v,l]) => `<option value="${v}"${r.badge_type===v?' selected':''}>${l}</option>`).join('');
+  const pubOpts = `<option value="true"${r.published!==false?' selected':''}>✓ Visible</option>
+    <option value="false"${r.published===false?' selected':''}>— Oculto</option>`;
+
+  return `<div class="review-form" style="border:none;background:transparent;padding:0;margin:0">
+    <div class="fg fg-3">
+      <div class="ff"><label>Autor</label><input id="ef-author-${i}" value="${esc(r.author)}"></div>
+      <div class="ff"><label>Iniciales</label><input id="ef-initials-${i}" value="${esc(r.initials)}" maxlength="3"></div>
+      <div class="ff"><label>Fecha</label><input id="ef-date-${i}" value="${esc(r.date)}"></div>
+    </div>
+    <div class="fg fg-3">
+      <div class="ff"><label>Calificación</label><select id="ef-rating-${i}">${ratingOpts}</select></div>
+      <div class="ff"><label>Categoría</label><select id="ef-category-${i}">${catOpts}</select></div>
+      <div class="ff"><label>Visibilidad</label><select id="ef-published-${i}">${pubOpts}</select></div>
+    </div>
+    <div class="fg fg-2">
+      <div class="ff"><label>Título</label><input id="ef-title-${i}" value="${esc(r.title)}"></div>
+      <div class="ff"><label>Tipo de badge</label><select id="ef-badge-type-${i}">${badgeOpts}</select></div>
+    </div>
+    <div class="fg">
+      <div class="ff full"><label>Texto del badge</label><input id="ef-badge-text-${i}" value="${esc(r.badge_text)}"></div>
+    </div>
+    <div class="fg">
+      <div class="ff full"><label>Texto del review</label>
+        <textarea id="ef-text-${i}" rows="3">${esc(r.text)}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-confirm" onclick="saveEdit(${i})">Guardar cambio</button>
+      <button class="btn-cancel" onclick="toggleEdit(${i})">Cancelar</button>
+    </div>
+  </div>`;
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Review CRUD ──────────────────────────────────────
+function togglePub(i, checked) {
+  reviews[i].published = checked;
+  markDirty();
+  const card = document.getElementById('rc-' + i);
+  const existing = card.querySelector('.rc-hidden');
+  const actions = card.querySelector('.rc-actions');
+  if (!checked && !existing) {
+    const badge = document.createElement('span');
+    badge.className = 'rc-hidden';
+    badge.textContent = 'Oculto';
+    actions.before(badge);
+  } else if (checked && existing) {
+    existing.remove();
+  }
+  const active = reviews.filter(r => r.published !== false).length;
+  document.getElementById('reviews-info').innerHTML =
+    `<strong>${reviews.length}</strong> reviews — <strong style="color:var(--green)">${active} activos</strong>, ${reviews.length - active} ocultos`;
+  document.getElementById('header-badge').textContent = `${active} activos`;
+}
+
+function toggleEdit(i) {
+  const ef = document.getElementById('ef-' + i);
+  const btn = document.getElementById('ebtn-' + i);
+  const isOpen = ef.style.display === 'block';
+  ef.style.display = isOpen ? '' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? 'Editar' : 'Cerrar';
+}
+
+function saveEdit(i) {
+  reviews[i] = {
+    published: document.getElementById('ef-published-' + i).value === 'true',
+    title:      document.getElementById('ef-title-' + i).value,
+    author:     document.getElementById('ef-author-' + i).value,
+    initials:   document.getElementById('ef-initials-' + i).value,
+    rating:     parseInt(document.getElementById('ef-rating-' + i).value),
+    category:   document.getElementById('ef-category-' + i).value,
+    date:       document.getElementById('ef-date-' + i).value,
+    text:       document.getElementById('ef-text-' + i).value,
+    badge_type: document.getElementById('ef-badge-type-' + i).value,
+    badge_text: document.getElementById('ef-badge-text-' + i).value,
+  };
+  markDirty();
+  renderReviews();
+}
+
+function delReview(i) {
+  if (!confirm(`¿Eliminar el review de "${reviews[i].author}"? No se puede deshacer.`)) return;
+  reviews.splice(i, 1);
+  markDirty();
+  renderReviews();
+}
+
+let addOpen = false;
+function toggleAddForm() {
+  addOpen = !addOpen;
+  document.getElementById('add-form').style.display = addOpen ? 'block' : 'none';
+  document.getElementById('add-btn-label').textContent = addOpen ? '✕ Cancelar' : '+ Nuevo Review';
+  if (addOpen) {
+    const today = new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date());
+    document.getElementById('nf-date').value = today;
+    document.getElementById('nf-badge-text').value = '✓ Verified Purchase';
+  }
+}
+
+function addReview() {
+  const author = document.getElementById('nf-author').value.trim();
+  const title  = document.getElementById('nf-title').value.trim();
+  const text   = document.getElementById('nf-text').value.trim();
+  if (!author || !title || !text) { alert('Completa al menos: Autor, Título y Texto del review.'); return; }
+
+  const initials = (document.getElementById('nf-initials').value.trim() ||
+    author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2));
+
+  reviews.unshift({
+    published:  document.getElementById('nf-published').value === 'true',
+    title, author, initials,
+    rating:     parseInt(document.getElementById('nf-rating').value),
+    category:   document.getElementById('nf-category').value,
+    date:       document.getElementById('nf-date').value,
+    text,
+    badge_type: document.getElementById('nf-badge-type').value,
+    badge_text: document.getElementById('nf-badge-text').value,
+  });
+
+  ['author','initials','date','title','text','badge-text'].forEach(id => {
+    const el = document.getElementById('nf-' + id);
+    if (el) el.value = '';
+  });
+
+  addOpen = false;
+  document.getElementById('add-form').style.display = 'none';
+  document.getElementById('add-btn-label').textContent = '+ Nuevo Review';
+  markDirty();
+  renderReviews();
+}
+
+function markDirty() {
+  dirty = true;
+  setStatus('reviews', 'Cambios pendientes — guarda cuando estés listo', 'pending');
+}
+
+// ─── Settings form ────────────────────────────────────
+function renderSettings() {
+  const h = settings.hero || {};
+  document.getElementById('s-desc').value     = h.description || '';
+  document.getElementById('s-cta-text').value = h.cta_text    || '';
+  document.getElementById('s-cta-url').value  = h.cta_url     || '';
+
+  const stats = settings.stats || [];
+  document.getElementById('stats-editor').innerHTML = stats.map((s, i) => `
+    <div class="stat-row-editor">
+      <div class="stat-idx">Stat ${i + 1}</div>
+      <div class="ff">
+        <label>Número</label>
+        <input id="sn-${i}" value="${esc(s.number)}" placeholder="4.3/5">
+      </div>
+      <div class="ff">
+        <label>Etiqueta</label>
+        <input id="sl-${i}" value="${esc(s.label)}" placeholder="Average Rating">
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── Save to GitHub ───────────────────────────────────
+async function saveReviews() {
+  const btn = document.getElementById('btn-save-reviews');
+  btn.disabled = true;
+  setStatus('reviews', 'Guardando…', 'saving');
+
+  const result = await callSave('reviews', { reviews });
+  btn.disabled = false;
+
+  if (result.ok) {
+    dirty = false;
+    setStatus('reviews', '✓ Guardado. El sitio se actualiza en ~30 segundos.', 'ok');
+  } else {
+    const msg = result.error || 'Error desconocido';
+    if (msg.includes('Contraseña')) {
+      setStatus('reviews', '✗ Contraseña incorrecta — cierra sesión y vuelve a entrar.', 'err');
+    } else {
+      setStatus('reviews', '✗ ' + msg, 'err');
+    }
+  }
+}
+
+async function saveSettings() {
+  const btn = document.getElementById('btn-save-settings');
+  btn.disabled = true;
+  setStatus('settings', 'Guardando…', 'saving');
+
+  const statCount = (settings.stats || []).length;
+  const newStats = Array.from({ length: statCount }, (_, i) => ({
+    number: document.getElementById('sn-' + i)?.value || '',
+    label:  document.getElementById('sl-' + i)?.value || '',
+  }));
+
+  const newSettings = {
+    hero: {
+      description: document.getElementById('s-desc').value,
+      cta_text:    document.getElementById('s-cta-text').value,
+      cta_url:     document.getElementById('s-cta-url').value,
+    },
+    stats: newStats,
+  };
+
+  const result = await callSave('settings', newSettings);
+  btn.disabled = false;
+
+  if (result.ok) {
+    settings = newSettings;
+    setStatus('settings', '✓ Guardado. El sitio se actualiza en ~30 segundos.', 'ok');
+  } else {
+    setStatus('settings', '✗ ' + (result.error || 'Error desconocido'), 'err');
+  }
+}
+
+async function callSave(file, data) {
+  try {
+    const res = await fetch('/.netlify/functions/save-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPassword, file, data }),
+    });
+    const json = await res.json();
+    return res.ok ? { ok: true } : { ok: false, error: json.error };
+  } catch (e) {
+    return { ok: false, error: 'Error de red: ' + e.message };
+  }
+}
+
+// ─── UI helpers ───────────────────────────────────────
+function showTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  // Save bar only shows on reviews tab
+  document.querySelector('.save-bar').style.display = tab === 'reviews' ? 'flex' : 'none';
+}
+
+function setStatus(which, msg, type) {
+  const el = document.getElementById('status-' + which);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'save-status ' + type;
+}
+</script>
 </body>
 </html>

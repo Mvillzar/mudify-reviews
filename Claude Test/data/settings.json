@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "description": "Real feedback from 445+ off-road and overlanding enthusiasts on suspension kits, shipping, and support.",
+    "cta_text": "Leave a Review",
+    "cta_url": "#contact"
+  },
+  "stats": [
+    { "number": "4.3/5", "label": "Average Rating" },
+    { "number": "445+",  "label": "Verified Reviews" },
+    { "number": "82%",   "label": "Positive Reviews" }
+  ]
+}

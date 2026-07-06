@@ -508,10 +508,10 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
       <div>
         <div class="hero-eyebrow">Verified Customer Reviews</div>
         <h1>What Customers<br>Say About <span class="accent">Mudify</span></h1>
-        <p class="hero-desc">Real feedback from 445+ off-road and overlanding enthusiasts on suspension kits, shipping, and support.</p>
+        <p class="hero-desc" id="hero-desc">Real feedback from 445+ off-road and overlanding enthusiasts on suspension kits, shipping, and support.</p>
         <div class="btn-row">
           <a href="#reviews" class="btn btn-red">Read All Reviews</a>
-          <a href="#contact" class="btn btn-outline">Leave a Review</a>
+          <a href="#contact" class="btn btn-outline" id="hero-cta">Leave a Review</a>
         </div>
       </div>
       <div class="hero-card" aria-label="Rating summary">
@@ -1067,6 +1067,34 @@ async function loadReviews() {
   }
 }
 loadReviews();
+
+async function loadSettings() {
+  try {
+    const res = await fetch('data/settings.json?t=' + Date.now());
+    if (!res.ok) return;
+    const s = await res.json();
+    if (s.hero?.description) {
+      const el = document.getElementById('hero-desc');
+      if (el) el.textContent = s.hero.description;
+    }
+    if (s.hero?.cta_text || s.hero?.cta_url) {
+      const el = document.getElementById('hero-cta');
+      if (el) {
+        if (s.hero.cta_text) el.textContent = s.hero.cta_text;
+        if (s.hero.cta_url) el.href = s.hero.cta_url;
+      }
+    }
+    if (s.stats?.length) {
+      const numEls = document.querySelectorAll('.hss-num');
+      const lblEls = document.querySelectorAll('.hss-lbl');
+      s.stats.forEach((st, i) => {
+        if (numEls[i]) numEls[i].innerHTML = st.number.replace(/^([\d.,]+)(.*)$/, '<span class="r">$1</span>$2');
+        if (lblEls[i]) lblEls[i].textContent = st.label;
+      });
+    }
+  } catch(e) {}
+}
+loadSettings();
 
 // ── Review Filters ──
 let activeRating = 'all';
