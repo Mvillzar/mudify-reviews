@@ -1,0 +1,82 @@
+{
+  "_comment": "Crea esta colección en Wix CMS: Content Manager → + New Collection → nombre: 'Reviews'",
+  "collectionId": "Reviews",
+  "displayName": "Reviews",
+  "permissions": {
+    "read": "anyone",
+    "insert": "admin",
+    "update": "admin",
+    "delete": "admin"
+  },
+  "fields": [
+    {
+      "name": "title",
+      "displayName": "Título del review",
+      "type": "Text",
+      "example": "Ordered and Excited"
+    },
+    {
+      "name": "body",
+      "displayName": "Texto del review",
+      "type": "Text (long)",
+      "example": "Samantha fue muy paciente ayudándome a elegir el kit correcto..."
+    },
+    {
+      "name": "authorName",
+      "displayName": "Nombre del autor",
+      "type": "Text",
+      "example": "Kevin S."
+    },
+    {
+      "name": "authorInitials",
+      "displayName": "Iniciales (avatar)",
+      "type": "Text",
+      "example": "KS"
+    },
+    {
+      "name": "rating",
+      "displayName": "Rating (1-5)",
+      "type": "Number",
+      "example": 5
+    },
+    {
+      "name": "productCategory",
+      "displayName": "Categoría de producto",
+      "type": "Text",
+      "_values": "general | suspension | coilovers | shocks | control-arms | ome",
+      "example": "suspension"
+    },
+    {
+      "name": "reviewDate",
+      "displayName": "Fecha del review",
+      "type": "Date",
+      "example": "2026-01-22"
+    },
+    {
+      "name": "platform",
+      "displayName": "Plataforma de origen",
+      "type": "Text",
+      "_values": "trustpilot | google | smartcustomer | direct",
+      "example": "trustpilot"
+    },
+    {
+      "name": "verified",
+      "displayName": "Compra verificada",
+      "type": "Boolean",
+      "example": true
+    },
+    {
+      "name": "badgeType",
+      "displayName": "Tipo de badge",
+      "type": "Text",
+      "_values": "pos | neg | neu",
+      "example": "pos"
+    },
+    {
+      "name": "badgeText",
+      "displayName": "Texto del badge",
+      "type": "Text",
+      "example": "✓ Verified Purchase"
+    }
+  ]
+}

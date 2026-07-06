@@ -1,0 +1,55 @@
+<!--
+  ══════════════════════════════════════════════════════════════
+  OPCIÓN 2 — EMBED DE NETLIFY EN WIX
+  ══════════════════════════════════════════════════════════════
+
+  PASOS EN WIX EDITOR:
+  1. Crea una página nueva en Wix (en blanco, sin secciones)
+  2. Click en Add (+) → Embed → Custom Embeds → Embed a Widget
+  3. En el elemento que aparece, click en "Edit Code"
+  4. Pega el código HTML de abajo (reemplaza la URL)
+  5. Arrastra el elemento para que cubra TODA la página
+     → Width: 100%  /  Height: ~5000px (o la altura real de tu página)
+  6. Publica la página
+
+  NOTA: El scroll funciona dentro del iframe.
+        Si Wix pone padding/margin alrededor, elimínalos en el editor.
+  ══════════════════════════════════════════════════════════════
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    min-height: 5000px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ⚠️ REEMPLAZA ESTA URL con la URL real de tu sitio en Netlify -->
+<iframe
+  src="https://REEMPLAZA-CON-TU-URL.netlify.app"
+  scrolling="yes"
+  allow="clipboard-write"
+  title="Mudify Reviews"
+></iframe>
+
+<script>
+  // Auto-ajusta la altura del iframe al contenido real
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'mudify-height') {
+      document.querySelector('iframe').style.height = e.data.height + 'px';
+    }
+  });
+</script>
+
+</body>
+</html>
