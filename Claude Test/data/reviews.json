@@ -229,7 +229,7 @@
       "badge_text": "⚡ Issue Resolved"
     },
     {
-      "published": false,
+      "published": true,
       "title": "Chronic Delays — Unresolved",
       "author": "A Customer",
       "initials": "AC",

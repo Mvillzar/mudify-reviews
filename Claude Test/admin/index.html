@@ -30,7 +30,6 @@
   --sw: 224px;
   --ui: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --mono: 'SF Mono','Fira Mono','Courier New',monospace;
-  --serif: Georgia,'Times New Roman',serif;
 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html,body { height:100%; font-family:var(--ui); font-size:14px; color:var(--t1); background:var(--bg); -webkit-font-smoothing:antialiased }
@@ -213,8 +212,8 @@ a { color:var(--accent); text-decoration:none }
   color:var(--t3); margin-bottom:10px;
 }
 .dash-stat-num {
-  font-family:var(--serif); font-size:2.6rem; line-height:1;
-  letter-spacing:-0.05em; color:var(--t1); font-weight:normal;
+  font-family:var(--ui); font-size:2.4rem; line-height:1;
+  letter-spacing:-0.06em; color:var(--t1); font-weight:800;
 }
 .dash-stat-num.accent { color:var(--accent) }
 .dash-stat-num.success { color:var(--success) }
@@ -672,6 +671,118 @@ a { color:var(--accent); text-decoration:none }
             <div class="section-panel-body" id="stats-fields"></div>
           </div>
 
+          <!-- About section -->
+          <div class="section-panel" id="sp-about">
+            <div class="section-panel-header" onclick="toggleSection('about')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">About Mudify</span>
+              <span class="section-panel-meta">Descripción, marcas y vehículos</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-group">
+                <label class="field-label">Párrafo 1 <span style="font-weight:400;color:var(--t3)">— ¿Quiénes son?</span></label>
+                <textarea id="s-about-p1" class="field-textarea" rows="3"></textarea>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Párrafo 2 <span style="font-weight:400;color:var(--t3)">— Marcas y servicios</span></label>
+                <textarea id="s-about-p2" class="field-textarea" rows="2"></textarea>
+              </div>
+              <div class="field-row cols2">
+                <div>
+                  <label class="field-label">Marcas autorizadas <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
+                  <input id="s-about-brands" class="field-input" placeholder="Old Man Emu, Fox Shocks…">
+                </div>
+                <div>
+                  <label class="field-label">Plataformas de vehículos <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
+                  <input id="s-about-vehicles" class="field-input" placeholder="Toyota 4Runner, Tacoma…">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rating section -->
+          <div class="section-panel" id="sp-rating">
+            <div class="section-panel-header" onclick="toggleSection('rating')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Puntuación General</span>
+              <span class="section-panel-meta">Score, barras y estadísticas de rating</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-row cols2">
+                <div><label class="field-label">Puntuación</label><input id="s-rating-score" class="field-input" placeholder="4.3"></div>
+                <div><label class="field-label">Total de reviews</label><input id="s-rating-total" class="field-input" placeholder="445+"></div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
+                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Distribución por estrellas</div>
+                <div id="rating-bars-fields"></div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px">
+                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Tarjetas de resumen</div>
+                <div class="field-row cols3" style="margin-bottom:6px">
+                  <div><label class="field-label" style="color:var(--success)">Positivo %</label><input id="s-pos-pct" class="field-input" placeholder="82%"></div>
+                  <div><label class="field-label" style="color:#C0392B">Crítico %</label><input id="s-crit-pct" class="field-input" placeholder="10%"></div>
+                  <div><label class="field-label">Mixto %</label><input id="s-mix-pct" class="field-input" placeholder="8%"></div>
+                </div>
+                <div class="field-row cols3" style="margin-bottom:0">
+                  <div><label class="field-label">Etiqueta positivo</label><input id="s-pos-lbl" class="field-input" placeholder="Positive reviews…"></div>
+                  <div><label class="field-label">Etiqueta crítico</label><input id="s-crit-lbl" class="field-input" placeholder="Critical reviews…"></div>
+                  <div><label class="field-label">Etiqueta mixto</label><input id="s-mix-lbl" class="field-input" placeholder="Mixed reviews…"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlights section -->
+          <div class="section-panel" id="sp-highlights">
+            <div class="section-panel-header" onclick="toggleSection('highlights')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Temas de Reviews</span>
+              <span class="section-panel-meta">4 tarjetas "Lo que dicen los clientes"</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body" id="highlights-fields"></div>
+          </div>
+
+          <!-- Contact section -->
+          <div class="section-panel" id="sp-contact">
+            <div class="section-panel-header" onclick="toggleSection('contact')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Información de Contacto</span>
+              <span class="section-panel-meta">Teléfono, web, ubicación, financiamiento</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div class="field-row cols2"><div><label class="field-label">📞 Teléfono</label><input id="s-ct-phone" class="field-input" placeholder="(786) 699-8829"></div><div><label class="field-label">Nota del teléfono</label><input id="s-ct-phone-note" class="field-input"></div></div>
+              <div class="field-row cols2"><div><label class="field-label">🌐 Website</label><input id="s-ct-web" class="field-input" placeholder="mudify.com"></div><div><label class="field-label">Nota del website</label><input id="s-ct-web-note" class="field-input"></div></div>
+              <div class="field-row cols2"><div><label class="field-label">📍 Ubicación</label><input id="s-ct-loc" class="field-input" placeholder="Miami, Florida, USA"></div><div><label class="field-label">Nota de ubicación</label><input id="s-ct-loc-note" class="field-input"></div></div>
+              <div class="field-row cols2" style="margin-bottom:0"><div><label class="field-label">💳 Financiamiento</label><input id="s-ct-fin" class="field-input" placeholder="Affirm & Snap Finance"></div><div><label class="field-label">Nota de financiamiento</label><input id="s-ct-fin-note" class="field-input"></div></div>
+            </div>
+          </div>
+
+          <!-- FAQ section -->
+          <div class="section-panel" id="sp-faq">
+            <div class="section-panel-header" onclick="toggleSection('faq')">
+              <div class="section-panel-drag"><span></span><span></span><span></span></div>
+              <div class="section-panel-dot"></div>
+              <span class="section-panel-name">Preguntas Frecuentes (FAQ)</span>
+              <span class="section-panel-meta">Preguntas y respuestas de la página</span>
+              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+            </div>
+            <div class="section-panel-body">
+              <div id="faq-fields"></div>
+              <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="addFaqItem()">
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+                Agregar pregunta
+              </button>
+            </div>
+          </div>
+
           <div class="save-bar-wrap">
             <button class="btn btn-primary" id="btn-save-pagina" onclick="saveSettings()">Guardar cambios</button>
             <span class="save-status" id="st-pagina"></span>
@@ -830,6 +941,30 @@ function defaultSettings() {
       { number:'4.3/5', label:'Average Rating' },
       { number:'445+',  label:'Verified Reviews' },
       { number:'82%',   label:'Positive Reviews' }
+    ],
+    about: { paragraph1:'', paragraph2:'', brands:'', vehicles:'' },
+    rating: {
+      score:'4.3', total:'445+',
+      pct_5:'62', pct_4:'20', pct_3:'8', pct_2:'5', pct_1:'5',
+      positive_pct:'82%', positive_lbl:'Positive reviews (4–5 stars)',
+      critical_pct:'10%', critical_lbl:'Critical reviews (1–2 stars)',
+      mixed_pct:'8%', mixed_lbl:'Mixed reviews (3 stars)'
+    },
+    highlights: [
+      { icon:'🎧', title:'Responsive Service', body:'Staff described as knowledgeable, patient, and proactive.', tag:'Most mentioned' },
+      { icon:'📦', title:'Fast Shipping', body:'Buyers frequently note well-packaged deliveries.', tag:'40%+ reviews' },
+      { icon:'🔧', title:'Product Expertise', body:'Customers value honest, vehicle-specific advice.', tag:'Key differentiator' },
+      { icon:'⚠️', title:'Stock Delays', body:'A minority flag inventory gaps or fulfillment delays.', tag:'~10% of reviews' }
+    ],
+    contact: {
+      phone:'(786) 699-8829', phone_note:'Available during business hours · Miami, FL',
+      website:'mudify.com', website_note:'Shop all off-road & overlanding accessories',
+      location:'Miami, Florida, USA', location_note:'Ships nationwide · US-based retailer',
+      financing:'Affirm & Snap Finance', financing_note:'Military & first-responder discounts available'
+    },
+    faq: [
+      { q:'Is Mudify a legitimate and trustworthy company?', a:'Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL.' },
+      { q:"How is Mudify's customer service quality?", a:"Mudify's customer service is consistently their highest-rated attribute." }
     ]
   };
 }
@@ -871,6 +1006,52 @@ function renderSettings() {
   document.getElementById('s-cta-text').value = h.cta_text || '';
   document.getElementById('s-cta-url').value = h.cta_url || '';
 
+  // About
+  const ab = settings.about || {};
+  const g = id => document.getElementById(id);
+  if(g('s-about-p1')) g('s-about-p1').value = ab.paragraph1 || '';
+  if(g('s-about-p2')) g('s-about-p2').value = ab.paragraph2 || '';
+  if(g('s-about-brands')) g('s-about-brands').value = ab.brands || '';
+  if(g('s-about-vehicles')) g('s-about-vehicles').value = ab.vehicles || '';
+
+  // Rating
+  const rt = settings.rating || {};
+  if(g('s-rating-score')) g('s-rating-score').value = rt.score || '';
+  if(g('s-rating-total')) g('s-rating-total').value = rt.total || '';
+  const rbf = g('rating-bars-fields');
+  if(rbf) rbf.innerHTML = [5,4,3,2,1].map(n => `
+    <div style="display:grid;grid-template-columns:34px 80px auto 1fr;gap:10px;align-items:center;margin-bottom:8px">
+      <label class="field-label" style="text-align:right;margin:0">${n}★</label>
+      <input id="s-pct${n}" class="field-input" style="text-align:center" value="${esc(rt['pct_'+n]||'')}" placeholder="0">
+      <span style="font-size:.78rem;color:var(--t3)">%</span>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="height:100%;background:var(--accent);opacity:.6;width:${rt['pct_'+n]||0}%"></div>
+      </div>
+    </div>`).join('');
+  if(g('s-pos-pct')) g('s-pos-pct').value = rt.positive_pct || '';
+  if(g('s-pos-lbl')) g('s-pos-lbl').value = rt.positive_lbl || '';
+  if(g('s-crit-pct')) g('s-crit-pct').value = rt.critical_pct || '';
+  if(g('s-crit-lbl')) g('s-crit-lbl').value = rt.critical_lbl || '';
+  if(g('s-mix-pct')) g('s-mix-pct').value = rt.mixed_pct || '';
+  if(g('s-mix-lbl')) g('s-mix-lbl').value = rt.mixed_lbl || '';
+
+  // Highlights
+  renderHighlightsFields();
+
+  // Contact
+  const ct = settings.contact || {};
+  if(g('s-ct-phone')) g('s-ct-phone').value = ct.phone || '';
+  if(g('s-ct-phone-note')) g('s-ct-phone-note').value = ct.phone_note || '';
+  if(g('s-ct-web')) g('s-ct-web').value = ct.website || '';
+  if(g('s-ct-web-note')) g('s-ct-web-note').value = ct.website_note || '';
+  if(g('s-ct-loc')) g('s-ct-loc').value = ct.location || '';
+  if(g('s-ct-loc-note')) g('s-ct-loc-note').value = ct.location_note || '';
+  if(g('s-ct-fin')) g('s-ct-fin').value = ct.financing || '';
+  if(g('s-ct-fin-note')) g('s-ct-fin-note').value = ct.financing_note || '';
+
+  // FAQ
+  renderFaqFields();
+
   const sf = document.getElementById('stats-fields');
   sf.innerHTML = (settings.stats || []).map((s, i) => `
     <div style="display:grid;grid-template-columns:48px 1fr 1fr;gap:12px;align-items:end;padding:10px 0;${i < (settings.stats.length - 1) ? 'border-bottom:1px solid var(--border)' : ''}">
@@ -899,6 +1080,59 @@ function openSection(id) {
   setTimeout(() => {
     document.getElementById('sp-' + id).scrollIntoView({ behavior:'smooth', block:'nearest' });
   }, 100);
+}
+
+function renderHighlightsFields() {
+  const hls = settings.highlights || [];
+  const hf = document.getElementById('highlights-fields');
+  if (!hf) return;
+  hf.innerHTML = hls.map((h, i) => `
+    <div style="padding:14px 0;${i < hls.length-1?'border-bottom:1px solid var(--border)':''}">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tarjeta ${i+1}</div>
+      <div class="field-row cols2" style="margin-bottom:8px">
+        <div><label class="field-label">Icono (emoji)</label><input id="hl-icon-${i}" class="field-input" value="${esc(h.icon)}" placeholder="🎧"></div>
+        <div><label class="field-label">Título</label><input id="hl-title-${i}" class="field-input" value="${esc(h.title)}"></div>
+      </div>
+      <div class="field-row cols2" style="margin-bottom:0">
+        <div><label class="field-label">Descripción</label><textarea id="hl-body-${i}" class="field-textarea" rows="2">${esc(h.body)}</textarea></div>
+        <div><label class="field-label">Tag</label><input id="hl-tag-${i}" class="field-input" value="${esc(h.tag)}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderFaqFields() {
+  const faqs = settings.faq || [];
+  const ff = document.getElementById('faq-fields');
+  if (!ff) return;
+  ff.innerHTML = faqs.map((f, i) => `
+    <div style="padding:14px 0;${i < faqs.length-1?'border-bottom:1px solid var(--border)':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">Pregunta ${i+1}</span>
+        <button class="btn btn-danger btn-xs" onclick="removeFaqItem(${i})">✕ Eliminar</button>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Pregunta</label>
+        <input id="fq-q-${i}" class="field-input" value="${esc(f.q)}">
+      </div>
+      <div class="field-group" style="margin-bottom:0">
+        <label class="field-label">Respuesta</label>
+        <textarea id="fq-a-${i}" class="field-textarea" rows="3">${esc(f.a)}</textarea>
+      </div>
+    </div>`).join('');
+}
+
+function addFaqItem() {
+  settings.faq = settings.faq || [];
+  settings.faq.push({ q:'', a:'' });
+  renderFaqFields();
+  const ff = document.getElementById('faq-fields');
+  if (ff && ff.lastElementChild) ff.lastElementChild.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function removeFaqItem(i) {
+  if (!settings.faq) return;
+  settings.faq.splice(i, 1);
+  renderFaqFields();
 }
 
 // ── Reviews ──────────────────────────────────────
@@ -1139,17 +1373,53 @@ async function saveSettings() {
   btn.disabled = true;
   setStatus('pagina', 'Guardando…', 'saving');
 
-  const sc = settings.stats.length;
+  const g = id => document.getElementById(id)?.value || '';
+  const sc = (settings.stats || []).length;
+
   const newSettings = {
     hero: {
-      description: document.getElementById('s-desc').value,
-      cta_text:    document.getElementById('s-cta-text').value,
-      cta_url:     document.getElementById('s-cta-url').value,
+      description: g('s-desc'),
+      cta_text:    g('s-cta-text'),
+      cta_url:     g('s-cta-url'),
     },
     stats: Array.from({length:sc}, (_,i) => ({
-      number: document.getElementById('sn-'+i)?.value||'',
-      label:  document.getElementById('sl-'+i)?.value||'',
-    }))
+      number: g('sn-'+i),
+      label:  g('sl-'+i),
+    })),
+    about: {
+      paragraph1: g('s-about-p1'),
+      paragraph2: g('s-about-p2'),
+      brands:     g('s-about-brands'),
+      vehicles:   g('s-about-vehicles'),
+    },
+    rating: {
+      score: g('s-rating-score'), total: g('s-rating-total'),
+      pct_5: g('s-pct5'), pct_4: g('s-pct4'), pct_3: g('s-pct3'),
+      pct_2: g('s-pct2'), pct_1: g('s-pct1'),
+      positive_pct: g('s-pos-pct'), positive_lbl: g('s-pos-lbl'),
+      critical_pct: g('s-crit-pct'), critical_lbl: g('s-crit-lbl'),
+      mixed_pct:    g('s-mix-pct'),  mixed_lbl:    g('s-mix-lbl'),
+    },
+    highlights: (settings.highlights || []).map((_,i) => ({
+      icon:  g('hl-icon-'+i),
+      title: g('hl-title-'+i),
+      body:  document.getElementById('hl-body-'+i)?.value || '',
+      tag:   g('hl-tag-'+i),
+    })),
+    contact: {
+      phone:          g('s-ct-phone'),
+      phone_note:     g('s-ct-phone-note'),
+      website:        g('s-ct-web'),
+      website_note:   g('s-ct-web-note'),
+      location:       g('s-ct-loc'),
+      location_note:  g('s-ct-loc-note'),
+      financing:      g('s-ct-fin'),
+      financing_note: g('s-ct-fin-note'),
+    },
+    faq: (settings.faq || []).map((_,i) => ({
+      q: g('fq-q-'+i),
+      a: document.getElementById('fq-a-'+i)?.value || '',
+    })),
   };
 
   const res = await callSave('settings', newSettings);

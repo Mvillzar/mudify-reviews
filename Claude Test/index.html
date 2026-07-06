@@ -46,8 +46,8 @@
   --fm:'Montserrat','Rajdhani',system-ui,sans-serif;
   --mw:1160px;--r:0;--rm:4px;
 }
-html{scroll-behavior:smooth;font-size:16px;margin:0;padding:0;overflow-x:hidden}
-body{font-family:var(--fb);background:var(--bg);color:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;margin:0;padding:0;width:100%}
+html{scroll-behavior:smooth;font-size:16px;margin:0;padding:0;overflow-x:clip}
+body{font-family:var(--fb);background:var(--bg);color:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip;margin:0;padding:0;width:100%}
 a{color:var(--red);text-decoration:none;transition:color .15s}
 a:hover{color:var(--red-d)}
 img{max-width:100%;display:block}
@@ -515,16 +515,16 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
         </div>
       </div>
       <div class="hero-card" aria-label="Rating summary">
-        <div class="hc-score">4.3</div>
+        <div class="hc-score" id="hc-score">4.3</div>
         <div class="hc-out">out of 5.0</div>
         <div class="hc-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span class="e">★</span></div>
-        <div class="hc-cnt">445+ Verified Reviews</div>
+        <div class="hc-cnt" id="hc-cnt">445+ Verified Reviews</div>
         <div class="hc-bars">
-          <div class="hcb"><div class="hcb-lbl">5★</div><div class="hcb-track"><div class="hcb-fill" style="width:62%"></div></div><div class="hcb-pct">62%</div></div>
-          <div class="hcb"><div class="hcb-lbl">4★</div><div class="hcb-track"><div class="hcb-fill" style="width:20%"></div></div><div class="hcb-pct">20%</div></div>
-          <div class="hcb"><div class="hcb-lbl">3★</div><div class="hcb-track"><div class="hcb-fill" style="width:8%;opacity:.6"></div></div><div class="hcb-pct">8%</div></div>
-          <div class="hcb"><div class="hcb-lbl">2★</div><div class="hcb-track"><div class="hcb-fill" style="width:5%;background:var(--border)"></div></div><div class="hcb-pct">5%</div></div>
-          <div class="hcb"><div class="hcb-lbl">1★</div><div class="hcb-track"><div class="hcb-fill" style="width:5%;background:var(--border)"></div></div><div class="hcb-pct">5%</div></div>
+          <div class="hcb"><div class="hcb-lbl">5★</div><div class="hcb-track"><div id="hcb-f5" class="hcb-fill" style="width:62%"></div></div><div id="hcb-p5" class="hcb-pct">62%</div></div>
+          <div class="hcb"><div class="hcb-lbl">4★</div><div class="hcb-track"><div id="hcb-f4" class="hcb-fill" style="width:20%"></div></div><div id="hcb-p4" class="hcb-pct">20%</div></div>
+          <div class="hcb"><div class="hcb-lbl">3★</div><div class="hcb-track"><div id="hcb-f3" class="hcb-fill" style="width:8%;opacity:.6"></div></div><div id="hcb-p3" class="hcb-pct">8%</div></div>
+          <div class="hcb"><div class="hcb-lbl">2★</div><div class="hcb-track"><div id="hcb-f2" class="hcb-fill" style="width:5%;background:var(--border)"></div></div><div id="hcb-p2" class="hcb-pct">5%</div></div>
+          <div class="hcb"><div class="hcb-lbl">1★</div><div class="hcb-track"><div id="hcb-f1" class="hcb-fill" style="width:5%;background:var(--border)"></div></div><div id="hcb-p1" class="hcb-pct">5%</div></div>
         </div>
       </div>
     </div>
@@ -554,9 +554,9 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
     <div class="about-grid">
       <div class="card">
         <h3>Who Is Mudify?</h3>
-        <p>Mudify is an online off-road and overlanding accessories retailer headquartered in <strong style="color:var(--ink)">Miami, Florida</strong>. They specialize in suspension systems, lift kits, armor, recovery gear, and camping equipment for 4x4 vehicles of all platforms.</p>
-        <p>Authorized dealer for the industry's leading brands. Offers vehicle-specific build guidance, financing through Affirm &amp; Snap Finance, and discounts for military and first responders.</p>
-        <div class="brands-row">
+        <p id="about-p1">Mudify is an online off-road and overlanding accessories retailer headquartered in <strong style="color:var(--ink)">Miami, Florida</strong>. They specialize in suspension systems, lift kits, armor, recovery gear, and camping equipment for 4x4 vehicles of all platforms.</p>
+        <p id="about-p2">Authorized dealer for the industry's leading brands. Offers vehicle-specific build guidance, financing through Affirm &amp; Snap Finance, and discounts for military and first responders.</p>
+        <div class="brands-row" id="about-brands">
           <span class="brand-chip">Old Man Emu</span><span class="brand-chip">Fox Shocks</span><span class="brand-chip">Bilstein</span><span class="brand-chip">King Shocks</span><span class="brand-chip">Dobinsons</span><span class="brand-chip">BDS Suspension</span><span class="brand-chip">ARB</span><span class="brand-chip">Warn</span><span class="brand-chip">Icon</span>
         </div>
       </div>
@@ -573,7 +573,7 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
         </div>
         <div class="card" style="margin-top:1px">
           <h3>Vehicle Platforms</h3>
-          <div class="brands-row">
+          <div class="brands-row" id="about-vehicles">
             <span class="brand-chip">Toyota 4Runner</span><span class="brand-chip">Tacoma</span><span class="brand-chip">Jeep Wrangler</span><span class="brand-chip">Ford Bronco</span><span class="brand-chip">RAM 1500/2500</span><span class="brand-chip">Ford F-150</span><span class="brand-chip">Lexus GX</span>
           </div>
         </div>
@@ -592,21 +592,21 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
     </div>
     <div class="rating-grid">
       <div class="rb-box">
-        <div class="rb-n">4.3</div>
+        <div class="rb-n" id="rb-score">4.3</div>
         <div class="rb-s"><span>★</span><span>★</span><span>★</span><span>★</span><span class="e">★</span></div>
-        <div class="rb-lbl">out of 5.0<br>445+ reviews</div>
+        <div class="rb-lbl" id="rb-lbl-total">out of 5.0<br>445+ reviews</div>
       </div>
       <div class="bars-col">
-        <div class="barr"><div class="bl"><span>★</span>5</div><div class="bt"><div class="bf" style="width:62%"></div></div><div class="bp">62%</div></div>
-        <div class="barr"><div class="bl"><span>★</span>4</div><div class="bt"><div class="bf" style="width:20%"></div></div><div class="bp">20%</div></div>
-        <div class="barr"><div class="bl"><span>★</span>3</div><div class="bt"><div class="bf" style="width:8%;opacity:.6"></div></div><div class="bp">8%</div></div>
-        <div class="barr"><div class="bl"><span>★</span>2</div><div class="bt"><div class="bf low" style="width:5%"></div></div><div class="bp">5%</div></div>
-        <div class="barr"><div class="bl"><span>★</span>1</div><div class="bt"><div class="bf low" style="width:5%"></div></div><div class="bp">5%</div></div>
+        <div class="barr"><div class="bl"><span>★</span>5</div><div class="bt"><div id="bf5" class="bf" style="width:62%"></div></div><div id="bp5" class="bp">62%</div></div>
+        <div class="barr"><div class="bl"><span>★</span>4</div><div class="bt"><div id="bf4" class="bf" style="width:20%"></div></div><div id="bp4" class="bp">20%</div></div>
+        <div class="barr"><div class="bl"><span>★</span>3</div><div class="bt"><div id="bf3" class="bf" style="width:8%;opacity:.6"></div></div><div id="bp3" class="bp">8%</div></div>
+        <div class="barr"><div class="bl"><span>★</span>2</div><div class="bt"><div id="bf2" class="bf low" style="width:5%"></div></div><div id="bp2" class="bp">5%</div></div>
+        <div class="barr"><div class="bl"><span>★</span>1</div><div class="bt"><div id="bf1" class="bf low" style="width:5%"></div></div><div id="bp1" class="bp">5%</div></div>
       </div>
       <div class="stat-cards">
-        <div class="stat-card"><div><div class="sc-n" style="color:var(--green)">82%</div><div class="sc-l">Positive reviews<br>(4–5 stars)</div></div></div>
-        <div class="stat-card"><div><div class="sc-n" style="color:var(--red)">10%</div><div class="sc-l">Critical reviews<br>(1–2 stars)</div></div></div>
-        <div class="stat-card"><div><div class="sc-n">8%</div><div class="sc-l">Mixed reviews<br>(3 stars)</div></div></div>
+        <div class="stat-card"><div><div id="sc-pos" class="sc-n" style="color:var(--green)">82%</div><div id="sc-pos-l" class="sc-l">Positive reviews<br>(4–5 stars)</div></div></div>
+        <div class="stat-card"><div><div id="sc-crit" class="sc-n" style="color:var(--red)">10%</div><div id="sc-crit-l" class="sc-l">Critical reviews<br>(1–2 stars)</div></div></div>
+        <div class="stat-card"><div><div id="sc-mix" class="sc-n">8%</div><div id="sc-mix-l" class="sc-l">Mixed reviews<br>(3 stars)</div></div></div>
       </div>
     </div>
   </div>
@@ -620,7 +620,7 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
       <h2>What Customers Consistently Say</h2>
       <p class="ss">Recurring themes extracted from 445+ verified reviews.</p>
     </div>
-    <div class="hl-grid">
+    <div class="hl-grid" id="hl-grid">
       <div class="hlc on">
         <span class="hl-icon">🎧</span>
         <h3>Responsive Service</h3>
@@ -767,7 +767,7 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
       <h2>Frequently Asked Questions</h2>
       <p class="ss">Common questions answered based on 445+ verified reviews and brand data.</p>
     </div>
-    <div class="faq-list" role="list">
+    <div class="faq-list" id="faq-list" role="list">
       <div class="fi open"><div class="fq" role="button" tabindex="0">Is Mudify a legitimate and trustworthy company?<span class="fi-ic">+</span></div><div class="fa">Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.3/5 average rating. They are an authorized dealer for Old Man Emu, Fox, Bilstein, King Shocks, Dobinsons, and more.</div></div>
       <div class="fi"><div class="fq" role="button" tabindex="0">How is Mudify's customer service quality?<span class="fi-ic">+</span></div><div class="fa">Mudify's customer service is consistently their highest-rated attribute. Reviews praise responsive communication, knowledgeable staff, and honest advice. Team members Samantha and Eddie have been specifically named in positive reviews. A minority of reviews cite slow updates during supply chain delays, but most issues are ultimately resolved.</div></div>
       <div class="fi"><div class="fq" role="button" tabindex="0">How fast does Mudify ship, and is packaging reliable?<span class="fi-ic">+</span></div><div class="fa">Most customers report fast shipping with well-packaged deliveries arriving in perfect condition. Delays have been noted on specific suspension components during supply chain disruptions. Confirm live stock availability — especially for time-sensitive builds — before placing orders.</div></div>
@@ -790,10 +790,10 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
       <!-- Contact info -->
       <div>
         <div class="ct-list">
-          <div class="ct-row"><div class="ct-ic">📞</div><div><div class="ct-lbl">Phone</div><div class="ct-val"><a href="tel:+17866998829">(786) 699-8829</a></div><div class="ct-note">Available during business hours · Miami, FL</div></div></div>
-          <div class="ct-row"><div class="ct-ic">🌐</div><div><div class="ct-lbl">Website</div><div class="ct-val"><a href="https://mudify.com" target="_blank" rel="noopener">mudify.com</a></div><div class="ct-note">Shop all off-road &amp; overlanding accessories</div></div></div>
-          <div class="ct-row"><div class="ct-ic">📍</div><div><div class="ct-lbl">Location</div><div class="ct-val">Miami, Florida, USA</div><div class="ct-note">Ships nationwide · US-based retailer</div></div></div>
-          <div class="ct-row"><div class="ct-ic">💳</div><div><div class="ct-lbl">Financing</div><div class="ct-val">Affirm &amp; Snap Finance</div><div class="ct-note">Military &amp; first-responder discounts available</div></div></div>
+          <div class="ct-row"><div class="ct-ic">📞</div><div><div class="ct-lbl">Phone</div><div class="ct-val"><a id="ct-phone-val" href="tel:+17866998829">(786) 699-8829</a></div><div id="ct-phone-note" class="ct-note">Available during business hours · Miami, FL</div></div></div>
+          <div class="ct-row"><div class="ct-ic">🌐</div><div><div class="ct-lbl">Website</div><div class="ct-val"><a id="ct-web-val" href="https://mudify.com" target="_blank" rel="noopener">mudify.com</a></div><div id="ct-web-note" class="ct-note">Shop all off-road &amp; overlanding accessories</div></div></div>
+          <div class="ct-row"><div class="ct-ic">📍</div><div><div class="ct-lbl">Location</div><div id="ct-loc-val" class="ct-val">Miami, Florida, USA</div><div id="ct-loc-note" class="ct-note">Ships nationwide · US-based retailer</div></div></div>
+          <div class="ct-row"><div class="ct-ic">💳</div><div><div class="ct-lbl">Financing</div><div id="ct-fin-val" class="ct-val">Affirm &amp; Snap Finance</div><div id="ct-fin-note" class="ct-note">Military &amp; first-responder discounts available</div></div></div>
         </div>
         <!-- Verified on platforms -->
         <div class="platforms-bar" role="complementary" aria-label="Review platforms">
@@ -1073,24 +1073,95 @@ async function loadSettings() {
     const res = await fetch('data/settings.json?t=' + Date.now());
     if (!res.ok) return;
     const s = await res.json();
-    if (s.hero?.description) {
-      const el = document.getElementById('hero-desc');
-      if (el) el.textContent = s.hero.description;
-    }
+    const $ = id => document.getElementById(id);
+
+    // ── Hero
+    if (s.hero?.description) { const el=$('hero-desc'); if(el) el.textContent=s.hero.description; }
     if (s.hero?.cta_text || s.hero?.cta_url) {
-      const el = document.getElementById('hero-cta');
-      if (el) {
-        if (s.hero.cta_text) el.textContent = s.hero.cta_text;
-        if (s.hero.cta_url) el.href = s.hero.cta_url;
-      }
+      const el=$('hero-cta');
+      if(el) { if(s.hero.cta_text) el.textContent=s.hero.cta_text; if(s.hero.cta_url) el.href=s.hero.cta_url; }
     }
+
+    // ── Stats strip
     if (s.stats?.length) {
-      const numEls = document.querySelectorAll('.hss-num');
-      const lblEls = document.querySelectorAll('.hss-lbl');
-      s.stats.forEach((st, i) => {
-        if (numEls[i]) numEls[i].innerHTML = st.number.replace(/^([\d.,]+)(.*)$/, '<span class="r">$1</span>$2');
-        if (lblEls[i]) lblEls[i].textContent = st.label;
+      document.querySelectorAll('.hss-num').forEach((el,i) => {
+        if(s.stats[i]) el.innerHTML=s.stats[i].number.replace(/^([\d.,]+)(.*)$/,'<span class="r">$1</span>$2');
       });
+      document.querySelectorAll('.hss-lbl').forEach((el,i) => { if(s.stats[i]) el.textContent=s.stats[i].label; });
+    }
+
+    // ── About
+    if (s.about) {
+      const a=s.about;
+      if(a.paragraph1) { const el=$('about-p1'); if(el) el.textContent=a.paragraph1; }
+      if(a.paragraph2) { const el=$('about-p2'); if(el) el.textContent=a.paragraph2; }
+      if(a.brands) { const el=$('about-brands'); if(el) el.innerHTML=a.brands.split(',').map(b=>`<span class="brand-chip">${b.trim()}</span>`).join(''); }
+      if(a.vehicles) { const el=$('about-vehicles'); if(el) el.innerHTML=a.vehicles.split(',').map(v=>`<span class="brand-chip">${v.trim()}</span>`).join(''); }
+    }
+
+    // ── Rating
+    if (s.rating) {
+      const r=s.rating;
+      if(r.score) { const el=$('hc-score'); if(el) el.textContent=r.score; const rb=$('rb-score'); if(rb) rb.textContent=r.score; }
+      if(r.total) { const el=$('hc-cnt'); if(el) el.textContent=r.total+' Verified Reviews'; const rb=$('rb-lbl-total'); if(rb) rb.innerHTML='out of 5.0<br>'+r.total+' reviews'; }
+      [5,4,3,2,1].forEach(n => {
+        const pct=r['pct_'+n]; if(!pct) return;
+        const hcf=$('hcb-f'+n), hcp=$('hcb-p'+n);
+        if(hcf) hcf.style.width=pct+'%'; if(hcp) hcp.textContent=pct+'%';
+        const brf=$('bf'+n), brp=$('bp'+n);
+        if(brf) brf.style.width=pct+'%'; if(brp) brp.textContent=pct+'%';
+      });
+      if(r.positive_pct) { const el=$('sc-pos'); if(el) el.textContent=r.positive_pct; }
+      if(r.positive_lbl) { const el=$('sc-pos-l'); if(el) el.innerHTML=r.positive_lbl; }
+      if(r.critical_pct) { const el=$('sc-crit'); if(el) el.textContent=r.critical_pct; }
+      if(r.critical_lbl) { const el=$('sc-crit-l'); if(el) el.innerHTML=r.critical_lbl; }
+      if(r.mixed_pct)    { const el=$('sc-mix'); if(el) el.textContent=r.mixed_pct; }
+      if(r.mixed_lbl)    { const el=$('sc-mix-l'); if(el) el.innerHTML=r.mixed_lbl; }
+    }
+
+    // ── Highlights
+    if (s.highlights?.length) {
+      const grid=$('hl-grid');
+      if(grid) grid.innerHTML=s.highlights.map((h,i)=>`
+        <div class="hlc${i===0?' on':''}">
+          <span class="hl-icon">${h.icon}</span>
+          <h3>${h.title}</h3>
+          <p>${h.body}</p>
+          <span class="hl-tag">${h.tag}</span>
+        </div>`).join('');
+    }
+
+    // ── Contact
+    if (s.contact) {
+      const c=s.contact;
+      if(c.phone) { const el=$('ct-phone-val'); if(el){ el.textContent=c.phone; el.href='tel:+1'+c.phone.replace(/\D/g,''); } }
+      if(c.phone_note) { const el=$('ct-phone-note'); if(el) el.textContent=c.phone_note; }
+      if(c.website) { const el=$('ct-web-val'); if(el){ el.textContent=c.website; el.href='https://'+c.website; } }
+      if(c.website_note) { const el=$('ct-web-note'); if(el) el.textContent=c.website_note; }
+      if(c.location) { const el=$('ct-loc-val'); if(el) el.textContent=c.location; }
+      if(c.location_note) { const el=$('ct-loc-note'); if(el) el.textContent=c.location_note; }
+      if(c.financing) { const el=$('ct-fin-val'); if(el) el.textContent=c.financing; }
+      if(c.financing_note) { const el=$('ct-fin-note'); if(el) el.textContent=c.financing_note; }
+    }
+
+    // ── FAQ
+    if (s.faq?.length) {
+      const list=$('faq-list');
+      if(list) {
+        const e=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        list.innerHTML=s.faq.map((f,i)=>`
+          <div class="fi${i===0?' open':''}">
+            <div class="fq" role="button" tabindex="0">${e(f.q)}<span class="fi-ic">+</span></div>
+            <div class="fa">${e(f.a)}</div>
+          </div>`).join('');
+        list.querySelectorAll('.fq').forEach(q=>{
+          q.addEventListener('click',()=>{
+            const fi=q.closest('.fi'), open=fi.classList.contains('open');
+            list.querySelectorAll('.fi.open').forEach(i=>i.classList.remove('open'));
+            if(!open) fi.classList.add('open');
+          });
+        });
+      }
     }
   } catch(e) {}
 }
