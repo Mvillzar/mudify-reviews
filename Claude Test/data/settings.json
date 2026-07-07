@@ -5,9 +5,21 @@
     "cta_url": "#contact"
   },
   "stats": [
-    { "number": "4.3/5", "label": "Average Rating", "visible": true },
-    { "number": "445+",  "label": "Verified Reviews", "visible": true },
-    { "number": "82%",   "label": "Positive Reviews", "visible": true }
+    {
+      "number": "4.3/5",
+      "label": "Average Rating",
+      "visible": true
+    },
+    {
+      "number": "445+",
+      "label": "Verified Reviews",
+      "visible": true
+    },
+    {
+      "number": "82%",
+      "label": "Positive Reviews",
+      "visible": true
+    }
   ],
   "about": {
     "paragraph1": "Mudify is an online off-road and overlanding accessories retailer headquartered in Miami, Florida. They specialize in suspension systems, lift kits, armor, recovery gear, and camping equipment for 4x4 vehicles of all platforms.",
@@ -34,10 +46,34 @@
     "mixed_visible": true
   },
   "highlights": [
-    { "icon": "🎧", "title": "Responsive Service", "body": "Staff described as knowledgeable, patient, and proactive. Specific team members are called out by name in multiple reviews.", "tag": "Most mentioned", "visible": true },
-    { "icon": "📦", "title": "Fast Shipping", "body": "Buyers frequently note well-packaged deliveries arriving in perfect condition, often ahead of schedule.", "tag": "40%+ reviews", "visible": true },
-    { "icon": "🔧", "title": "Product Expertise", "body": "Customers value honest, vehicle-specific advice. Staff regularly steer customers away from unnecessary parts.", "tag": "Key differentiator", "visible": true },
-    { "icon": "⚠️", "title": "Stock Delays", "body": "A minority flag inventory gaps or fulfillment delays. Most cases were resolved, though resolution times vary.", "tag": "~10% of reviews", "visible": true }
+    {
+      "icon": "🎧",
+      "title": "Responsive Service",
+      "body": "Staff described as knowledgeable, patient, and proactive. Specific team members are called out by name in multiple reviews.",
+      "tag": "Most mentioned",
+      "visible": true
+    },
+    {
+      "icon": "📦",
+      "title": "Fast Shipping",
+      "body": "Buyers frequently note well-packaged deliveries arriving in perfect condition, often ahead of schedule.",
+      "tag": "40%+ reviews",
+      "visible": true
+    },
+    {
+      "icon": "🔧",
+      "title": "Product Expertise",
+      "body": "Customers value honest, vehicle-specific advice. Staff regularly steer customers away from unnecessary parts.",
+      "tag": "Customer favorite",
+      "visible": true
+    },
+    {
+      "icon": "🏆",
+      "title": "High-quality products and well-curated selection",
+      "body": "Customers frequently report improved ride quality, handling, and overall vehicle performance after installation.\n",
+      "tag": "Key differentiator",
+      "visible": true
+    }
   ],
   "staff_header": {
     "eyebrow": "People Behind the Brand",
@@ -74,6 +110,38 @@
     "financing": "Affirm & Snap Finance",
     "financing_note": "Military & first-responder discounts available"
   },
+  "faq": [
+    {
+      "q": "Is Mudify a legitimate and trustworthy company?",
+      "a": "Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.3/5 average rating. They are an authorized dealer for Old Man Emu, Fox, Bilstein, King Shocks, Dobinsons, and more.",
+      "visible": true
+    },
+    {
+      "q": "How is Mudify's customer service quality?",
+      "a": "Mudify's customer service is consistently their highest-rated attribute. Reviews praise responsive communication, knowledgeable staff, and honest advice. Team members Samantha and Eddie have been specifically named in positive reviews.",
+      "visible": true
+    },
+    {
+      "q": "How fast does Mudify ship, and is packaging reliable?",
+      "a": "Most customers report fast shipping with well-packaged deliveries arriving in perfect condition. Delays have been noted on specific suspension components during supply chain disruptions.",
+      "visible": true
+    },
+    {
+      "q": "What off-road brands does Mudify carry?",
+      "a": "Mudify carries Old Man Emu (OME), Fox Shocks, Bilstein, King Shocks, Dobinsons, BDS Suspension, Icon Vehicle Dynamics, ARB, Warn Winches, and many more.",
+      "visible": true
+    },
+    {
+      "q": "Does Mudify offer financing or special discounts?",
+      "a": "Yes. Mudify offers flexible financing through Affirm and Snap Finance. They also provide discounts for military personnel and first responders. Contact them at (786) 699-8829 for current promotions.",
+      "visible": true
+    },
+    {
+      "q": "How does Mudify handle returns and product issues?",
+      "a": "Based on reviews, Mudify generally resolves product issues through their customer service team. Calling directly at (786) 699-8829 yields faster results than email.",
+      "visible": true
+    }
+  ],
   "seo": {
     "favicon_url": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/fav-con.png?v=1620745179",
     "title": "Mudify Reviews 2026 – 445+ Verified Customer Ratings | Off-Road & 4x4 Specialists",
@@ -105,13 +173,5 @@
     "social_facebook": "",
     "social_youtube": "",
     "social_tiktok": ""
-  },
-  "faq": [
-    { "q": "Is Mudify a legitimate and trustworthy company?", "a": "Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.3/5 average rating. They are an authorized dealer for Old Man Emu, Fox, Bilstein, King Shocks, Dobinsons, and more.", "visible": true },
-    { "q": "How is Mudify's customer service quality?", "a": "Mudify's customer service is consistently their highest-rated attribute. Reviews praise responsive communication, knowledgeable staff, and honest advice. Team members Samantha and Eddie have been specifically named in positive reviews.", "visible": true },
-    { "q": "How fast does Mudify ship, and is packaging reliable?", "a": "Most customers report fast shipping with well-packaged deliveries arriving in perfect condition. Delays have been noted on specific suspension components during supply chain disruptions.", "visible": true },
-    { "q": "What off-road brands does Mudify carry?", "a": "Mudify carries Old Man Emu (OME), Fox Shocks, Bilstein, King Shocks, Dobinsons, BDS Suspension, Icon Vehicle Dynamics, ARB, Warn Winches, and many more.", "visible": true },
-    { "q": "Does Mudify offer financing or special discounts?", "a": "Yes. Mudify offers flexible financing through Affirm and Snap Finance. They also provide discounts for military personnel and first responders. Contact them at (786) 699-8829 for current promotions.", "visible": true },
-    { "q": "How does Mudify handle returns and product issues?", "a": "Based on reviews, Mudify generally resolves product issues through their customer service team. Calling directly at (786) 699-8829 yields faster results than email.", "visible": true }
-  ]
+  }
 }
