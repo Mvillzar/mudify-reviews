@@ -5,7 +5,7 @@
       "name": "David",
       "email": "david@mudify.com",
       "role": "admin",
-      "passwordHash": "Mudify2024!",
+      "passwordHash": "6b26dc00efb701fdb8cccc78aca35f5b529e5457baf28db22bdd93d78d20fb32",
       "active": true
     },
     {
@@ -30,14 +30,6 @@
       "email": "carlos@mudify.com",
       "role": "marketing",
       "passwordHash": "Mudify2024!",
-      "active": true
-    },
-    {
-      "id": "u1783387418046",
-      "name": "Marcos",
-      "email": "marcos@mudify.com",
-      "role": "design",
-      "passwordHash": "6733b430c4cea81d2e2b893d9b252440035e9d6d6803ac9aadc9c7f4c0594b2b",
       "active": true
     }
   ]
