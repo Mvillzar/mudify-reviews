@@ -13,7 +13,7 @@
       "name": "Joel",
       "email": "joel@mudify.com",
       "role": "admin",
-      "passwordHash": "33b5880ef6320ab6a58fcd04e177adcb0168f7061011ad46cb6f7730c377e834",
+      "passwordHash": "Mudify2024!",
       "active": true
     },
     {
@@ -21,7 +21,7 @@
       "name": "Alicia",
       "email": "alicia@mudify.com",
       "role": "marketing",
-      "passwordHash": "Mudify2024!",
+      "passwordHash": "5c06eb3d5a05a19f49476d694ca81a36344660e9d5b98e3d6a6630f31c2422e7",
       "active": true
     },
     {
