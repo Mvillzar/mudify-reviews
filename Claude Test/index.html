@@ -9,10 +9,21 @@
 <meta property="og:title" content="Mudify Reviews 2026 – What Customers Are Saying">
 <meta property="og:description" content="445+ verified reviews. Average 4.3/5 stars. Honest opinions from off-road enthusiasts.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Mudify">
+<meta property="og:locale" content="en_US">
 <link rel="canonical" href="https://reviews.mudify.com">
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <meta property="og:url" content="https://reviews.mudify.com">
 <meta property="og:image" content="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mudify">
+<meta name="twitter:title" content="Mudify Reviews 2026 – What Customers Are Saying">
+<meta name="twitter:description" content="445+ verified reviews. Average 4.3/5 stars. Honest opinions from off-road enthusiasts.">
+<meta name="twitter:image" content="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536">
+<meta name="google-site-verification" content="">
+<meta name="msvalidate.01" content="">
+<meta name="p:domain_verify" content="">
+<link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0559/6944/8111/files/fav-con.png?v=1620745179">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://mudify.com/#org","name":"Mudify","description":"Online retailer specializing in off-road and overlanding accessories for 4x4 vehicles. Based in Miami, FL.","url":"https://mudify.com","telephone":"+17866998829","address":{"@type":"PostalAddress","addressLocality":"Miami","addressRegion":"FL","addressCountry":"US"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.3","reviewCount":"445","bestRating":"5","worstRating":"1"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Mudify legitimate?","acceptedAnswer":{"@type":"Answer","text":"Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.3/5 average rating."}},{"@type":"Question","name":"How is Mudify's customer service?","acceptedAnswer":{"@type":"Answer","text":"Frequently praised for being responsive and knowledgeable. Staff members Samantha and Eddie are mentioned by name in positive reviews."}}]}]}
 </script>
@@ -1082,12 +1093,16 @@ async function loadSettings() {
       if(el) { if(s.hero.cta_text) el.textContent=s.hero.cta_text; if(s.hero.cta_url) el.href=s.hero.cta_url; }
     }
 
-    // ── Stats strip
+    // ── Stats strip (respects visible flag)
     if (s.stats?.length) {
-      document.querySelectorAll('.hss-num').forEach((el,i) => {
-        if(s.stats[i]) el.innerHTML=s.stats[i].number.replace(/^([\d.,]+)(.*)$/,'<span class="r">$1</span>$2');
+      const visStats = s.stats.filter(st => st.visible !== false);
+      const numEls = document.querySelectorAll('.hss-num');
+      const lblEls = document.querySelectorAll('.hss-lbl');
+      numEls.forEach((el,i) => {
+        if(visStats[i]) { el.innerHTML=visStats[i].number.replace(/^([\d.,]+)(.*)$/,'<span class="r">$1</span>$2'); el.closest('[class*="hss"]')?.style.removeProperty('display'); }
+        else { const w=el.closest('[class*="hss"]'); if(w) w.style.display='none'; }
       });
-      document.querySelectorAll('.hss-lbl').forEach((el,i) => { if(s.stats[i]) el.textContent=s.stats[i].label; });
+      lblEls.forEach((el,i) => { if(visStats[i]) el.textContent=visStats[i].label; });
     }
 
     // ── About
@@ -1111,24 +1126,64 @@ async function loadSettings() {
         const brf=$('bf'+n), brp=$('bp'+n);
         if(brf) brf.style.width=pct+'%'; if(brp) brp.textContent=pct+'%';
       });
-      if(r.positive_pct) { const el=$('sc-pos'); if(el) el.textContent=r.positive_pct; }
-      if(r.positive_lbl) { const el=$('sc-pos-l'); if(el) el.innerHTML=r.positive_lbl; }
-      if(r.critical_pct) { const el=$('sc-crit'); if(el) el.textContent=r.critical_pct; }
-      if(r.critical_lbl) { const el=$('sc-crit-l'); if(el) el.innerHTML=r.critical_lbl; }
-      if(r.mixed_pct)    { const el=$('sc-mix'); if(el) el.textContent=r.mixed_pct; }
-      if(r.mixed_lbl)    { const el=$('sc-mix-l'); if(el) el.innerHTML=r.mixed_lbl; }
+      const applyCard = (key, pctId, lblId) => {
+        const visible = r[key+'_visible'] !== false;
+        const wrap = $('sc-'+key) ? $('sc-'+key).closest('[class*="score-card"],[class*="sc-wrap"],[data-card]') : null;
+        if (!visible) { if(wrap) wrap.style.display='none'; return; }
+        if(wrap) wrap.style.removeProperty('display');
+        if(r[key+'_pct']) { const el=$(pctId); if(el) el.textContent=r[key+'_pct']; }
+        if(r[key+'_lbl']) { const el=$(lblId); if(el) el.innerHTML=r[key+'_lbl']; }
+      };
+      applyCard('positive','sc-pos','sc-pos-l');
+      applyCard('critical','sc-crit','sc-crit-l');
+      applyCard('mixed','sc-mix','sc-mix-l');
     }
 
-    // ── Highlights
+    // ── Highlights (respects visible flag)
     if (s.highlights?.length) {
       const grid=$('hl-grid');
-      if(grid) grid.innerHTML=s.highlights.map((h,i)=>`
+      const visHl = s.highlights.filter(h => h.visible !== false);
+      if(grid) grid.innerHTML=visHl.map((h,i)=>`
         <div class="hlc${i===0?' on':''}">
           <span class="hl-icon">${h.icon}</span>
           <h3>${h.title}</h3>
           <p>${h.body}</p>
           <span class="hl-tag">${h.tag}</span>
         </div>`).join('');
+    }
+
+    // ── Staff
+    if (s.staff_header) {
+      const sh = s.staff_header;
+      const ey = document.querySelector('#staff .sl');   if(ey && sh.eyebrow)  ey.textContent  = sh.eyebrow;
+      const ti = document.querySelector('#staff h2');    if(ti && sh.title)    ti.textContent  = sh.title;
+      const su = document.querySelector('#staff .ss');   if(su && sh.subtitle) su.textContent  = sh.subtitle;
+    }
+    if (s.staff?.length) {
+      const grid = document.querySelector('#staff .staff-grid');
+      if (grid) {
+        const e = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const visible = s.staff.filter(m => m.visible !== false);
+        const cta = grid.querySelector('.sfc-cta');
+        grid.innerHTML = visible.map(m => {
+          const init = (m.name||'?')[0].toUpperCase();
+          return `<div class="sfc">
+            <div class="sf-photo-wrap">
+              ${m.photo
+                ? `<img src="${e(m.photo)}" alt="${e(m.name)} at Mudify" class="sf-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+                : ''}
+              <div class="sf-placeholder" style="${m.photo?'display:none':'display:flex'}">${init}</div>
+              <div class="sf-overlay"><span class="sf-role-tag">${e(m.role)}</span></div>
+            </div>
+            <div class="sf-body">
+              <div class="sf-nm">${e(m.name)}</div>
+              <div class="sf-mentions">${e(m.mentions)}</div>
+              <blockquote class="sf-q">"${e(m.quote)}"<small>${e(m.quote_attr)}</small></blockquote>
+            </div>
+          </div>`;
+        }).join('');
+        if (cta) grid.appendChild(cta);
+      }
     }
 
     // ── Contact
@@ -1144,12 +1199,75 @@ async function loadSettings() {
       if(c.financing_note) { const el=$('ct-fin-note'); if(el) el.textContent=c.financing_note; }
     }
 
-    // ── FAQ
+    // ── SEO
+    if (s.seo) {
+      const seo = s.seo;
+      if (seo.favicon_url) { let fav = document.querySelector('link[rel="icon"]'); if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav);} fav.href=seo.favicon_url; }
+      if (seo.title) document.title = seo.title;
+      const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); };
+      const setOrCreate = (name, content, prop) => {
+        const attr = prop ? 'property' : 'name';
+        let el = document.querySelector(`meta[${attr}="${name}"]`);
+        if (!el) { el = document.createElement('meta'); el.setAttribute(attr, name); document.head.appendChild(el); }
+        if (content) el.setAttribute('content', content);
+      };
+      setMeta('meta[name="description"]', seo.description);
+      setMeta('meta[name="robots"]', seo.robots);
+      setMeta('meta[property="og:title"]', seo.og_title);
+      setMeta('meta[property="og:description"]', seo.og_description);
+      setMeta('meta[property="og:image"]', seo.og_image);
+      setMeta('meta[property="og:url"]', seo.canonical);
+      setMeta('meta[property="og:type"]', seo.og_type);
+      setMeta('meta[property="og:site_name"]', seo.og_site_name);
+      setMeta('meta[property="og:locale"]', seo.og_locale);
+      setOrCreate('twitter:card', seo.twitter_card);
+      setOrCreate('twitter:site', seo.twitter_site);
+      setOrCreate('twitter:title', seo.twitter_title || seo.og_title);
+      setOrCreate('twitter:description', seo.twitter_description || seo.og_description);
+      setOrCreate('twitter:image', seo.twitter_image || seo.og_image);
+      setMeta('meta[name="google-site-verification"]', seo.google_site_verification);
+      setMeta('meta[name="msvalidate.01"]', seo.bing_site_verification);
+      setMeta('meta[name="p:domain_verify"]', seo.pinterest_site_verification);
+      const canon = document.querySelector('link[rel="canonical"]');
+      if (canon && seo.canonical) canon.setAttribute('href', seo.canonical);
+      // Inject GA4
+      if (seo.ga4_id && !document.getElementById('ga4-script')) {
+        const s1 = document.createElement('script'); s1.async=true; s1.id='ga4-script';
+        s1.src='https://www.googletagmanager.com/gtag/js?id='+seo.ga4_id; document.head.appendChild(s1);
+        const s2 = document.createElement('script');
+        s2.textContent=`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${seo.ga4_id}');`;
+        document.head.appendChild(s2);
+      }
+      // Inject GTM
+      if (seo.gtm_id && !document.getElementById('gtm-script')) {
+        const s3 = document.createElement('script'); s3.id='gtm-script';
+        s3.textContent=`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${seo.gtm_id}');`;
+        document.head.appendChild(s3);
+      }
+      // Update JSON-LD
+      const ld = document.querySelector('script[type="application/ld+json"]');
+      if (ld) { try {
+        const jd = JSON.parse(ld.textContent);
+        const org = jd['@graph']?.find(n => n['@type'] === 'Organization');
+        if (org) {
+          if (seo.schema_rating) org.aggregateRating.ratingValue = seo.schema_rating;
+          if (seo.schema_review_count) org.aggregateRating.reviewCount = seo.schema_review_count;
+          if (seo.schema_best_rating) org.aggregateRating.bestRating = seo.schema_best_rating;
+          if (seo.schema_item_reviewed) org.name = seo.schema_item_reviewed;
+          const sameAs = [seo.social_instagram, seo.social_facebook, seo.social_youtube, seo.social_tiktok].filter(Boolean);
+          if (sameAs.length) org.sameAs = sameAs;
+        }
+        ld.textContent = JSON.stringify(jd);
+      } catch(e) {} }
+    }
+
+    // ── FAQ (respects visible flag)
     if (s.faq?.length) {
       const list=$('faq-list');
       if(list) {
         const e=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        list.innerHTML=s.faq.map((f,i)=>`
+        const visFaq = s.faq.filter(f => f.visible !== false);
+        list.innerHTML=visFaq.map((f,i)=>`
           <div class="fi${i===0?' open':''}">
             <div class="fq" role="button" tabindex="0">${e(f.q)}<span class="fi-ic">+</span></div>
             <div class="fa">${e(f.a)}</div>

@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "name": "David",
+      "email": "david@mudify.com",
+      "role": "admin",
+      "passwordHash": "Mudify2024!",
+      "active": true
+    },
+    {
+      "id": "u2",
+      "name": "Joel",
+      "email": "joel@mudify.com",
+      "role": "admin",
+      "passwordHash": "Mudify2024!",
+      "active": true
+    },
+    {
+      "id": "u3",
+      "name": "Alicia",
+      "email": "alicia@mudify.com",
+      "role": "marketing",
+      "passwordHash": "Mudify2024!",
+      "active": true
+    },
+    {
+      "id": "u4",
+      "name": "Carlos",
+      "email": "carlos@mudify.com",
+      "role": "marketing",
+      "passwordHash": "Mudify2024!",
+      "active": true
+    }
+  ]
+}

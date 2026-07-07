@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mudify Reviews — Admin</title>
+<link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0559/6944/8111/files/fav-con.png?v=1620745179">
 <style>
 /* ── TOKENS ─────────────────────────────────────── */
 :root {
@@ -49,7 +50,7 @@ a { color:var(--accent); text-decoration:none }
   border-radius:var(--r);
 }
 .gate-logo {
-  height:32px; filter:brightness(0) invert(1);
+  height:32px;
   margin:0 auto 36px; display:block;
 }
 .gate-label {
@@ -91,7 +92,7 @@ a { color:var(--accent); text-decoration:none }
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 .sb-logo-wrap { display:flex; align-items:center; gap:10px; margin-bottom:4px }
-.sb-logo { height:24px; filter:brightness(0) invert(1) }
+.sb-logo { height:24px; }
 .sb-site-label {
   font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
   color:#2D2D2D; padding-top:6px;
@@ -448,17 +449,406 @@ a { color:var(--accent); text-decoration:none }
   display:block; font-size:1rem; color:var(--t2); margin-bottom:6px;
 }
 
+/* ── SIDEBAR SUB-NAV ─────────────────────────────── */
+.sb-item-with-sub {
+  display:flex; align-items:center; gap:11px;
+  padding:9px 10px; border-radius:5px;
+  color:rgba(255,255,255,.45); font-size:.85rem; font-weight:500;
+  cursor:pointer; transition:color .12s,background .12s;
+  user-select:none; border:none; background:none; width:100%;
+  text-align:left; margin-bottom:2px;
+}
+.sb-item-with-sub:hover { background:var(--sb-hover); color:rgba(255,255,255,.8) }
+.sb-item-with-sub.active { background:rgba(233,65,65,.14); color:#fff }
+.sb-item-with-sub.active .sb-icon { color:var(--accent) }
+.sb-sub-chevron { margin-left:auto; width:12px; height:12px; color:rgba(255,255,255,.2); transition:transform .22s; flex-shrink:0 }
+.sb-item-with-sub.open .sb-sub-chevron { transform:rotate(90deg) }
+.sb-sub {
+  padding:0 10px 0 40px; overflow:hidden;
+  max-height:0; transition:max-height .28s ease,opacity .22s ease; opacity:0;
+}
+.sb-sub.open { max-height:280px; opacity:1; margin-bottom:4px }
+.sb-sub-item {
+  display:flex; align-items:center; gap:7px;
+  padding:6px 10px; border-radius:4px;
+  color:rgba(255,255,255,.32); font-size:.78rem; font-weight:500;
+  cursor:pointer; transition:all .12s; border:none; background:none;
+  width:100%; text-align:left; margin-bottom:1px;
+}
+.sb-sub-item:hover { color:rgba(255,255,255,.72); background:rgba(255,255,255,.04) }
+.sb-sub-item.active { color:#fff }
+.sb-sub-item::before { content:''; width:0; height:4px; border-radius:2px; background:transparent; flex-shrink:0; transition:width .15s }
+.sb-sub-item.active::before { width:4px; height:4px; border-radius:50%; background:var(--accent) }
+
+/* ── SECTION VIEWS ───────────────────────────────── */
+.sv { display:none }
+.sv.active { display:block; animation:svIn .16s ease-out }
+@keyframes svIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.sv-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; gap:16px }
+.sv-eyebrow { font-size:.6rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--t3); margin-bottom:5px }
+.sv-title { font-size:1.45rem; font-weight:800; color:var(--t1); letter-spacing:-.04em; line-height:1 }
+.sv-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:20px 22px; box-shadow:0 1px 2px rgba(0,0,0,.05); margin-bottom:12px }
+.sv-card:last-child { margin-bottom:0 }
+.sv-card-label { font-size:.65rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--t3); margin-bottom:14px }
+.sv-split { display:grid; grid-template-columns:1fr 316px; gap:20px }
+.sv-split > div:first-child { align-self:start }
+.sv-preview-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,.05); position:sticky; top:0 }
+.sv-preview-label { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--t3); margin-bottom:16px; display:flex; align-items:center; gap:8px }
+.sv-preview-label::before,.sv-preview-label::after { content:''; flex:1; height:1px; background:var(--border) }
+
+/* ── STAT CARD EDITOR ────────────────────────────── */
+.stat-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
+.stat-editor-card { border:1.5px solid var(--border); border-radius:10px; padding:18px 14px; text-align:center; background:#FAFAF9; transition:border-color .15s,background .15s }
+.stat-editor-card:focus-within { border-color:#C9C6C2; background:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.04) }
+.stat-num-input { width:100%; border:none; text-align:center; font-size:1.9rem; font-weight:900; letter-spacing:-.06em; color:var(--t1); background:transparent; outline:none; margin-bottom:6px; font-family:var(--ui) }
+.stat-num-input:focus { color:var(--accent) }
+.stat-lbl-input { width:100%; border:none; text-align:center; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--t3); background:transparent; outline:none }
+.stat-lbl-input:focus { color:var(--t2) }
+
+/* ── STAR RATING EDITOR ──────────────────────────── */
+.star-row { display:grid; grid-template-columns:22px 1fr 56px 12px; gap:10px; align-items:center; margin-bottom:9px }
+.star-row:last-child { margin-bottom:0 }
+.star-lbl { font-size:.78rem; font-weight:700; color:var(--t2); text-align:right }
+.star-bar-wrap { height:8px; background:var(--border); border-radius:4px; overflow:hidden; cursor:pointer }
+.star-bar-fill { height:100%; background:var(--accent); border-radius:4px; transition:width .1s; opacity:.8 }
+.star-num-input { padding:5px 6px; border:1px solid var(--border); border-radius:5px; font-size:.82rem; font-weight:700; color:var(--t1); text-align:center; background:var(--surface); outline:none; width:100%; -moz-appearance:textfield }
+.star-num-input::-webkit-outer-spin-button,.star-num-input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0 }
+.star-num-input:focus { border-color:var(--border-focus) }
+.star-pct-sym { font-size:.72rem; color:var(--t3) }
+
+/* ── RATING LIVE PREVIEW ─────────────────────────── */
+.rp-card { background:linear-gradient(160deg,#0D0D0D 0%,#181818 100%); border-radius:10px; padding:22px 20px; color:#fff }
+.rp-score { font-size:3.2rem; font-weight:900; letter-spacing:-.08em; color:#fff; line-height:1; margin-bottom:2px }
+.rp-stars { font-size:1rem; color:#E94141; letter-spacing:3px; margin-bottom:2px }
+.rp-total { font-size:.72rem; color:rgba(255,255,255,.38); margin-bottom:16px }
+.rp-bar-row { display:grid; grid-template-columns:18px 1fr 28px; gap:8px; align-items:center; margin-bottom:5px }
+.rp-bar-row:last-child { margin-bottom:0 }
+.rp-bn { font-size:.68rem; color:rgba(255,255,255,.35); text-align:right }
+.rp-bar { height:4px; background:rgba(255,255,255,.08); border-radius:2px; overflow:hidden }
+.rp-bf { height:100%; border-radius:2px; transition:width .1s }
+.rp-bp { font-size:.68rem; color:rgba(255,255,255,.35) }
+
+/* ── HIGHLIGHTS CARD EDITOR ──────────────────────── */
+.hl-cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px }
+.hl-editor-card { border:1.5px solid var(--border); border-radius:10px; padding:18px 16px; background:#FAFAF9; transition:border-color .15s,box-shadow .15s }
+.hl-editor-card:focus-within { border-color:#C9C6C2; background:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.04) }
+.hl-emoji-row { display:flex; align-items:center; gap:10px; margin-bottom:11px }
+.hl-emoji-input { font-size:1.5rem; width:42px; height:42px; text-align:center; border:1px solid var(--border); border-radius:8px; background:var(--surface); cursor:text; outline:none; padding:0; line-height:42px }
+.hl-emoji-input:focus { border-color:var(--border-focus) }
+.hl-tag-input { flex:1; padding:4px 10px; border:1px solid var(--border); border-radius:20px; font-size:.7rem; font-weight:600; color:var(--t2); background:var(--surface); outline:none }
+.hl-tag-input:focus { border-color:var(--border-focus) }
+.hl-title-input { width:100%; border:none; border-bottom:1px solid var(--border); font-size:.92rem; font-weight:700; color:var(--t1); padding:0 0 8px; margin-bottom:10px; background:transparent; outline:none }
+.hl-title-input:focus { border-bottom-color:var(--accent) }
+.hl-body-input { width:100%; border:none; font-size:.78rem; color:var(--t2); line-height:1.55; background:transparent; resize:none; outline:none; min-height:52px }
+
+/* ── FAQ EDITOR ──────────────────────────────────── */
+.faq-editor-item { border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:8px; background:#fff }
+.faq-editor-item:last-child { margin-bottom:0 }
+.faq-editor-meta { display:flex; justify-content:space-between; align-items:center; font-size:.64rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--t3); margin-bottom:10px }
+.faq-q-input { width:100%; border:none; border-bottom:1px solid var(--border); font-size:.86rem; font-weight:600; color:var(--t1); padding:0 0 8px; margin-bottom:10px; background:transparent; outline:none }
+.faq-q-input:focus { border-bottom-color:var(--accent) }
+.faq-a-input { width:100%; border:none; font-size:.8rem; color:var(--t2); line-height:1.5; background:transparent; resize:none; outline:none; min-height:48px }
+
+/* ── CONTACT ROWS ────────────────────────────────── */
+.ct-row { display:grid; grid-template-columns:28px 1fr 1fr; gap:12px; align-items:start; padding:14px 0; border-bottom:1px solid var(--border) }
+.ct-row:last-child { border-bottom:none; padding-bottom:0 }
+.ct-icon { font-size:.95rem; padding-top:7px; text-align:center }
+
+/* ── SEO GOOGLE PREVIEW ──────────────────────────── */
+.google-preview { border:1px solid #DADCE0; border-radius:8px; padding:14px 16px; margin-bottom:12px }
+.gp-header { display:flex; align-items:center; gap:8px; margin-bottom:4px }
+.gp-favicon { width:18px; height:18px; border-radius:4px; background:#E94141; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:800; color:#fff; flex-shrink:0 }
+.gp-url-text { font-size:.78rem; color:#3C4043 }
+.gp-title { font-size:1.05rem; color:#1a0dab; margin-bottom:4px; line-height:1.3; cursor:pointer; word-break:break-word }
+.gp-desc { font-size:.82rem; color:#3C4043; line-height:1.45; word-break:break-word }
+.og-preview { border:1px solid var(--border); border-radius:8px; overflow:hidden }
+.og-preview-img { height:72px; background:linear-gradient(135deg,#0D0D0D,#E94141); display:flex; align-items:center; justify-content:center; overflow:hidden }
+.og-preview-img img { width:100%; height:100%; object-fit:cover }
+.og-preview-body { padding:10px 12px; background:#fff }
+.og-domain { font-size:.68rem; text-transform:uppercase; color:var(--t3); margin-bottom:3px }
+.og-title { font-size:.82rem; font-weight:700; color:var(--t1); margin-bottom:2px; line-height:1.3 }
+.og-desc { font-size:.75rem; color:var(--t2); line-height:1.4 }
+
+/* ── STAFF CARD EDITOR ───────────────────────────── */
+.staff-editor-card { border:1.5px solid var(--border); border-radius:10px; padding:16px; background:#FAFAF9; transition:border-color .15s }
+.staff-editor-card:focus-within { border-color:#C9C6C2; background:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.04) }
+.staff-photo-row { display:flex; align-items:center; gap:12px; margin-bottom:12px }
+.staff-photo-thumb { width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0; background:#111 }
+.staff-photo-placeholder { width:48px; height:48px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800; flex-shrink:0 }
+.staff-name-input { width:100%; border:none; border-bottom:1px solid var(--border); font-size:.95rem; font-weight:700; color:var(--t1); padding:0 0 7px; margin-bottom:9px; background:transparent; outline:none }
+.staff-name-input:focus { border-bottom-color:var(--accent) }
+.staff-role-input { width:100%; border:1px solid var(--border); border-radius:20px; font-size:.7rem; font-weight:600; color:var(--t2); padding:4px 11px; background:var(--surface); outline:none; margin-bottom:10px }
+.staff-role-input:focus { border-color:var(--border-focus) }
+.staff-mentions-input { width:100%; border:none; font-size:.72rem; color:var(--t3); background:transparent; outline:none; margin-bottom:9px }
+.staff-quote-input { width:100%; border:none; border-left:2px solid var(--border); padding-left:10px; font-size:.78rem; color:var(--t2); font-style:italic; line-height:1.5; background:transparent; resize:none; outline:none; min-height:48px }
+.staff-quote-input:focus { border-left-color:var(--accent) }
+.staff-attr-input { width:100%; border:none; font-size:.7rem; color:var(--t3); background:transparent; outline:none; margin-top:6px }
+.staff-cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px }
+
+/* ── VISIBILITY TOGGLE ───────────────────────────── */
+.vis-tog { position:relative; width:32px; height:18px; flex-shrink:0; cursor:pointer; display:inline-block }
+.vis-tog input { opacity:0; width:0; height:0; position:absolute }
+.vis-slider { position:absolute; inset:0; background:#D0CDC9; border-radius:20px; transition:background .18s }
+.vis-slider:before { content:''; position:absolute; height:12px; width:12px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:transform .18s; box-shadow:0 1px 2px rgba(0,0,0,.2) }
+.vis-tog input:checked + .vis-slider { background:#1A7A4A }
+.vis-tog input:checked + .vis-slider:before { transform:translateX(14px) }
+.vis-off { opacity:.35; }
+.vis-off .stat-num-input, .vis-off .stat-lbl-input { color:var(--t3) }
+.stat-vis-row { display:flex; justify-content:flex-end; margin-bottom:6px }
+.sum-card-header { display:flex; align-items:center; margin-bottom:8px }
+.sum-card-header .field-label { flex:1; margin-bottom:0 }
+
+/* ── HAMBURGER BUTTON ────────────────────────────── */
+#mob-menu-btn {
+  display:none; width:38px; height:38px; flex-shrink:0;
+  border:none; background:none; color:var(--t1); cursor:pointer;
+  border-radius:var(--r); align-items:center; justify-content:center;
+  transition:background .12s; margin-right:4px;
+}
+#mob-menu-btn:hover { background:var(--bg) }
+#mob-menu-btn svg { pointer-events:none }
+
+/* ── MOBILE HOME BUTTON ───────────────────────────── */
+#mob-home-btn {
+  display:flex; width:34px; height:34px; flex-shrink:0;
+  border:none; background:none; color:var(--t2); cursor:pointer;
+  border-radius:var(--r); align-items:center; justify-content:center;
+  transition:background .12s, color .12s;
+}
+#mob-home-btn:hover { background:var(--bg); color:var(--t1) }
+#mob-home-btn svg { pointer-events:none }
+
+/* ── FLOATING MASCOT / RYNO (all screens) ────────── */
+#floating-mascot {
+  position:fixed;
+  bottom:14px;
+  right:max(14px, env(safe-area-inset-right,0px));
+  z-index:50;
+  display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+}
+@keyframes rynoEntry {
+  0% { transform:translateX(130px); opacity:0 }
+  60% { opacity:1 }
+  82% { transform:translateX(-7px) }
+  100% { transform:translateX(0) }
+}
+#hat-mascot {
+  animation:rynoStrut 3.2s ease-in-out infinite;
+  display:block; overflow:visible;
+  transform-box:border-box; transform-origin:50% 100%;
+  cursor:pointer;
+}
+@keyframes rynoStrut {
+  0%,100% { transform:translateY(0) rotate(-1deg) }
+  35% { transform:translateY(-5px) rotate(1.5deg) }
+  65% { transform:translateY(-2px) rotate(-.5deg) }
+}
+.floating-bubble {
+  background:#fff; border:1.5px solid var(--border); border-radius:12px;
+  padding:8px 12px; font-size:.76rem; color:var(--t1);
+  max-width:200px; min-width:140px; line-height:1.4;
+  box-shadow:var(--shadow-md); position:relative; text-align:left;
+}
+.floating-bubble::before {
+  content:''; position:absolute; bottom:-11px; right:22px;
+  border:6px solid transparent; border-top-color:var(--border);
+}
+.floating-bubble::after {
+  content:''; position:absolute; bottom:-9px; right:23px;
+  border:5px solid transparent; border-top-color:#fff;
+}
+@keyframes bubblePop {
+  from { opacity:0; transform:scale(.85) translateY(4px) }
+  to   { opacity:1; transform:scale(1) translateY(0) }
+}
+/* Close button (hover to reveal) */
+.ryno-close {
+  position:absolute; top:-7px; right:-7px;
+  width:22px; height:22px;
+  background:var(--t1); color:#fff;
+  border-radius:50%; border:2.5px solid var(--bg);
+  font-size:13px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; opacity:0; transition:opacity .18s; z-index:2; padding:0;
+}
+#floating-mascot:hover .ryno-close { opacity:1 }
+/* Clippy-style peek button when RYNO is hidden */
+#ryno-peek {
+  position:fixed;
+  bottom:max(16px, env(safe-area-inset-bottom, 0px));
+  right:max(12px, env(safe-area-inset-right, 0px));
+  z-index:50; cursor:pointer; display:none;
+}
+.peek-chip {
+  background:var(--t1); color:#fff;
+  padding:8px 14px 8px 10px; border-radius:22px 22px 4px 22px;
+  font-size:.76rem; display:flex; align-items:center; gap:7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.22);
+  animation:peekFloat 2.6s ease-in-out infinite;
+  white-space:nowrap;
+}
+.peek-chip:hover { background:#333 }
+.peek-horn { font-size:1rem; flex-shrink:0 }
+@keyframes peekFloat {
+  0%,100% { transform:translateY(0) }
+  50% { transform:translateY(-4px) }
+}
+@media(max-width:900px) {
+  .ryno-close { opacity:.75 }
+}
+@media(max-width:600px) {
+  #hat-mascot { width:50px !important; height:68px !important }
+  .floating-bubble { max-width:170px; min-width:120px; font-size:.73rem }
+}
+
+/* ── PÁGINA SECTION PICKER ───────────────────────── */
+.pagina-picker-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(185px,1fr)); gap:14px;
+}
+.pagina-picker-card {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:20px 18px; text-align:left; cursor:pointer;
+  transition:border-color .15s, box-shadow .15s, transform .15s;
+  display:flex; flex-direction:column; gap:5px; box-shadow:var(--shadow);
+}
+.pagina-picker-card:hover {
+  border-color:#C9C6C2; box-shadow:var(--shadow-md); transform:translateY(-2px);
+}
+.pagina-picker-icon { font-size:1.6rem; margin-bottom:3px; line-height:1 }
+.pagina-picker-name { font-size:.88rem; font-weight:700; color:var(--t1) }
+.pagina-picker-desc { font-size:.75rem; color:var(--t3); line-height:1.3 }
+.save-bar-wrap.save-hidden { display:none !important }
+
+/* ── SIDEBAR BACKDROP ────────────────────────────── */
+#sb-backdrop {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.55); z-index:99;
+  -webkit-tap-highlight-color:transparent;
+}
+#sb-backdrop.visible { display:block }
+
+/* ── USERS VIEW ─────────────────────────────────── */
+.users-table { width:100%; border-collapse:collapse }
+.users-table thead { background:var(--bg) }
+.users-table th { padding:10px 14px; font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--t3); text-align:left; border-bottom:1px solid var(--border) }
+.users-table td { padding:12px 14px; font-size:.84rem; color:var(--t1); border-bottom:1px solid var(--border); vertical-align:middle }
+.users-table tr:last-child td { border-bottom:none }
+.users-table tr:hover td { background:var(--bg) }
+.u-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow) }
+.role-badge { display:inline-flex; align-items:center; padding:2px 9px; border-radius:20px; font-size:.72rem; font-weight:600 }
+.role-badge.admin { background:rgba(233,65,65,.1); color:var(--accent) }
+.role-badge.marketing { background:rgba(59,130,246,.1); color:#3b82f6 }
+.role-badge.design { background:rgba(139,92,246,.1); color:#8b5cf6 }
+.user-action-btn { background:none; border:1px solid var(--border); border-radius:6px; padding:3px 10px; font-size:.78rem; color:var(--t2); cursor:pointer; transition:all .12s }
+.user-action-btn:hover { border-color:#C9C6C2; color:var(--t1) }
+.user-action-btn.danger:hover { border-color:#ef4444; color:#ef4444 }
+.u-avatar { width:30px; height:30px; border-radius:50%; background:var(--accent-bg); color:var(--accent); font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center }
+/* Modal */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.38); z-index:200; display:flex; align-items:center; justify-content:center; padding:20px }
+.modal-card { background:var(--surface); border:1px solid var(--border); border-radius:calc(var(--r) + 4px); width:100%; max-width:420px; box-shadow:0 8px 40px rgba(0,0,0,.2) }
+.modal-head { padding:20px 24px 0; display:flex; align-items:center; justify-content:space-between }
+.modal-head h3 { font-size:1rem; font-weight:700 }
+.modal-close { background:none; border:none; cursor:pointer; color:var(--t3); font-size:20px; padding:2px 6px; line-height:1 }
+.modal-close:hover { color:var(--t1) }
+.modal-body { padding:20px 24px }
+.modal-foot { padding:0 24px 20px; display:flex; gap:8px; justify-content:flex-end }
+/* Sidebar user chip */
+.sb-user { display:flex; align-items:center; gap:9px; padding:8px 14px 12px }
+.sb-user-avatar { width:26px; height:26px; border-radius:50%; background:rgba(233,65,65,.18); color:var(--accent); font-size:.75rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0 }
+.sb-user-name { font-size:.81rem; font-weight:600; color:rgba(255,255,255,.85) }
+.sb-user-role { font-size:.7rem; color:rgba(255,255,255,.38); text-transform:capitalize }
+
+/* ── BULK IMPORT ─────────────────────────────────── */
+.import-panel { display:none }
+.import-panel.active { display:block }
+.import-toggle { display:flex; gap:6px; margin-bottom:18px; background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:4px }
+.import-toggle-btn { flex:1; padding:6px; font-size:.82rem; border:none; border-radius:calc(var(--r) - 2px); background:none; color:var(--t2); cursor:pointer; font-weight:500; transition:all .12s }
+.import-toggle-btn.active { background:var(--surface); color:var(--t1); box-shadow:0 1px 4px rgba(0,0,0,.08) }
+.import-drop { border:2px dashed var(--border); border-radius:calc(var(--r) + 2px); padding:32px 20px; text-align:center; cursor:pointer; position:relative; transition:border-color .15s, background .15s }
+.import-drop:hover,.import-drop.dragover { border-color:var(--accent); background:var(--accent-bg) }
+.import-drop input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100% }
+.import-drop-icon { font-size:2.2rem; margin-bottom:8px }
+.import-drop-title { font-size:.9rem; font-weight:600; color:var(--t1); margin-bottom:4px }
+.import-drop-sub { font-size:.8rem; color:var(--t3) }
+.import-preview-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-top:16px }
+.import-preview-head { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between }
+.import-table { width:100%; border-collapse:collapse }
+.import-table th { padding:8px 12px; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--t3); border-bottom:1px solid var(--border); background:var(--bg); text-align:left }
+.import-table td { padding:8px 12px; font-size:.8rem; color:var(--t1); border-bottom:1px solid var(--border) }
+.import-table tr:last-child td { border-bottom:none }
+.import-table .td-err { color:#ef4444; font-size:.74rem }
+.import-actions-row { padding:12px 16px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center }
+.import-template-bar { background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; flex-wrap:wrap }
+.import-template-info { font-size:.84rem }
+.import-template-info strong { display:block; font-weight:600; color:var(--t1); margin-bottom:2px }
+.import-template-info span { color:var(--t3); font-size:.78rem }
+
 /* ── RESPONSIVE ──────────────────────────────────── */
 @media(max-width:900px) {
-  :root { --sw: 0px }
-  #sidebar { display:none }
+  #mob-menu-btn { display:flex }
+  .save-bar-wrap { justify-content:center }
+  #floating-mascot { bottom:max(58px, calc(env(safe-area-inset-bottom,0px) + 52px)); right:10px }
+  .save-bar-wrap .btn-primary { flex:1; max-width:340px; justify-content:center }
+
+  #sidebar {
+    position:fixed; top:0; left:0; bottom:0; height:100%;
+    width:280px; z-index:100;
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  #sidebar.open { transform:translateX(0) }
+
+  #topbar {
+    padding:0 16px;
+    padding-left:max(16px, env(safe-area-inset-left,0px));
+    padding-right:max(16px, env(safe-area-inset-right,0px));
+  }
+  #content { -webkit-overflow-scrolling:touch }
+  .view { padding:16px }
+  .view { padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)) }
+
+  .sv-split { grid-template-columns:1fr }
+  .sv-split > div:first-child { align-self:auto }
+  .sv-preview-card { position:static !important; margin-top:12px }
+
+  .dash-stat-grid { grid-template-columns:repeat(3,1fr) }
   .dash-actions-grid { grid-template-columns:1fr 1fr }
+
   .rt-head,.rt-row { grid-template-columns:40px 1fr 80px 68px }
   .rt-cell:nth-child(4),.rt-cell:nth-child(5),.rt-head span:nth-child(4),.rt-head span:nth-child(5) { display:none }
 }
+
 @media(max-width:600px) {
+  /* Stats capsule layout */
   .dash-stat-grid { grid-template-columns:1fr 1fr }
+  .dash-stat { padding:12px 14px }
+  .dash-stat-num { font-size:2rem }
+  .dash-stat:last-child {
+    grid-column:1 / -1;
+    display:flex; flex-direction:row; align-items:center;
+    justify-content:space-between; gap:10px; padding:10px 16px;
+  }
+  .dash-stat:last-child .dash-stat-label { margin-bottom:0; order:2; text-align:right }
+  .dash-stat:last-child .dash-stat-num { font-size:1.6rem; order:1 }
+  .dash-stat:last-child .dash-stat-desc { display:none }
+  /* Welcome card stacked */
+  .dash-welcome { flex-direction:column; align-items:stretch; gap:12px; padding:18px 20px }
+  .dash-welcome .btn-secondary { justify-content:center }
+  /* Quick access 2-col */
+  .dash-actions-grid { grid-template-columns:1fr 1fr }
+  /* Rest */
   .field-row.cols2,.field-row.cols3 { grid-template-columns:1fr }
+  .stat-cards-grid { grid-template-columns:1fr }
+  .hl-cards-grid { grid-template-columns:1fr }
+  .staff-cards-grid { grid-template-columns:1fr }
+  .star-row { grid-template-columns:22px 1fr 56px 12px }
+  .sv-head h1 { font-size:1.35rem }
+  .save-bar-wrap { padding:10px 16px; padding-bottom:max(10px, env(safe-area-inset-bottom,0px)) }
+  .field-row.cols3 { grid-template-columns:1fr }
+  /* RYNO peek */
+  #ryno-peek { bottom:max(14px, env(safe-area-inset-bottom, 0px)); right:10px }
+  .peek-chip { font-size:.73rem }
 }
 </style>
 </head>
@@ -467,15 +857,19 @@ a { color:var(--accent); text-decoration:none }
 <!-- ── GATE ──────────────────────────────────────── -->
 <div id="gate">
   <div class="gate-card">
-    <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="gate-logo" alt="Mudify">
+    <img src="https://cdn.shopify.com/s/files/1/0559/6944/8111/files/MUDIFY-Brand-Hat-print-3.png?v=1783377358" class="gate-logo" alt="Mudify">
     <p class="gate-label">Panel de administración</p>
     <form onsubmit="login(event)">
+      <input type="email" id="login-email" class="gate-field" placeholder="tu@mudify.com" autocomplete="email">
       <input type="password" id="pwd" class="gate-field" placeholder="Contraseña" autocomplete="current-password">
-      <button type="submit" class="gate-submit">Iniciar sesión</button>
+      <button type="submit" class="gate-submit" id="gate-btn">Iniciar sesión</button>
       <p id="gate-err"></p>
     </form>
   </div>
 </div>
+
+<!-- Sidebar backdrop (mobile) -->
+<div id="sb-backdrop" onclick="closeSidebar()"></div>
 
 <!-- ── APP ───────────────────────────────────────── -->
 <div id="app">
@@ -485,7 +879,7 @@ a { color:var(--accent); text-decoration:none }
     <aside id="sidebar">
       <div class="sb-head">
         <div class="sb-logo-wrap">
-          <img src="https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536" class="sb-logo" alt="Mudify">
+          <img src="https://cdn.shopify.com/s/files/1/0559/6944/8111/files/MUDIFY-Brand-Hat-print-3.png?v=1783377358" class="sb-logo" alt="Mudify">
         </div>
         <p class="sb-site-label">Reviews Admin</p>
       </div>
@@ -499,23 +893,52 @@ a { color:var(--accent); text-decoration:none }
           </svg>
           Dashboard
         </button>
-        <button class="sb-item" data-view="pagina" onclick="nav('pagina',this)">
+        <button class="sb-item-with-sub" data-view="pagina" data-roles="admin design" onclick="nav('pagina',this)">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <rect x="3" y="2" width="14" height="16" rx="2"/>
             <line x1="6" y1="7" x2="14" y2="7"/><line x1="6" y1="10" x2="14" y2="10"/><line x1="6" y1="13" x2="11" y2="13"/>
           </svg>
           Página
+          <svg class="sb-sub-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l3 3 3-3"/></svg>
         </button>
-        <button class="sb-item" data-view="reviews" onclick="nav('reviews',this)" id="sb-reviews">
+        <nav class="sb-sub" id="sub-pagina">
+          <button class="sb-sub-item active" data-sub="hero"       onclick="navSub('hero',this)">Hero</button>
+          <button class="sb-sub-item"        data-sub="about"      onclick="navSub('about',this)">About Mudify</button>
+          <button class="sb-sub-item"        data-sub="rating"     onclick="navSub('rating',this)">Puntuación General</button>
+          <button class="sb-sub-item"        data-sub="highlights" onclick="navSub('highlights',this)">Temas de Reviews</button>
+          <button class="sb-sub-item"        data-sub="staff"      onclick="navSub('staff',this)">Staff Destacado</button>
+          <button class="sb-sub-item"        data-sub="contact"    onclick="navSub('contact',this)">Información de Contacto</button>
+          <button class="sb-sub-item"        data-sub="faq"        onclick="navSub('faq',this)">Preguntas Frecuentes</button>
+        </nav>
+        <button class="sb-item" data-view="seo" data-roles="admin marketing" onclick="nav('seo',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="8" cy="8" r="5"/><path d="M13 13l4 4"/>
+          </svg>
+          SEO
+        </button>
+        <button class="sb-item" data-view="reviews" data-roles="admin marketing" onclick="nav('reviews',this)" id="sb-reviews">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <path d="M10 2l2.39 4.84L18 7.64l-4 3.9.94 5.46L10 14.27l-4.94 2.73L6 11.54 2 7.64l5.61-.8L10 2z"/>
           </svg>
           Reviews
           <span class="sb-badge" id="sb-badge">—</span>
         </button>
+        <button class="sb-item" data-view="usuarios" data-roles="admin" onclick="nav('usuarios',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="7" cy="7" r="3"/><path d="M1 18c0-3.314 2.686-6 6-6"/><circle cx="14" cy="11" r="3"/><path d="M10 18c0-2.21 1.79-4 4-4s4 1.79 4 4"/>
+          </svg>
+          Usuarios
+        </button>
       </nav>
 
       <div class="sb-divider"></div>
+      <div class="sb-user" id="sb-user-chip" style="display:none">
+        <div class="sb-user-avatar" id="sb-user-avatar">?</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name"></div>
+          <div class="sb-user-role" id="sb-user-role"></div>
+        </div>
+      </div>
       <div class="sb-footer">
         <a href="https://mudify-reviews.netlify.app" target="_blank" class="sb-site-link">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -535,7 +958,18 @@ a { color:var(--accent); text-decoration:none }
     <!-- MAIN -->
     <div id="main">
       <header id="topbar">
+        <button id="mob-menu-btn" onclick="toggleSidebar()" aria-label="Menú">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <line x1="2" y1="5" x2="18" y2="5"/><line x1="2" y1="10" x2="18" y2="10"/><line x1="2" y1="15" x2="18" y2="15"/>
+          </svg>
+        </button>
+        <button id="mob-home-btn" onclick="nav('dashboard')" aria-label="Inicio">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 10L10 3l7 7"/><path d="M5 8.5V17h4v-4h2v4h4V8.5"/>
+          </svg>
+        </button>
         <div class="tb-title" id="tb-title">Dashboard</div>
+        <span class="tb-sub" id="tb-sub"></span>
         <div id="tb-actions"></div>
       </header>
 
@@ -587,7 +1021,7 @@ a { color:var(--accent); text-decoration:none }
                 <div class="dash-action-desc">Agregar a la colección</div>
               </div>
             </button>
-            <button class="dash-action" onclick="nav('pagina');openSection('hero')">
+            <button class="dash-action" onclick="nav('pagina');navSub('hero')">
               <div class="dash-action-icon">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
                   <path d="M4 4h12M4 8h8M4 12h4"/>
@@ -598,7 +1032,7 @@ a { color:var(--accent); text-decoration:none }
                 <div class="dash-action-desc">Descripción y botón CTA</div>
               </div>
             </button>
-            <button class="dash-action" onclick="nav('pagina');openSection('stats')">
+            <button class="dash-action" onclick="nav('pagina');navSub('rating')">
               <div class="dash-action-icon">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
                   <rect x="3" y="10" width="3" height="8"/><rect x="9" y="6" width="3" height="12"/><rect x="15" y="2" width="3" height="16"/>
@@ -625,169 +1059,474 @@ a { color:var(--accent); text-decoration:none }
 
         <!-- ── PÁGINA ─────────────────────────────── -->
         <div id="v-pagina" class="view">
-          <p class="sections-header">Secciones de la página</p>
 
-          <!-- Hero section -->
-          <div class="section-panel open" id="sp-hero">
-            <div class="section-panel-header" onclick="toggleSection('hero')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Hero</span>
-              <span class="section-panel-meta">Título, descripción y botón principal</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 8l5 5 5-5"/>
-              </svg>
+          <!-- sv-pagina-home (section picker) -->
+          <div id="sv-pagina-home" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página</div><h1 class="sv-title">¿Qué quieres editar?</h1></div>
             </div>
-            <div class="section-panel-body">
-              <div class="field-group">
-                <label class="field-label">Descripción principal</label>
-                <textarea id="s-desc" class="field-textarea" rows="3"></textarea>
-                <p class="field-hint">Texto que aparece debajo del título en el hero de la página.</p>
-              </div>
-              <div class="field-row cols2">
-                <div>
-                  <label class="field-label">Texto del botón</label>
-                  <input id="s-cta-text" class="field-input" placeholder="Leave a Review">
-                </div>
-                <div>
-                  <label class="field-label">URL del botón</label>
-                  <input id="s-cta-url" class="field-input" placeholder="#contact o https://…">
-                </div>
-              </div>
+            <div class="pagina-picker-grid">
+              <button class="pagina-picker-card" onclick="navSub('hero')">
+                <div class="pagina-picker-icon">✏️</div>
+                <div class="pagina-picker-name">Hero</div>
+                <div class="pagina-picker-desc">Descripción principal, estadísticas y CTA</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('about')">
+                <div class="pagina-picker-icon">🏢</div>
+                <div class="pagina-picker-name">About Mudify</div>
+                <div class="pagina-picker-desc">Historia, marcas y plataformas de vehículos</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('rating')">
+                <div class="pagina-picker-icon">⭐</div>
+                <div class="pagina-picker-name">Puntuación General</div>
+                <div class="pagina-picker-desc">Score, barras de rating y resúmenes</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('highlights')">
+                <div class="pagina-picker-icon">🎯</div>
+                <div class="pagina-picker-name">Temas de Reviews</div>
+                <div class="pagina-picker-desc">Highlights y categorías más mencionadas</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('staff')">
+                <div class="pagina-picker-icon">👤</div>
+                <div class="pagina-picker-name">Staff Destacado</div>
+                <div class="pagina-picker-desc">Equipo mencionado en reviews de clientes</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('contact')">
+                <div class="pagina-picker-icon">📞</div>
+                <div class="pagina-picker-name">Información de Contacto</div>
+                <div class="pagina-picker-desc">Teléfono, website, ubicación y financiamiento</div>
+              </button>
+              <button class="pagina-picker-card" onclick="navSub('faq')">
+                <div class="pagina-picker-icon">💬</div>
+                <div class="pagina-picker-name">Preguntas Frecuentes</div>
+                <div class="pagina-picker-desc">FAQ visible en la página pública</div>
+              </button>
             </div>
           </div>
 
-          <!-- Stats section -->
-          <div class="section-panel" id="sp-stats">
-            <div class="section-panel-header" onclick="toggleSection('stats')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Estadísticas</span>
-              <span class="section-panel-meta">Barra de métricas en el hero</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 8l5 5 5-5"/>
-              </svg>
+          <!-- sv-hero -->
+          <div id="sv-hero" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Hero</h1></div>
             </div>
-            <div class="section-panel-body" id="stats-fields"></div>
+            <div class="sv-card">
+              <div class="sv-card-label">Descripción principal</div>
+              <textarea id="s-desc" class="field-textarea" rows="4" placeholder="Real feedback from 445+ off-road enthusiasts…"></textarea>
+              <p class="field-hint" style="margin-top:5px">Texto debajo del título en el hero de la página.</p>
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label">Botón de acción (CTA)</div>
+              <div class="field-row cols2" style="margin-bottom:0">
+                <div><label class="field-label">Texto del botón</label><input id="s-cta-text" class="field-input" placeholder="Leave a Review"></div>
+                <div><label class="field-label">URL / Anchor</label><input id="s-cta-url" class="field-input" placeholder="#contact"></div>
+              </div>
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label">Estadísticas — métricas del hero</div>
+              <div class="stat-cards-grid" id="stats-fields"></div>
+            </div>
           </div>
 
-          <!-- About section -->
-          <div class="section-panel" id="sp-about">
-            <div class="section-panel-header" onclick="toggleSection('about')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">About Mudify</span>
-              <span class="section-panel-meta">Descripción, marcas y vehículos</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          <!-- sv-about -->
+          <div id="sv-about" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">About Mudify</h1></div>
             </div>
-            <div class="section-panel-body">
+            <div class="sv-card">
+              <div class="sv-card-label">Descripción de la empresa</div>
               <div class="field-group">
                 <label class="field-label">Párrafo 1 <span style="font-weight:400;color:var(--t3)">— ¿Quiénes son?</span></label>
                 <textarea id="s-about-p1" class="field-textarea" rows="3"></textarea>
               </div>
-              <div class="field-group">
+              <div class="field-group" style="margin-bottom:0">
                 <label class="field-label">Párrafo 2 <span style="font-weight:400;color:var(--t3)">— Marcas y servicios</span></label>
                 <textarea id="s-about-p2" class="field-textarea" rows="2"></textarea>
               </div>
-              <div class="field-row cols2">
-                <div>
-                  <label class="field-label">Marcas autorizadas <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
-                  <input id="s-about-brands" class="field-input" placeholder="Old Man Emu, Fox Shocks…">
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label">Datos adicionales</div>
+              <div class="field-group">
+                <label class="field-label">Marcas autorizadas <span style="font-weight:400;color:var(--t3)">(separadas por coma)</span></label>
+                <input id="s-about-brands" class="field-input" placeholder="Old Man Emu, Fox Shocks, Bilstein…">
+              </div>
+              <div class="field-group" style="margin-bottom:0">
+                <label class="field-label">Plataformas de vehículos <span style="font-weight:400;color:var(--t3)">(separadas por coma)</span></label>
+                <input id="s-about-vehicles" class="field-input" placeholder="Toyota 4Runner, Tacoma, Jeep Wrangler…">
+              </div>
+            </div>
+          </div>
+
+          <!-- sv-rating -->
+          <div id="sv-rating" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Puntuación General</h1></div>
+            </div>
+            <div class="sv-split">
+              <div>
+                <div class="sv-card">
+                  <div class="sv-card-label">Score y total</div>
+                  <div class="field-row cols2" style="margin-bottom:0">
+                    <div><label class="field-label">Score</label><input id="s-rating-score" class="field-input" placeholder="4.3" oninput="liveRating()"></div>
+                    <div><label class="field-label">Total de reviews</label><input id="s-rating-total" class="field-input" placeholder="445+" oninput="liveRating()"></div>
+                  </div>
                 </div>
-                <div>
-                  <label class="field-label">Plataformas de vehículos <span style="font-weight:400;color:var(--t3)">(comas)</span></label>
-                  <input id="s-about-vehicles" class="field-input" placeholder="Toyota 4Runner, Tacoma…">
+                <div class="sv-card">
+                  <div class="sv-card-label">Distribución de estrellas — edita los % y las barras se actualizan</div>
+                  <div id="star-editor"></div>
+                </div>
+                <div class="sv-card">
+                  <div class="sv-card-label">Tarjetas de resumen</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+                    <div id="sum-card-pos">
+                      <div class="sum-card-header">
+                        <label class="field-label" style="color:var(--success)">✓ Positivo</label>
+                        <label class="vis-tog" title="Visible en página">
+                          <input type="checkbox" id="vis-pos" checked onchange="settings.rating.positive_visible=this.checked;document.getElementById('sum-card-pos').classList.toggle('vis-off',!this.checked)">
+                          <span class="vis-slider"></span>
+                        </label>
+                      </div>
+                      <input id="s-pos-pct" class="field-input" placeholder="82%">
+                      <input id="s-pos-lbl" class="field-input" placeholder="Positive reviews…" style="margin-top:6px">
+                    </div>
+                    <div id="sum-card-crit">
+                      <div class="sum-card-header">
+                        <label class="field-label" style="color:#C0392B">⚠ Crítico</label>
+                        <label class="vis-tog" title="Visible en página">
+                          <input type="checkbox" id="vis-crit" checked onchange="settings.rating.critical_visible=this.checked;document.getElementById('sum-card-crit').classList.toggle('vis-off',!this.checked)">
+                          <span class="vis-slider"></span>
+                        </label>
+                      </div>
+                      <input id="s-crit-pct" class="field-input" placeholder="10%">
+                      <input id="s-crit-lbl" class="field-input" placeholder="Critical reviews…" style="margin-top:6px">
+                    </div>
+                    <div id="sum-card-mix">
+                      <div class="sum-card-header">
+                        <label class="field-label" style="color:#D97706">◎ Mixto</label>
+                        <label class="vis-tog" title="Visible en página">
+                          <input type="checkbox" id="vis-mix" checked onchange="settings.rating.mixed_visible=this.checked;document.getElementById('sum-card-mix').classList.toggle('vis-off',!this.checked)">
+                          <span class="vis-slider"></span>
+                        </label>
+                      </div>
+                      <input id="s-mix-pct" class="field-input" placeholder="8%">
+                      <input id="s-mix-lbl" class="field-input" placeholder="Mixed reviews…" style="margin-top:6px">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="sv-preview-card">
+                  <div class="sv-preview-label">En vivo</div>
+                  <div class="rp-card" id="rating-live-preview">
+                    <div class="rp-score">4.3</div>
+                    <div class="rp-stars">★★★★☆</div>
+                    <div class="rp-total">de 5.0 · 445+ reviews</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Rating section -->
-          <div class="section-panel" id="sp-rating">
-            <div class="section-panel-header" onclick="toggleSection('rating')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Puntuación General</span>
-              <span class="section-panel-meta">Score, barras y estadísticas de rating</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          <!-- sv-highlights -->
+          <div id="sv-highlights" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Temas de Reviews</h1></div>
             </div>
-            <div class="section-panel-body">
-              <div class="field-row cols2">
-                <div><label class="field-label">Puntuación</label><input id="s-rating-score" class="field-input" placeholder="4.3"></div>
-                <div><label class="field-label">Total de reviews</label><input id="s-rating-total" class="field-input" placeholder="445+"></div>
+            <div class="sv-card">
+              <div class="sv-card-label">4 tarjetas · edita el emoji, título, descripción y tag directamente</div>
+              <div class="hl-cards-grid" id="highlights-fields"></div>
+            </div>
+          </div>
+
+          <!-- sv-staff -->
+          <div id="sv-staff" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Staff Destacado</h1></div>
+            </div>
+            <div class="sv-card" style="margin-bottom:12px">
+              <div class="sv-card-label">Encabezado de sección</div>
+              <div class="field-row cols2" style="margin-bottom:10px">
+                <div><label class="field-label">Eyebrow</label><input id="s-staff-eyebrow" class="field-input" placeholder="People Behind the Brand"></div>
+                <div><label class="field-label">Título</label><input id="s-staff-title" class="field-input" placeholder="Staff Mentioned by Customers"></div>
               </div>
-              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
-                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Distribución por estrellas</div>
-                <div id="rating-bars-fields"></div>
+              <div class="field-group" style="margin-bottom:0">
+                <label class="field-label">Subtítulo</label>
+                <input id="s-staff-subtitle" class="field-input" placeholder="Team members called out by name in verified customer reviews…">
               </div>
-              <div style="background:var(--bg);border-radius:var(--r);padding:14px 16px">
-                <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Tarjetas de resumen</div>
-                <div class="field-row cols3" style="margin-bottom:6px">
-                  <div><label class="field-label" style="color:var(--success)">Positivo %</label><input id="s-pos-pct" class="field-input" placeholder="82%"></div>
-                  <div><label class="field-label" style="color:#C0392B">Crítico %</label><input id="s-crit-pct" class="field-input" placeholder="10%"></div>
-                  <div><label class="field-label">Mixto %</label><input id="s-mix-pct" class="field-input" placeholder="8%"></div>
-                </div>
-                <div class="field-row cols3" style="margin-bottom:0">
-                  <div><label class="field-label">Etiqueta positivo</label><input id="s-pos-lbl" class="field-input" placeholder="Positive reviews…"></div>
-                  <div><label class="field-label">Etiqueta crítico</label><input id="s-crit-lbl" class="field-input" placeholder="Critical reviews…"></div>
-                  <div><label class="field-label">Etiqueta mixto</label><input id="s-mix-lbl" class="field-input" placeholder="Mixed reviews…"></div>
-                </div>
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label">Miembros del equipo · foto, nombre, rol, cita</div>
+              <div class="staff-cards-grid" id="staff-fields"></div>
+              <button class="btn btn-secondary btn-sm" style="margin-top:14px" onclick="addStaffItem()">
+                <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+                Agregar miembro
+              </button>
+            </div>
+          </div>
+
+          <!-- sv-contact -->
+          <div id="sv-contact" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Información de Contacto</h1></div>
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label">Campos de contacto</div>
+              <div class="ct-row">
+                <div class="ct-icon">📞</div>
+                <div><label class="field-label">Teléfono</label><input id="s-ct-phone" class="field-input" placeholder="(786) 699-8829"></div>
+                <div><label class="field-label">Nota</label><input id="s-ct-phone-note" class="field-input" placeholder="Horario · Miami, FL"></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-icon">🌐</div>
+                <div><label class="field-label">Website</label><input id="s-ct-web" class="field-input" placeholder="mudify.com"></div>
+                <div><label class="field-label">Nota</label><input id="s-ct-web-note" class="field-input" placeholder="Shop off-road accessories"></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-icon">📍</div>
+                <div><label class="field-label">Ubicación</label><input id="s-ct-loc" class="field-input" placeholder="Miami, Florida, USA"></div>
+                <div><label class="field-label">Nota</label><input id="s-ct-loc-note" class="field-input" placeholder="Ships nationwide"></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-icon">💳</div>
+                <div><label class="field-label">Financiamiento</label><input id="s-ct-fin" class="field-input" placeholder="Affirm &amp; Snap Finance"></div>
+                <div><label class="field-label">Nota</label><input id="s-ct-fin-note" class="field-input" placeholder="Military discount available"></div>
               </div>
             </div>
           </div>
 
-          <!-- Highlights section -->
-          <div class="section-panel" id="sp-highlights">
-            <div class="section-panel-header" onclick="toggleSection('highlights')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Temas de Reviews</span>
-              <span class="section-panel-meta">4 tarjetas "Lo que dicen los clientes"</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          <!-- sv-faq -->
+          <div id="sv-faq" class="sv">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow">Página · Sección</div><h1 class="sv-title">Preguntas Frecuentes</h1></div>
             </div>
-            <div class="section-panel-body" id="highlights-fields"></div>
-          </div>
-
-          <!-- Contact section -->
-          <div class="section-panel" id="sp-contact">
-            <div class="section-panel-header" onclick="toggleSection('contact')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Información de Contacto</span>
-              <span class="section-panel-meta">Teléfono, web, ubicación, financiamiento</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-            </div>
-            <div class="section-panel-body">
-              <div class="field-row cols2"><div><label class="field-label">📞 Teléfono</label><input id="s-ct-phone" class="field-input" placeholder="(786) 699-8829"></div><div><label class="field-label">Nota del teléfono</label><input id="s-ct-phone-note" class="field-input"></div></div>
-              <div class="field-row cols2"><div><label class="field-label">🌐 Website</label><input id="s-ct-web" class="field-input" placeholder="mudify.com"></div><div><label class="field-label">Nota del website</label><input id="s-ct-web-note" class="field-input"></div></div>
-              <div class="field-row cols2"><div><label class="field-label">📍 Ubicación</label><input id="s-ct-loc" class="field-input" placeholder="Miami, Florida, USA"></div><div><label class="field-label">Nota de ubicación</label><input id="s-ct-loc-note" class="field-input"></div></div>
-              <div class="field-row cols2" style="margin-bottom:0"><div><label class="field-label">💳 Financiamiento</label><input id="s-ct-fin" class="field-input" placeholder="Affirm & Snap Finance"></div><div><label class="field-label">Nota de financiamiento</label><input id="s-ct-fin-note" class="field-input"></div></div>
-            </div>
-          </div>
-
-          <!-- FAQ section -->
-          <div class="section-panel" id="sp-faq">
-            <div class="section-panel-header" onclick="toggleSection('faq')">
-              <div class="section-panel-drag"><span></span><span></span><span></span></div>
-              <div class="section-panel-dot"></div>
-              <span class="section-panel-name">Preguntas Frecuentes (FAQ)</span>
-              <span class="section-panel-meta">Preguntas y respuestas de la página</span>
-              <svg class="section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-            </div>
-            <div class="section-panel-body">
+            <div class="sv-card">
+              <div class="sv-card-label">Preguntas y respuestas</div>
               <div id="faq-fields"></div>
-              <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="addFaqItem()">
-                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+              <button class="btn btn-secondary btn-sm" style="margin-top:14px" onclick="addFaqItem()">
+                <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
                 Agregar pregunta
               </button>
             </div>
           </div>
 
+          <!-- sv-seo -->
+          <div id="sv-seo" class="sv">
+            <div class="sv-head">
+              <div><h1 class="sv-title">SEO &amp; Metadatos</h1></div>
+            </div>
+            <div class="sv-split">
+              <div>
+                <div style="display:flex;align-items:flex-start;gap:9px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.79rem;color:var(--t2);line-height:1.5">
+                  <svg style="flex-shrink:0;margin-top:1px" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><line x1="10" y1="9" x2="10" y2="14"/><circle cx="10" cy="6.5" r=".5" fill="currentColor"/></svg>
+                  Google indexa JS dinámico — los cambios se reflejan en la próxima recrawl. El rebuild se dispara al guardar.
+                </div>
+
+                <!-- Favicon -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Favicon</div>
+                  <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+                    <img id="favicon-prev" src="https://cdn.shopify.com/s/files/1/0559/6944/8111/files/MUDIFY-Brand-Hat-print-3.png?v=1783377358" style="width:40px;height:40px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:#111;padding:4px;flex-shrink:0" alt="favicon preview">
+                    <div style="flex:1">
+                      <label class="field-label">URL del Favicon <span class="field-hint" style="display:inline">— PNG, ICO o SVG · recomendado 32×32 o 64×64px</span></label>
+                      <input id="s-seo-favicon" class="field-input" placeholder="https://…" oninput="liveFavicon(this.value)">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Search Engine -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Search Engine</div>
+                  <div class="field-group">
+                    <label class="field-label">Título de la página <span style="font-weight:400;color:var(--t3)" id="seo-title-count"></span></label>
+                    <input id="s-seo-title" class="field-input" placeholder="Mudify Reviews 2026 – …" oninput="seoCount('s-seo-title','seo-title-count',70,'seo-title-bar');liveSeo()">
+                    <div style="height:3px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden"><span id="seo-title-bar" style="display:block;height:100%;background:var(--accent);width:0%;transition:width .2s,background .2s"></span></div>
+                    <div class="field-hint">Ideal: 50–70 chars · Se muestra en la pestaña del navegador y resultados de Google</div>
+                  </div>
+                  <div class="field-group" style="margin-bottom:0">
+                    <label class="field-label">Meta description <span style="font-weight:400;color:var(--t3)" id="seo-desc-count"></span></label>
+                    <textarea id="s-seo-desc" class="field-textarea" rows="3" placeholder="Read 445+ verified…" oninput="seoCount('s-seo-desc','seo-desc-count',160,'seo-desc-bar');liveSeo()"></textarea>
+                    <div style="height:3px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden"><span id="seo-desc-bar" style="display:block;height:100%;background:var(--accent);width:0%;transition:width .2s,background .2s"></span></div>
+                    <div class="field-hint">Ideal: 120–160 chars · Aparece en el snippet de Google</div>
+                  </div>
+                </div>
+
+                <!-- Open Graph -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Open Graph — Facebook, LinkedIn, WhatsApp</div>
+                  <div class="field-row cols2">
+                    <div><label class="field-label">OG Title</label><input id="s-seo-og-title" class="field-input" placeholder="Igual que el título si se deja vacío" oninput="liveSeo()"></div>
+                    <div><label class="field-label">OG Description</label><input id="s-seo-og-desc" class="field-input" placeholder="Igual que meta description" oninput="liveSeo()"></div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">OG Image URL <span class="field-hint" style="display:inline">— recomendado 1200×630px</span></label>
+                    <input id="s-seo-og-image" class="field-input" placeholder="https://…" oninput="liveSeo()">
+                  </div>
+                  <div class="field-row cols3" style="margin-bottom:0">
+                    <div>
+                      <label class="field-label">OG Type</label>
+                      <select id="s-seo-og-type" class="field-select">
+                        <option value="website">website</option>
+                        <option value="article">article</option>
+                        <option value="product">product</option>
+                      </select>
+                    </div>
+                    <div><label class="field-label">Site Name</label><input id="s-seo-og-sitename" class="field-input" placeholder="Mudify"></div>
+                    <div><label class="field-label">Locale</label><input id="s-seo-og-locale" class="field-input" placeholder="en_US"></div>
+                  </div>
+                </div>
+
+                <!-- Twitter / X -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Twitter / X Card</div>
+                  <div class="field-row cols2">
+                    <div>
+                      <label class="field-label">Card Type</label>
+                      <select id="s-seo-tw-card" class="field-select">
+                        <option value="summary_large_image">summary_large_image — imagen grande</option>
+                        <option value="summary">summary — miniatura</option>
+                      </select>
+                    </div>
+                    <div><label class="field-label">@Site handle</label><input id="s-seo-tw-site" class="field-input" placeholder="@mudify"></div>
+                  </div>
+                  <div class="field-row cols2" style="margin-bottom:0">
+                    <div><label class="field-label">Twitter Title</label><input id="s-seo-tw-title" class="field-input" placeholder="Igual que OG Title si vacío"></div>
+                    <div><label class="field-label">Twitter Image URL</label><input id="s-seo-tw-image" class="field-input" placeholder="Igual que OG Image si vacío"></div>
+                  </div>
+                </div>
+
+                <!-- Técnico -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Técnico &amp; Indexación</div>
+                  <div class="field-row cols2">
+                    <div><label class="field-label">Canonical URL</label><input id="s-seo-canonical" class="field-input" placeholder="https://reviews.mudify.com" oninput="liveSeo()"></div>
+                    <div>
+                      <label class="field-label">Robots meta</label>
+                      <select id="s-seo-robots" class="field-select">
+                        <option value="index, follow">index, follow — indexar</option>
+                        <option value="noindex, nofollow">noindex, nofollow — ocultar todo</option>
+                        <option value="noindex, follow">noindex, follow — no indexar</option>
+                        <option value="index, nofollow">index, nofollow — no seguir links</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field-group" style="margin-bottom:0">
+                    <label class="field-label">Sitemap URL</label>
+                    <input id="s-seo-sitemap" class="field-input" placeholder="https://reviews.mudify.com/sitemap.xml">
+                  </div>
+                </div>
+
+                <!-- Schema.org -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Schema.org — Datos estructurados</div>
+                  <div class="field-row cols2">
+                    <div><label class="field-label">Rating value</label><input id="s-seo-schema-rating" class="field-input" placeholder="4.3"></div>
+                    <div><label class="field-label">Review count</label><input id="s-seo-schema-count" class="field-input" placeholder="445"></div>
+                  </div>
+                  <div class="field-row cols2" style="margin-bottom:0">
+                    <div><label class="field-label">Empresa revisada</label><input id="s-seo-schema-item" class="field-input" placeholder="Mudify"></div>
+                    <div><label class="field-label">Best rating</label><input id="s-seo-schema-best" class="field-input" placeholder="5"></div>
+                  </div>
+                </div>
+
+                <!-- Verificación webmasters -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Verificación de propietario del sitio</div>
+                  <div class="field-group">
+                    <label class="field-label">Google Search Console</label>
+                    <input id="s-seo-gsc" class="field-input" placeholder="Código meta content de Google (ej. abc123xyz)">
+                    <div class="field-hint">En Search Console → Configuración → Verificación → Etiqueta HTML</div>
+                  </div>
+                  <div class="field-row cols2" style="margin-bottom:0">
+                    <div>
+                      <label class="field-label">Bing Webmaster Tools</label>
+                      <input id="s-seo-bing" class="field-input" placeholder="Código de verificación Bing">
+                    </div>
+                    <div>
+                      <label class="field-label">Pinterest</label>
+                      <input id="s-seo-pinterest" class="field-input" placeholder="Código de verificación Pinterest">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Analytics & Tracking -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Analytics &amp; Tracking</div>
+                  <div class="field-row cols2">
+                    <div>
+                      <label class="field-label">Google Analytics 4 (GA4)</label>
+                      <input id="s-seo-ga4" class="field-input" placeholder="G-XXXXXXXXXX">
+                      <div class="field-hint">Measurement ID de la propiedad GA4</div>
+                    </div>
+                    <div>
+                      <label class="field-label">Google Tag Manager</label>
+                      <input id="s-seo-gtm" class="field-input" placeholder="GTM-XXXXXXX">
+                      <div class="field-hint">ID de contenedor GTM</div>
+                    </div>
+                  </div>
+                  <div class="field-group" style="margin-bottom:0">
+                    <label class="field-label">Meta / Facebook Pixel ID</label>
+                    <input id="s-seo-fbpixel" class="field-input" placeholder="123456789012345">
+                    <div class="field-hint">ID numérico del Pixel en Meta Ads Manager</div>
+                  </div>
+                </div>
+
+                <!-- Perfiles sociales -->
+                <div class="sv-card">
+                  <div class="sv-card-label">Perfiles Sociales <span style="font-weight:400;color:var(--t3)">— para Schema sameAs</span></div>
+                  <div class="field-group"><label class="field-label">Instagram</label><input id="s-seo-social-ig" class="field-input" placeholder="https://instagram.com/mudify"></div>
+                  <div class="field-group"><label class="field-label">Facebook</label><input id="s-seo-social-fb" class="field-input" placeholder="https://facebook.com/mudify"></div>
+                  <div class="field-group"><label class="field-label">YouTube</label><input id="s-seo-social-yt" class="field-input" placeholder="https://youtube.com/@mudify"></div>
+                  <div class="field-group" style="margin-bottom:0"><label class="field-label">TikTok</label><input id="s-seo-social-tt" class="field-input" placeholder="https://tiktok.com/@mudify"></div>
+                </div>
+              </div>
+
+              <!-- Preview column -->
+              <div>
+                <div class="sv-preview-card" style="position:sticky;top:0">
+                  <div class="sv-preview-label">Vista previa</div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Google Search</div>
+                  <div class="google-preview">
+                    <div class="gp-header">
+                      <div class="gp-favicon">M</div>
+                      <div class="gp-url-text" id="gp-url-text">reviews.mudify.com</div>
+                    </div>
+                    <div class="gp-title" id="gp-title">Mudify Reviews 2026 – 445+ Verified…</div>
+                    <div class="gp-desc" id="gp-desc">Read 445+ verified customer reviews for Mudify…</div>
+                  </div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px">Open Graph / Redes Sociales</div>
+                  <div class="og-preview">
+                    <div class="og-preview-img">
+                      <img id="og-img-prev" src="" style="display:none;width:100%;height:100%;object-fit:cover">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    </div>
+                    <div class="og-preview-body">
+                      <div class="og-domain" id="og-domain">reviews.mudify.com</div>
+                      <div class="og-title" id="og-title">Mudify Reviews 2026 – …</div>
+                      <div class="og-desc" id="og-desc">445+ verified reviews…</div>
+                    </div>
+                  </div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px">Twitter / X Card</div>
+                  <div class="og-preview">
+                    <div class="og-preview-img" style="height:90px">
+                      <img id="tw-img-prev" src="" style="display:none;width:100%;height:100%;object-fit:cover">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    </div>
+                    <div class="og-preview-body">
+                      <div class="og-domain" id="tw-domain">reviews.mudify.com</div>
+                      <div class="og-title" id="tw-title">Mudify Reviews 2026 – …</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- sticky save bar -->
           <div class="save-bar-wrap">
             <button class="btn btn-primary" id="btn-save-pagina" onclick="saveSettings()">Guardar cambios</button>
             <span class="save-status" id="st-pagina"></span>
           </div>
-        </div>
+
+        </div><!-- /v-pagina -->
 
         <!-- ── REVIEWS ────────────────────────────── -->
         <div id="v-reviews" class="view">
@@ -856,6 +1595,46 @@ a { color:var(--accent); text-decoration:none }
             </div>
           </div>
 
+          <!-- View toggle -->
+          <div class="import-toggle" id="reviews-mode-toggle">
+            <button class="import-toggle-btn active" id="tab-list" onclick="setReviewsTab('list')">Lista de reviews</button>
+            <button class="import-toggle-btn" id="tab-import" onclick="setReviewsTab('import')">⬆️ Importar en masa</button>
+          </div>
+
+          <!-- Bulk import panel -->
+          <div class="import-panel" id="import-panel">
+            <div class="import-template-bar">
+              <div class="import-template-info">
+                <strong>Plantilla CSV</strong>
+                <span>Descarga, completa en Excel o Google Sheets, y sube el archivo</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="downloadCsvTemplate()">⬇ Descargar plantilla CSV</button>
+            </div>
+            <div class="import-drop" id="import-drop" onclick="document.getElementById('import-file').click()">
+              <input type="file" id="import-file" accept=".csv,text/csv" onchange="handleImportFile(this.files[0])">
+              <div class="import-drop-icon">📂</div>
+              <div class="import-drop-title">Arrastra el CSV aquí o haz clic para seleccionar</div>
+              <div class="import-drop-sub">Formato: CSV — exporta desde Excel o Google Sheets como "CSV (UTF-8)"</div>
+            </div>
+            <div class="import-preview-wrap" id="import-preview" style="display:none">
+              <div class="import-preview-head">
+                <span class="import-preview-title">Vista previa</span>
+                <span id="import-count" style="font-size:.8rem;color:var(--t3)"></span>
+              </div>
+              <div style="overflow-x:auto">
+                <table class="import-table">
+                  <thead><tr><th>#</th><th>Autor</th><th>Fecha</th><th>★</th><th>Texto</th><th>Fuente</th><th>Estado</th></tr></thead>
+                  <tbody id="import-tbody"></tbody>
+                </table>
+              </div>
+              <div class="import-actions-row">
+                <button class="btn btn-primary btn-sm" id="btn-confirm-import" onclick="confirmImport()">Importar reviews</button>
+                <button class="btn btn-ghost btn-sm" onclick="clearImport()">Cancelar</button>
+                <span id="import-status" style="font-size:.8rem;color:var(--t3)"></span>
+              </div>
+            </div>
+          </div>
+
           <!-- Reviews table -->
           <div class="reviews-table" id="reviews-table">
             <div class="rt-head">
@@ -875,9 +1654,166 @@ a { color:var(--accent); text-decoration:none }
           </div>
         </div>
 
+        <!-- ── USUARIOS ────────────────────────────── -->
+        <div id="v-usuarios" class="view">
+          <div class="sv-head">
+            <div><div class="sv-eyebrow">Administración</div><h1 class="sv-title">Usuarios del panel</h1></div>
+            <button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Agregar usuario</button>
+          </div>
+          <div class="u-wrap">
+            <table class="users-table">
+              <thead><tr><th></th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th></th></tr></thead>
+              <tbody id="users-tbody"></tbody>
+            </table>
+          </div>
+          <div class="sv-card" style="margin-top:20px;background:rgba(233,65,65,.04);border-color:rgba(233,65,65,.18)">
+            <div class="sv-card-label" style="color:var(--accent)">Contraseña inicial de todos los usuarios</div>
+            <p style="font-size:.85rem;color:var(--t2);margin:0">Todos los usuarios nuevos reciben la contraseña <strong>Mudify2024!</strong> — se recomienda cambiarla en el primer acceso. Para cambiar la contraseña de un usuario, usa el botón "Editar" en la tabla.</p>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
+
+  <!-- User modal (add/edit) -->
+  <div class="modal-overlay" id="user-modal" style="display:none" onclick="if(event.target===this)closeUserModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modal-title">Agregar usuario</h3>
+        <button class="modal-close" onclick="closeUserModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="mu-id">
+        <div class="field-row" style="margin-bottom:12px">
+          <div><label class="field-label">Nombre</label><input id="mu-name" class="field-input" placeholder="Nombre completo"></div>
+        </div>
+        <div class="field-row" style="margin-bottom:12px">
+          <div><label class="field-label">Email</label><input id="mu-email" class="field-input" type="email" placeholder="nombre@mudify.com"></div>
+        </div>
+        <div class="field-row cols2" style="margin-bottom:12px">
+          <div>
+            <label class="field-label">Rol</label>
+            <select id="mu-role" class="field-select">
+              <option value="admin">Admin — Acceso completo</option>
+              <option value="marketing">Marketing — SEO + Reviews</option>
+              <option value="design">Diseño — Solo Página</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Estado</label>
+            <select id="mu-active" class="field-select">
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div id="mu-pwd-wrap">
+          <label class="field-label" id="mu-pwd-label">Nueva contraseña <span style="color:var(--t3);font-weight:400">(dejar vacío para no cambiar)</span></label>
+          <input id="mu-pwd" class="field-input" type="password" placeholder="Mínimo 8 caracteres">
+        </div>
+        <p id="mu-err" style="font-size:.8rem;color:#ef4444;margin-top:8px;display:none"></p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeUserModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveUser()">Guardar usuario</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RYNO – Mudify floating mascot -->
+  <div id="floating-mascot">
+    <button class="ryno-close" onclick="hideRyno()" title="Ocultar RYNO">×</button>
+    <div class="floating-bubble" id="mascot-bubble" style="animation:bubblePop .4s cubic-bezier(.34,1.56,.64,1)">
+      <span id="mascot-msg">Bienvenido, admin. Los reviews no se clasifican solos. 🦏</span>
+    </div>
+    <!-- RYNO SVG – rhino Johnny Bravo proportions, tactical vest, aviator shades, Mudify red -->
+    <svg id="hat-mascot" viewBox="0 0 100 130" width="58" height="75">
+      <!-- Shadow -->
+      <ellipse cx="50" cy="127" rx="30" ry="4.5" fill="rgba(0,0,0,.18)"/>
+      <!-- LEGS -->
+      <ellipse cx="36" cy="107" rx="11" ry="17" fill="#7A6E68"/>
+      <ellipse cx="64" cy="107" rx="11" ry="17" fill="#7A6E68"/>
+      <!-- Hooves -->
+      <ellipse cx="36" cy="122" rx="11" ry="6" fill="#3A3028"/>
+      <ellipse cx="64" cy="122" rx="11" ry="6" fill="#3A3028"/>
+      <!-- TORSO – massive chest -->
+      <ellipse cx="50" cy="76" rx="37" ry="26" fill="#7A6E68"/>
+      <!-- LEFT ARM -->
+      <ellipse cx="13" cy="78" rx="12" ry="21" fill="#7A6E68" transform="rotate(-6 13 78)"/>
+      <ellipse cx="10" cy="100" rx="11" ry="9" fill="#6E645C"/>
+      <!-- RIGHT ARM -->
+      <ellipse cx="87" cy="78" rx="12" ry="21" fill="#7A6E68" transform="rotate(6 87 78)"/>
+      <ellipse cx="90" cy="99" rx="11" ry="9" fill="#6E645C"/>
+      <!-- TACTICAL VEST -->
+      <ellipse cx="50" cy="76" rx="28" ry="22" fill="#252525"/>
+      <!-- V-neck skin -->
+      <path d="M40 57 Q50 69 60 57 Q56 53 50 52 Q44 53 40 57 Z" fill="#7A6E68"/>
+      <!-- Red shoulder stripe -->
+      <path d="M23 63 Q50 56 77 63" stroke="#E94141" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Center seam -->
+      <path d="M50 63 L50 97" stroke="#1A1A1A" stroke-width="1" fill="none" stroke-dasharray="2.5,2.5"/>
+      <!-- Chest pockets -->
+      <rect x="29" y="70" width="13" height="11" rx="2" fill="#1C1C1C"/>
+      <rect x="58" y="70" width="13" height="11" rx="2" fill="#1C1C1C"/>
+      <!-- Tool handle peeking from pocket -->
+      <rect x="32.5" y="62" width="3" height="9" rx="1.5" fill="#BCBAAE"/>
+      <!-- Mudify red badge -->
+      <circle cx="50" cy="84" r="5" fill="#E94141" opacity=".85"/>
+      <circle cx="49" cy="82.5" r="2" fill="rgba(255,255,255,.22)"/>
+      <!-- Belt -->
+      <path d="M24 93 Q50 89 76 93" stroke="#3A3A3A" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- NECK -->
+      <rect x="40" y="48" width="20" height="12" rx="6" fill="#7A6E68"/>
+      <!-- HEAD -->
+      <ellipse cx="50" cy="29" rx="25" ry="22" fill="#7A6E68"/>
+      <ellipse cx="50" cy="25" rx="20" ry="17" fill="#8E8480"/>
+      <!-- EARS -->
+      <path d="M26 20 Q19 11 21 5 Q25 0 30 6 Q34 13 30 22 Z" fill="#7A6E68"/>
+      <path d="M74 20 Q81 11 79 5 Q75 0 70 6 Q66 13 70 22 Z" fill="#7A6E68"/>
+      <path d="M27 19 Q21 12 23 7 Q26 3 30 8 Q32 13 29 20 Z" fill="#C87878"/>
+      <path d="M73 19 Q79 12 77 7 Q74 3 70 8 Q68 13 71 20 Z" fill="#C87878"/>
+      <!-- MUZZLE / SNOUT -->
+      <ellipse cx="50" cy="43" rx="16" ry="10" fill="#908880"/>
+      <ellipse cx="44" cy="45" rx="3.5" ry="2.5" fill="#7A706A"/>
+      <ellipse cx="56" cy="45" rx="3.5" ry="2.5" fill="#7A706A"/>
+      <!-- MAIN HORN -->
+      <path d="M45 37 Q47 24 50 16 Q53 24 55 37 Q52 40 50 40 Q48 40 45 37 Z" fill="#CABB96"/>
+      <path d="M49 18 Q50 16 51 20 Q50.5 26 50 32" stroke="rgba(255,255,255,.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Secondary horn bumps -->
+      <ellipse cx="38" cy="14" rx="5" ry="7" fill="#B8A878" transform="rotate(-22 38 14)"/>
+      <ellipse cx="62" cy="14" rx="5" ry="7" fill="#B8A878" transform="rotate(22 62 14)"/>
+      <!-- AVIATOR SUNGLASSES – red frames -->
+      <path d="M22 37 Q24 46 30 48 Q38 50 47 47 Q49 45 47 37 Z" fill="#0C0C0C"/>
+      <path d="M53 37 Q51 45 53 47 Q62 50 70 48 Q76 46 78 37 Z" fill="#0C0C0C"/>
+      <path d="M22 37 Q35 32 47 37" stroke="#E94141" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M53 37 Q65 32 78 37" stroke="#E94141" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M47 40 Q50 38 53 40" stroke="#E94141" stroke-width="1.8" fill="none"/>
+      <path d="M22 37 Q14 35 10 27" stroke="#E94141" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M78 37 Q86 35 90 27" stroke="#E94141" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="30" cy="40" rx="4" ry="2.5" fill="rgba(255,255,255,.17)" transform="rotate(-20 30 40)"/>
+      <ellipse cx="66" cy="40" rx="4" ry="2.5" fill="rgba(255,255,255,.17)" transform="rotate(20 66 40)"/>
+      <!-- MOUTH (animated) -->
+      <path id="hat-mouth" d="M42 47 Q50 53 58 47" stroke="#4A3A34" stroke-width="2.5" fill="rgba(25,15,10,.55)" stroke-linecap="round"/>
+      <!-- MUD SPLATTERS (honor marks) -->
+      <circle cx="6" cy="85" r="5.5" fill="#8B6B48" opacity=".75"/>
+      <circle cx="12" cy="94" r="3.5" fill="#8B6B48" opacity=".65"/>
+      <circle cx="3" cy="94" r="2" fill="#8B6B48" opacity=".55"/>
+      <circle cx="94" cy="85" r="4.5" fill="#8B6B48" opacity=".7"/>
+      <circle cx="88" cy="92" r="3" fill="#8B6B48" opacity=".6"/>
+      <circle cx="47" cy="34" r="1.5" fill="#8B6B48" opacity=".6"/>
+      <circle cx="32" cy="84" r="2" fill="#8B6B48" opacity=".5"/>
+    </svg>
+  </div>
+
+  <!-- Clippy-style peek trigger (shown when RYNO is hidden) -->
+  <div id="ryno-peek" onclick="showRyno()">
+    <div class="peek-chip">
+      <span class="peek-horn">🦏</span>
+      <span id="ryno-peek-msg">¿Necesitas consejo técnico?</span>
+    </div>
+  </div>
+
 </div>
 
 <!-- TOAST -->
@@ -887,33 +1823,224 @@ a { color:var(--accent); text-decoration:none }
 // ── State ────────────────────────────────────────
 let reviews = [];
 let settings = {};
+let usersData = [];
 let adminPwd = '';
+let currentUserEmail = '';
+let currentUserName = '';
+let currentUserRole = 'admin';
 let reviewFilter = 'all';
 let dirtyReviews = false;
 
 // ── Auth ─────────────────────────────────────────
-function login(e) {
+async function login(e) {
   e.preventDefault();
-  const pwd = document.getElementById('pwd').value;
+  const email = (document.getElementById('login-email')?.value || '').trim();
+  const pwd   = document.getElementById('pwd').value;
   if (!pwd) return;
-  adminPwd = pwd;
-  sessionStorage.setItem('_ap', pwd);
-  openApp();
+
+  const btn = document.getElementById('gate-btn');
+  const err = document.getElementById('gate-err');
+  btn.textContent = 'Iniciando…';
+  btn.disabled = true;
+  err.textContent = '';
+
+  try {
+    const res = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email || undefined, password: pwd }),
+    });
+    const j = await res.json();
+    if (!res.ok || !j.success) {
+      err.textContent = j.error || 'Credenciales incorrectas';
+      btn.textContent = 'Iniciar sesión';
+      btn.disabled = false;
+      return;
+    }
+    adminPwd          = pwd;
+    currentUserEmail  = email || '';
+    currentUserName   = j.name || 'Admin';
+    currentUserRole   = j.role || 'admin';
+    sessionStorage.setItem('_ap',    pwd);
+    sessionStorage.setItem('_email', currentUserEmail);
+    sessionStorage.setItem('_name',  currentUserName);
+    sessionStorage.setItem('_role',  currentUserRole);
+    openApp();
+  } catch (ex) {
+    err.textContent = 'Error de red. Intenta de nuevo.';
+    btn.textContent = 'Iniciar sesión';
+    btn.disabled = false;
+  }
 }
 
 function logout() {
-  sessionStorage.removeItem('_ap');
+  ['_ap','_email','_name','_role','_ryno_hidden'].forEach(k => sessionStorage.removeItem(k));
   location.reload();
+}
+
+function applyRoleVisibility(role) {
+  // Hide nav items not allowed for this role
+  document.querySelectorAll('[data-roles]').forEach(el => {
+    const allowed = el.getAttribute('data-roles').split(' ');
+    el.style.display = allowed.includes(role) ? '' : 'none';
+  });
+  // Update sidebar user chip
+  const chip = document.getElementById('sb-user-chip');
+  if (chip) {
+    chip.style.display = 'flex';
+    document.getElementById('sb-user-avatar').textContent = currentUserName.charAt(0).toUpperCase();
+    document.getElementById('sb-user-name').textContent   = currentUserName;
+    document.getElementById('sb-user-role').textContent   = role;
+  }
+  // Redirect if current view isn't allowed
+  const activeView = document.querySelector('.view.active');
+  if (activeView) {
+    const vid = activeView.id.replace('v-', '');
+    const viewEl = document.querySelector(`[data-view="${vid}"]`);
+    if (viewEl && viewEl.style.display === 'none') nav('dashboard');
+  }
 }
 
 function openApp() {
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+  history.replaceState({view:'dashboard', sub:null}, '', '');
+  applyRoleVisibility(currentUserRole);
   loadData();
+  if (currentUserRole === 'admin') loadUsers();
+  initMascot();
+}
+
+window.addEventListener('popstate', function(e) {
+  if (!e.state) return;
+  window._isPopping = true;
+  const {view, sub} = e.state;
+  if (sub) {
+    const vp = document.getElementById('v-pagina');
+    if (vp && !vp.classList.contains('active')) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.sb-item,.sb-item-with-sub').forEach(b => b.classList.remove('active','open'));
+      vp.classList.add('active');
+      const sn = document.getElementById('sub-pagina'); if (sn) sn.classList.add('open');
+      const tg = document.querySelector('[data-view="pagina"]'); if (tg) tg.classList.add('active','open');
+      document.getElementById('tb-title').textContent = 'Página';
+    }
+    navSub(sub);
+  } else {
+    nav(view);
+  }
+  window._isPopping = false;
+});
+
+function initMascot() {
+  const msgs = [
+    "Bienvenido, admin. Los reviews no se clasifican solos. Igual que el barro no se quita solo. 🦏",
+    "Dato: Los rinocerontes corren a 55 km/h. Similar a cómo llegan los pedidos de Mudify. ✈️",
+    "Pro tip: Un lift de 3\" no cubre malas decisiones de línea. Ni yo puedo ayudarte ahí. 💀",
+    "El 82% de reviews positivos. El 18% restante... tampoco tenían buen ángulo de ataque. 📐",
+    "Fun fact: El Jeep Willys nació en 1941. La suspensión original era horrible. Nada ha cambiado. 🛻",
+    "445+ reviews verificados. Eso es más votos que en algunas elecciones locales. 🗳️",
+    "Científicamente comprobado: a más lift, más personalidad. Yo tengo cuerno. Tú decides. 📊",
+    "Historia: el primer 4x4 fue un carruaje prusiano de 1758. Tampoco tenía garantía. 🎖️",
+    "Un T-rex no podría manejar un Wrangler. Brazos cortos. Yo los tengo perfectos. 💪",
+    "Dato inútil: un rinoceronte pesa ~2.300 kg. Un RAM 2500 con accesorios Mudify: casi lo mismo. 🐛",
+    "Las abejas ven ultravioleta. Yo veo reviews falsos a 50 metros. Diferentes superpoderes. 🐝",
+    "¿Torque wrench o intuición? Pregunta trampa. Aquí se usan herramientas. 🔩",
+    "Aquí para ayudar. O para juzgar tus decisiones de suspensión. Probablemente ambos. 🔧",
+    "La Luna se aleja 3.8 cm al año. Igual que tus neumáticos originales en barro real. 🌙",
+  ];
+  const peekMsgs = [
+    "¿Necesitas consejo técnico?",
+    "RYNO tiene algo que decirte...",
+    "¿Sin lift kit ni mascota? Arriesgado.",
+    "Reviews esperando revisión 👀",
+  ];
+  let msgIdx = 0;
+  let peekIdx = 0;
+  let talkTimer = null;
+  let talkOpen = false;
+  let talkCount = 0;
+
+  function talk() {
+    const m = document.getElementById('hat-mouth');
+    if (!m) return;
+    talkOpen = !talkOpen;
+    talkCount++;
+    m.setAttribute('d', talkOpen
+      ? 'M40 47 Q50 57 60 47'
+      : 'M43 48 Q50 52 57 48');
+    if (talkCount >= 14) {
+      clearInterval(talkTimer);
+      talkTimer = null;
+      talkCount = 0;
+      m.setAttribute('d', 'M42 47 Q50 53 58 47');
+    }
+  }
+
+  function startTalking() {
+    talkCount = 0;
+    talkOpen = false;
+    clearInterval(talkTimer);
+    talkTimer = setInterval(talk, 230);
+  }
+
+  function cycleMsg() {
+    msgIdx = (msgIdx + 1) % msgs.length;
+    const bubble = document.getElementById('mascot-bubble');
+    const msg = document.getElementById('mascot-msg');
+    if (!bubble || !msg) return;
+    bubble.style.animation = 'none';
+    bubble.offsetHeight;
+    bubble.style.animation = 'bubblePop .4s cubic-bezier(.34,1.56,.64,1)';
+    msg.textContent = msgs[msgIdx];
+    startTalking();
+  }
+
+  setInterval(() => {
+    const peek = document.getElementById('ryno-peek');
+    const pm = document.getElementById('ryno-peek-msg');
+    if (pm && peek && peek.style.display !== 'none') {
+      peekIdx = (peekIdx + 1) % peekMsgs.length;
+      pm.textContent = peekMsgs[peekIdx];
+    }
+  }, 5000);
+
+  startTalking();
+  setInterval(cycleMsg, 6000);
+
+  // Run-in animation from the right
+  const fm = document.getElementById('floating-mascot');
+  if (fm && !sessionStorage.getItem('_ryno_hidden')) {
+    fm.style.animation = 'rynoEntry .6s cubic-bezier(.34,1.56,.64,1) both';
+    fm.addEventListener('animationend', () => { fm.style.animation = ''; }, {once:true});
+  }
+
+  if (sessionStorage.getItem('_ryno_hidden')) {
+    document.getElementById('floating-mascot').style.display = 'none';
+    document.getElementById('ryno-peek').style.display = 'block';
+  }
+}
+
+function hideRyno() {
+  document.getElementById('floating-mascot').style.display = 'none';
+  document.getElementById('ryno-peek').style.display = 'block';
+  sessionStorage.setItem('_ryno_hidden', '1');
+}
+
+function showRyno() {
+  document.getElementById('floating-mascot').style.display = 'flex';
+  document.getElementById('ryno-peek').style.display = 'none';
+  sessionStorage.removeItem('_ryno_hidden');
 }
 
 const _s = sessionStorage.getItem('_ap');
-if (_s) { adminPwd = _s; document.addEventListener('DOMContentLoaded', openApp); }
+if (_s) {
+  adminPwd         = _s;
+  currentUserEmail = sessionStorage.getItem('_email') || '';
+  currentUserName  = sessionStorage.getItem('_name')  || 'Admin';
+  currentUserRole  = sessionStorage.getItem('_role')  || 'admin';
+  document.addEventListener('DOMContentLoaded', openApp);
+}
 
 // ── Data ─────────────────────────────────────────
 async function loadData() {
@@ -965,28 +2092,187 @@ function defaultSettings() {
     faq: [
       { q:'Is Mudify a legitimate and trustworthy company?', a:'Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL.' },
       { q:"How is Mudify's customer service quality?", a:"Mudify's customer service is consistently their highest-rated attribute." }
-    ]
+    ],
+    seo: {
+      title:'Mudify Reviews 2026 – 445+ Verified Customer Ratings | Off-Road & 4x4 Specialists',
+      description:'Read 445+ verified customer reviews for Mudify, the premier off-road and 4x4 overlanding retailer. Average 4.3/5 stars. Real opinions on suspension kits, lift kits, customer service, and shipping from Miami, FL.',
+      og_title:'Mudify Reviews 2026 – What Customers Are Saying',
+      og_description:'445+ verified reviews. Average 4.3/5 stars. Honest opinions from off-road enthusiasts.',
+      og_image:'https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536',
+      canonical:'https://reviews.mudify.com',
+      robots:'index, follow',
+      schema_rating:'4.3',
+      schema_review_count:'445'
+    }
   };
 }
 
+// ── Mobile sidebar ───────────────────────────────
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-backdrop').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-backdrop').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+}
+function isMobile() { return window.innerWidth <= 900; }
+
 // ── Navigation ───────────────────────────────────
+let currentSub = 'hero';
+
 function nav(view, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sb-item,.sb-item-with-sub').forEach(b => b.classList.remove('active','open'));
+  const actions = document.getElementById('tb-actions');
+  actions.innerHTML = '';
+
+  if (isMobile()) closeSidebar();
+
+  // SEO lives inside v-pagina but presents as its own top-level section
+  if (view === 'seo') {
+    document.getElementById('v-pagina').classList.add('active');
+    const navBtn = btn || document.querySelector('[data-view="seo"]');
+    if (navBtn) navBtn.classList.add('active');
+    document.getElementById('tb-title').textContent = 'SEO & Metadatos';
+    const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = '';
+    document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
+    document.getElementById('sv-seo')?.classList.add('active');
+    const sb = document.querySelector('#v-pagina .save-bar-wrap');
+    if (sb) sb.classList.remove('save-hidden');
+    liveSeo();
+    if (!window._isPopping) history.pushState({view:'seo', sub:null}, '', '');
+    return;
+  }
+
   document.getElementById('v-' + view).classList.add('active');
   const navBtn = btn || document.querySelector('[data-view="' + view + '"]');
   if (navBtn) navBtn.classList.add('active');
-
-  const titles = { dashboard:'Dashboard', pagina:'Página', reviews:'Reviews' };
+  const titles = { dashboard:'Dashboard', pagina:'Página', reviews:'Reviews', usuarios:'Usuarios' };
   document.getElementById('tb-title').textContent = titles[view] || view;
-
-  // Topbar actions
-  const actions = document.getElementById('tb-actions');
+  const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = '';
+  const subNav = document.getElementById('sub-pagina');
+  const toggle = document.querySelector('[data-view="pagina"]');
+  const isPag = view === 'pagina';
+  if (subNav) subNav.classList.toggle('open', isPag);
+  if (toggle && isPag) toggle.classList.add('open');
   if (view === 'reviews') {
     actions.innerHTML = '<button class="btn btn-primary" onclick="showAddForm()"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg> Nuevo review</button>';
-  } else {
-    actions.innerHTML = '';
   }
+  if (isPag) {
+    document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.sb-sub-item').forEach(b => b.classList.remove('active'));
+    const home = document.getElementById('sv-pagina-home');
+    if (home) home.classList.add('active');
+    currentSub = null;
+    const subEl = document.getElementById('tb-sub'); if (subEl) subEl.textContent = '';
+    const sb = document.querySelector('#v-pagina .save-bar-wrap');
+    if (sb) sb.classList.add('save-hidden');
+    if (!window._isPopping) history.pushState({view:'pagina', sub:null}, '', '');
+  } else {
+    if (!window._isPopping) history.pushState({view:view, sub:null}, '', '');
+  }
+}
+
+function navSub(section, el) {
+  currentSub = section;
+  if (isMobile()) closeSidebar();
+  document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sb-sub-item').forEach(b => b.classList.remove('active'));
+  const sv = document.getElementById('sv-' + section);
+  if (sv) sv.classList.add('active');
+  const sBtn = el || document.querySelector('.sb-sub-item[data-sub="' + section + '"]');
+  if (sBtn) sBtn.classList.add('active');
+  const lbls = { hero:'Hero', stats:'Estadísticas', about:'About Mudify', rating:'Puntuación General', highlights:'Temas de Reviews', staff:'Staff Destacado', contact:'Contacto', faq:'Preguntas Frecuentes', seo:'SEO & Metadatos' };
+  const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = lbls[section] || section;
+  const sb = document.querySelector('#v-pagina .save-bar-wrap');
+  if (sb) sb.classList.remove('save-hidden');
+  if (section === 'rating') liveRating();
+  if (section === 'seo') liveSeo();
+  if (!window._isPopping) history.pushState({view:'pagina', sub:section}, '', '');
+}
+
+// ── Live preview helpers ──────────────────────────
+function renderStars(score) {
+  const f = Math.round(parseFloat(score) || 0);
+  return '★'.repeat(Math.min(f,5)) + '☆'.repeat(Math.max(5-f,0));
+}
+
+function renderStarEditor(rt) {
+  const se = document.getElementById('star-editor');
+  if (!se) return;
+  se.innerHTML = [5,4,3,2,1].map(n => {
+    const pct = rt ? (parseInt(rt['pct_'+n]) || 0) : 0;
+    return `<div class="star-row">
+      <span class="star-lbl">${n}★</span>
+      <div class="star-bar-wrap" onclick="document.getElementById('s-pct${n}').focus()">
+        <div class="star-bar-fill" id="sbf-${n}" style="width:${pct}%"></div>
+      </div>
+      <input type="number" id="s-pct${n}" class="star-num-input" value="${pct}" min="0" max="100" oninput="updateStar(${n},this.value)">
+      <span class="star-pct-sym">%</span>
+    </div>`;
+  }).join('');
+}
+
+function updateStar(n, val) {
+  const pct = Math.min(100, Math.max(0, parseInt(val) || 0));
+  const bar = document.getElementById('sbf-' + n);
+  if (bar) bar.style.width = pct + '%';
+  liveRating();
+}
+
+function liveRating() {
+  const g = id => document.getElementById(id);
+  const score = g('s-rating-score')?.value || '4.3';
+  const total = g('s-rating-total')?.value || '445+';
+  const pcts = [5,4,3,2,1].map(n => parseInt(g('s-pct'+n)?.value) || 0);
+  const p = g('rating-live-preview');
+  if (!p) return;
+  p.innerHTML = `<div class="rp-score">${score}</div>
+    <div class="rp-stars">${renderStars(score)}</div>
+    <div class="rp-total">de 5.0 · ${total} reviews</div>
+    <div style="margin-top:16px">${[5,4,3,2,1].map((n,i) => `
+      <div class="rp-bar-row">
+        <div class="rp-bn">${n}</div>
+        <div class="rp-bar"><div class="rp-bf" style="width:${pcts[i]}%;background:${n>=4?'#E94141':n===3?'rgba(233,65,65,.5)':'rgba(233,65,65,.22)'}"></div></div>
+        <div class="rp-bp">${pcts[i]}%</div>
+      </div>`).join('')}</div>`;
+}
+
+function liveFavicon(url) {
+  const prev = document.getElementById('favicon-prev');
+  if (prev) prev.src = url || 'https://cdn.shopify.com/s/files/1/0559/6944/8111/files/MUDIFY-Brand-Hat-print-3.png?v=1783377358';
+  const fav = document.querySelector('link[rel="icon"]');
+  if (fav && url) fav.href = url;
+}
+
+function liveSeo() {
+  const g = id => document.getElementById(id);
+  const t = g('s-seo-title')?.value || '';
+  const d = g('s-seo-desc')?.value || '';
+  const c = (g('s-seo-canonical')?.value || 'https://reviews.mudify.com').replace(/https?:\/\//,'');
+  const ot = g('s-seo-og-title')?.value || t;
+  const od = g('s-seo-og-desc')?.value || d;
+  const oi = g('s-seo-og-image')?.value || '';
+  const tt = g('s-seo-tw-title')?.value || ot;
+  const ti = g('s-seo-tw-image')?.value || oi;
+  if (g('gp-title')) g('gp-title').textContent = t.substring(0,70) || '(sin título)';
+  if (g('gp-desc')) g('gp-desc').textContent = d.substring(0,155) || '(sin descripción)';
+  if (g('gp-url-text')) g('gp-url-text').textContent = c;
+  if (g('og-domain')) g('og-domain').textContent = c;
+  if (g('og-title')) g('og-title').textContent = (ot||'').substring(0,60) || '(sin título)';
+  if (g('og-desc')) g('og-desc').textContent = (od||'').substring(0,100) || '(sin descripción)';
+  const ogi = g('og-img-prev');
+  if (ogi) { if(oi){ogi.src=oi;ogi.style.display='block';}else ogi.style.display='none'; }
+  if (g('tw-domain')) g('tw-domain').textContent = c;
+  if (g('tw-title')) g('tw-title').textContent = (tt||'').substring(0,60) || '(sin título)';
+  const twi = g('tw-img-prev');
+  if (twi) { if(ti){twi.src=ti;twi.style.display='block';}else twi.style.display='none'; }
 }
 
 // ── Dashboard ────────────────────────────────────
@@ -1018,16 +2304,7 @@ function renderSettings() {
   const rt = settings.rating || {};
   if(g('s-rating-score')) g('s-rating-score').value = rt.score || '';
   if(g('s-rating-total')) g('s-rating-total').value = rt.total || '';
-  const rbf = g('rating-bars-fields');
-  if(rbf) rbf.innerHTML = [5,4,3,2,1].map(n => `
-    <div style="display:grid;grid-template-columns:34px 80px auto 1fr;gap:10px;align-items:center;margin-bottom:8px">
-      <label class="field-label" style="text-align:right;margin:0">${n}★</label>
-      <input id="s-pct${n}" class="field-input" style="text-align:center" value="${esc(rt['pct_'+n]||'')}" placeholder="0">
-      <span style="font-size:.78rem;color:var(--t3)">%</span>
-      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="height:100%;background:var(--accent);opacity:.6;width:${rt['pct_'+n]||0}%"></div>
-      </div>
-    </div>`).join('');
+  renderStarEditor(rt);
   if(g('s-pos-pct')) g('s-pos-pct').value = rt.positive_pct || '';
   if(g('s-pos-lbl')) g('s-pos-lbl').value = rt.positive_lbl || '';
   if(g('s-crit-pct')) g('s-crit-pct').value = rt.critical_pct || '';
@@ -1037,6 +2314,9 @@ function renderSettings() {
 
   // Highlights
   renderHighlightsFields();
+
+  // Staff
+  renderStaffFields();
 
   // Contact
   const ct = settings.contact || {};
@@ -1052,23 +2332,60 @@ function renderSettings() {
   // FAQ
   renderFaqFields();
 
+  // SEO
+  const seo = settings.seo || {};
+  const sv = (id, val) => { const el = g(id); if(el) el.value = val || ''; };
+  if(g('s-seo-title')) { g('s-seo-title').value = seo.title || ''; seoCount('s-seo-title','seo-title-count',70,'seo-title-bar'); }
+  if(g('s-seo-desc')) { g('s-seo-desc').value = seo.description || ''; seoCount('s-seo-desc','seo-desc-count',160,'seo-desc-bar'); }
+  sv('s-seo-og-title', seo.og_title);
+  sv('s-seo-og-desc', seo.og_description);
+  sv('s-seo-og-image', seo.og_image);
+  if(g('s-seo-og-type')) g('s-seo-og-type').value = seo.og_type || 'website';
+  sv('s-seo-og-sitename', seo.og_site_name);
+  sv('s-seo-og-locale', seo.og_locale);
+  if(g('s-seo-tw-card')) g('s-seo-tw-card').value = seo.twitter_card || 'summary_large_image';
+  sv('s-seo-tw-site', seo.twitter_site);
+  sv('s-seo-tw-title', seo.twitter_title);
+  sv('s-seo-tw-image', seo.twitter_image);
+  sv('s-seo-canonical', seo.canonical);
+  if(g('s-seo-robots')) g('s-seo-robots').value = seo.robots || 'index, follow';
+  sv('s-seo-sitemap', seo.sitemap_url);
+  sv('s-seo-schema-rating', seo.schema_rating);
+  sv('s-seo-schema-count', seo.schema_review_count);
+  sv('s-seo-schema-item', seo.schema_item_reviewed);
+  sv('s-seo-schema-best', seo.schema_best_rating);
+  sv('s-seo-gsc', seo.google_site_verification);
+  sv('s-seo-bing', seo.bing_site_verification);
+  sv('s-seo-pinterest', seo.pinterest_site_verification);
+  sv('s-seo-ga4', seo.ga4_id);
+  sv('s-seo-gtm', seo.gtm_id);
+  sv('s-seo-fbpixel', seo.fb_pixel_id);
+  sv('s-seo-favicon', seo.favicon_url);
+  if (seo.favicon_url) liveFavicon(seo.favicon_url);
+  sv('s-seo-social-ig', seo.social_instagram);
+  sv('s-seo-social-fb', seo.social_facebook);
+  sv('s-seo-social-yt', seo.social_youtube);
+  sv('s-seo-social-tt', seo.social_tiktok);
+
+  // Stats — visual cards with visibility toggle
   const sf = document.getElementById('stats-fields');
-  sf.innerHTML = (settings.stats || []).map((s, i) => `
-    <div style="display:grid;grid-template-columns:48px 1fr 1fr;gap:12px;align-items:end;padding:10px 0;${i < (settings.stats.length - 1) ? 'border-bottom:1px solid var(--border)' : ''}">
-      <div>
-        <label class="field-label">Stat ${i+1}</label>
-        <div style="font-size:.8rem;color:var(--t3);padding-top:10px;font-family:var(--mono)">#${i+1}</div>
+  if(sf) sf.innerHTML = (settings.stats || []).map((s, i) => `
+    <div class="stat-editor-card ${s.visible===false?'vis-off':''}" id="stat-card-${i}">
+      <div class="stat-vis-row">
+        <label class="vis-tog" title="${s.visible===false?'Oculto':'Visible en página'}">
+          <input type="checkbox" ${s.visible!==false?'checked':''} onchange="settings.stats[${i}].visible=this.checked;document.getElementById('stat-card-${i}').classList.toggle('vis-off',!this.checked)">
+          <span class="vis-slider"></span>
+        </label>
       </div>
-      <div>
-        <label class="field-label">Número</label>
-        <input id="sn-${i}" class="field-input" value="${esc(s.number)}" placeholder="445+">
-      </div>
-      <div>
-        <label class="field-label">Etiqueta</label>
-        <input id="sl-${i}" class="field-input" value="${esc(s.label)}" placeholder="Verified Reviews">
-      </div>
-    </div>
-  `).join('');
+      <input id="sn-${i}" class="stat-num-input" value="${esc(s.number)}" placeholder="—">
+      <input id="sl-${i}" class="stat-lbl-input" value="${esc(s.label)}" placeholder="ETIQUETA">
+    </div>`).join('');
+
+  // Restore summary card vis state
+  const rt2 = settings.rating || {};
+  const vp = document.getElementById('vis-pos'); if(vp){ vp.checked = rt2.positive_visible !== false; document.getElementById('sum-card-pos').classList.toggle('vis-off', rt2.positive_visible === false); }
+  const vc = document.getElementById('vis-crit'); if(vc){ vc.checked = rt2.critical_visible !== false; document.getElementById('sum-card-crit').classList.toggle('vis-off', rt2.critical_visible === false); }
+  const vm = document.getElementById('vis-mix'); if(vm){ vm.checked = rt2.mixed_visible !== false; document.getElementById('sum-card-mix').classList.toggle('vis-off', rt2.mixed_visible === false); }
 }
 
 function toggleSection(id) {
@@ -1076,10 +2393,8 @@ function toggleSection(id) {
 }
 
 function openSection(id) {
-  document.getElementById('sp-' + id).classList.add('open');
-  setTimeout(() => {
-    document.getElementById('sp-' + id).scrollIntoView({ behavior:'smooth', block:'nearest' });
-  }, 100);
+  nav('pagina');
+  navSub(id);
 }
 
 function renderHighlightsFields() {
@@ -1087,16 +2402,17 @@ function renderHighlightsFields() {
   const hf = document.getElementById('highlights-fields');
   if (!hf) return;
   hf.innerHTML = hls.map((h, i) => `
-    <div style="padding:14px 0;${i < hls.length-1?'border-bottom:1px solid var(--border)':''}">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tarjeta ${i+1}</div>
-      <div class="field-row cols2" style="margin-bottom:8px">
-        <div><label class="field-label">Icono (emoji)</label><input id="hl-icon-${i}" class="field-input" value="${esc(h.icon)}" placeholder="🎧"></div>
-        <div><label class="field-label">Título</label><input id="hl-title-${i}" class="field-input" value="${esc(h.title)}"></div>
+    <div class="hl-editor-card ${h.visible===false?'vis-off':''}" id="hl-card-${i}">
+      <div class="hl-emoji-row">
+        <input id="hl-icon-${i}" class="hl-emoji-input" value="${esc(h.icon||'')}" maxlength="4" title="Emoji">
+        <input id="hl-tag-${i}" class="hl-tag-input" value="${esc(h.tag||'')}" placeholder="Tag o etiqueta">
+        <label class="vis-tog" style="margin-left:auto;flex-shrink:0" title="Visible en página">
+          <input type="checkbox" ${h.visible!==false?'checked':''} onchange="settings.highlights[${i}].visible=this.checked;document.getElementById('hl-card-${i}').classList.toggle('vis-off',!this.checked)">
+          <span class="vis-slider"></span>
+        </label>
       </div>
-      <div class="field-row cols2" style="margin-bottom:0">
-        <div><label class="field-label">Descripción</label><textarea id="hl-body-${i}" class="field-textarea" rows="2">${esc(h.body)}</textarea></div>
-        <div><label class="field-label">Tag</label><input id="hl-tag-${i}" class="field-input" value="${esc(h.tag)}"></div>
-      </div>
+      <input id="hl-title-${i}" class="hl-title-input" value="${esc(h.title||'')}" placeholder="Título de la tarjeta">
+      <textarea id="hl-body-${i}" class="hl-body-input" rows="3" placeholder="Descripción…">${esc(h.body||'')}</textarea>
     </div>`).join('');
 }
 
@@ -1105,25 +2421,101 @@ function renderFaqFields() {
   const ff = document.getElementById('faq-fields');
   if (!ff) return;
   ff.innerHTML = faqs.map((f, i) => `
-    <div style="padding:14px 0;${i < faqs.length-1?'border-bottom:1px solid var(--border)':''}">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">Pregunta ${i+1}</span>
-        <button class="btn btn-danger btn-xs" onclick="removeFaqItem(${i})">✕ Eliminar</button>
+    <div class="faq-editor-item ${f.visible===false?'vis-off':''}" id="faq-item-${i}">
+      <div class="faq-editor-meta">
+        <span>Pregunta ${i+1}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <label class="vis-tog" title="Visible en página">
+            <input type="checkbox" ${f.visible!==false?'checked':''} onchange="settings.faq[${i}].visible=this.checked;document.getElementById('faq-item-${i}').classList.toggle('vis-off',!this.checked)">
+            <span class="vis-slider"></span>
+          </label>
+          <button class="btn btn-danger btn-xs" onclick="removeFaqItem(${i})">Eliminar</button>
+        </div>
       </div>
-      <div class="field-group">
-        <label class="field-label">Pregunta</label>
-        <input id="fq-q-${i}" class="field-input" value="${esc(f.q)}">
+      <div class="faq-editor-q">
+        <input id="fq-q-${i}" class="faq-q-input" value="${esc(f.q||'')}" placeholder="¿Pregunta frecuente?">
       </div>
-      <div class="field-group" style="margin-bottom:0">
-        <label class="field-label">Respuesta</label>
-        <textarea id="fq-a-${i}" class="field-textarea" rows="3">${esc(f.a)}</textarea>
+      <div class="faq-editor-a">
+        <textarea id="fq-a-${i}" class="faq-a-input" rows="2" placeholder="Respuesta…">${esc(f.a||'')}</textarea>
       </div>
     </div>`).join('');
 }
 
+function renderStaffFields() {
+  const members = settings.staff || [];
+  const sf = document.getElementById('staff-fields');
+  if (!sf) return;
+  sf.innerHTML = members.map((m, i) => {
+    const initial = (m.name||'?')[0].toUpperCase();
+    return `
+    <div class="staff-editor-card ${m.visible===false?'vis-off':''}" id="staff-card-${i}">
+      <div class="staff-photo-row">
+        ${m.photo
+          ? `<img id="staff-thumb-${i}" src="${esc(m.photo)}" class="staff-photo-thumb" onerror="this.style.display='none';document.getElementById('staff-ph-${i}').style.display='flex'">`
+          : ''}
+        <div id="staff-ph-${i}" class="staff-photo-placeholder" style="${m.photo?'display:none':'display:flex'}">${initial}</div>
+        <div style="flex:1">
+          <label class="field-label" style="margin-bottom:3px">URL de foto</label>
+          <input id="sm-photo-${i}" class="field-input" style="font-size:.72rem" value="${esc(m.photo||'')}" placeholder="https://cdn.shopify.com/…" oninput="previewStaffPhoto(${i},this.value)">
+        </div>
+        <label class="vis-tog" style="flex-shrink:0;margin-left:6px" title="Visible en página">
+          <input type="checkbox" ${m.visible!==false?'checked':''} onchange="settings.staff[${i}].visible=this.checked;document.getElementById('staff-card-${i}').classList.toggle('vis-off',!this.checked)">
+          <span class="vis-slider"></span>
+        </label>
+      </div>
+      <input id="sm-name-${i}" class="staff-name-input" value="${esc(m.name||'')}" placeholder="Nombre del colaborador">
+      <input id="sm-role-${i}" class="staff-role-input" value="${esc(m.role||'')}" placeholder="Customer Advisor · Sales">
+      <input id="sm-mentions-${i}" class="staff-mentions-input" value="${esc(m.mentions||'')}" placeholder="Mentioned in 2+ reviews">
+      <textarea id="sm-quote-${i}" class="staff-quote-input" rows="3" placeholder="Cita del cliente sobre este colaborador…">${esc(m.quote||'')}</textarea>
+      <input id="sm-attr-${i}" class="staff-attr-input" value="${esc(m.quote_attr||'')}" placeholder="— Kevin S., Jan 2026">
+      <div style="display:flex;justify-content:flex-end;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
+        <button class="btn btn-danger btn-xs" onclick="removeStaffItem(${i})">Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+  const gh = document.getElementById('s-staff-eyebrow'); if(gh) gh.value = settings.staff_header?.eyebrow || '';
+  const gt = document.getElementById('s-staff-title');   if(gt) gt.value = settings.staff_header?.title || '';
+  const gs = document.getElementById('s-staff-subtitle');if(gs) gs.value = settings.staff_header?.subtitle || '';
+}
+
+function previewStaffPhoto(i, url) {
+  const thumb = document.getElementById('staff-thumb-'+i);
+  const ph = document.getElementById('staff-ph-'+i);
+  if (!thumb && !ph) return;
+  if (url) {
+    if (!thumb) {
+      const img = document.createElement('img');
+      img.id = 'staff-thumb-'+i; img.className = 'staff-photo-thumb';
+      img.onerror = () => { img.style.display='none'; if(ph) ph.style.display='flex'; };
+      img.src = url;
+      ph.parentNode.insertBefore(img, ph);
+    } else { thumb.src = url; thumb.style.display = ''; }
+    if (ph) ph.style.display = 'none';
+  } else {
+    if (thumb) thumb.style.display = 'none';
+    if (ph) ph.style.display = 'flex';
+  }
+  settings.staff[i].photo = url;
+  if (ph) ph.textContent = (document.getElementById('sm-name-'+i)?.value||'?')[0].toUpperCase();
+}
+
+function addStaffItem() {
+  settings.staff = settings.staff || [];
+  settings.staff.push({ name:'', role:'', photo:'', mentions:'', quote:'', quote_attr:'', visible:true });
+  renderStaffFields();
+  const sf = document.getElementById('staff-fields');
+  if (sf && sf.lastElementChild) sf.lastElementChild.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function removeStaffItem(i) {
+  if (!settings.staff) return;
+  settings.staff.splice(i, 1);
+  renderStaffFields();
+}
+
 function addFaqItem() {
   settings.faq = settings.faq || [];
-  settings.faq.push({ q:'', a:'' });
+  settings.faq.push({ q:'', a:'', visible:true });
   renderFaqFields();
   const ff = document.getElementById('faq-fields');
   if (ff && ff.lastElementChild) ff.lastElementChild.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -1133,6 +2525,21 @@ function removeFaqItem(i) {
   if (!settings.faq) return;
   settings.faq.splice(i, 1);
   renderFaqFields();
+}
+
+function seoCount(inputId, countId, max, barId) {
+  const el = document.getElementById(inputId);
+  const cnt = document.getElementById(countId);
+  const bar = barId ? document.getElementById(barId) : null;
+  if (!el || !cnt) return;
+  const len = el.value.length;
+  const pct = Math.min(len / max * 100, 100);
+  cnt.textContent = len + '/' + max;
+  cnt.style.color = len > max ? '#E94141' : len > max * 0.85 ? '#D97706' : 'var(--t3)';
+  if (bar) {
+    bar.style.width = pct + '%';
+    bar.style.background = len > max ? '#E94141' : len > max * 0.85 ? '#D97706' : 'var(--accent)';
+  }
 }
 
 // ── Reviews ──────────────────────────────────────
@@ -1383,8 +2790,9 @@ async function saveSettings() {
       cta_url:     g('s-cta-url'),
     },
     stats: Array.from({length:sc}, (_,i) => ({
-      number: g('sn-'+i),
-      label:  g('sl-'+i),
+      number:  g('sn-'+i),
+      label:   g('sl-'+i),
+      visible: settings.stats[i]?.visible !== false,
     })),
     about: {
       paragraph1: g('s-about-p1'),
@@ -1396,15 +2804,33 @@ async function saveSettings() {
       score: g('s-rating-score'), total: g('s-rating-total'),
       pct_5: g('s-pct5'), pct_4: g('s-pct4'), pct_3: g('s-pct3'),
       pct_2: g('s-pct2'), pct_1: g('s-pct1'),
-      positive_pct: g('s-pos-pct'), positive_lbl: g('s-pos-lbl'),
-      critical_pct: g('s-crit-pct'), critical_lbl: g('s-crit-lbl'),
-      mixed_pct:    g('s-mix-pct'),  mixed_lbl:    g('s-mix-lbl'),
+      positive_pct:     g('s-pos-pct'),  positive_lbl:     g('s-pos-lbl'),
+      positive_visible: document.getElementById('vis-pos')?.checked !== false,
+      critical_pct:     g('s-crit-pct'), critical_lbl:     g('s-crit-lbl'),
+      critical_visible: document.getElementById('vis-crit')?.checked !== false,
+      mixed_pct:        g('s-mix-pct'),  mixed_lbl:        g('s-mix-lbl'),
+      mixed_visible:    document.getElementById('vis-mix')?.checked !== false,
     },
     highlights: (settings.highlights || []).map((_,i) => ({
-      icon:  g('hl-icon-'+i),
-      title: g('hl-title-'+i),
-      body:  document.getElementById('hl-body-'+i)?.value || '',
-      tag:   g('hl-tag-'+i),
+      icon:    g('hl-icon-'+i),
+      title:   g('hl-title-'+i),
+      body:    document.getElementById('hl-body-'+i)?.value || '',
+      tag:     g('hl-tag-'+i),
+      visible: settings.highlights[i]?.visible !== false,
+    })),
+    staff_header: {
+      eyebrow:  g('s-staff-eyebrow'),
+      title:    g('s-staff-title'),
+      subtitle: g('s-staff-subtitle'),
+    },
+    staff: (settings.staff || []).map((_,i) => ({
+      name:       g('sm-name-'+i),
+      role:       g('sm-role-'+i),
+      photo:      g('sm-photo-'+i),
+      mentions:   g('sm-mentions-'+i),
+      quote:      document.getElementById('sm-quote-'+i)?.value || '',
+      quote_attr: g('sm-attr-'+i),
+      visible:    settings.staff[i]?.visible !== false,
     })),
     contact: {
       phone:          g('s-ct-phone'),
@@ -1417,9 +2843,42 @@ async function saveSettings() {
       financing_note: g('s-ct-fin-note'),
     },
     faq: (settings.faq || []).map((_,i) => ({
-      q: g('fq-q-'+i),
-      a: document.getElementById('fq-a-'+i)?.value || '',
+      q:       g('fq-q-'+i),
+      a:       document.getElementById('fq-a-'+i)?.value || '',
+      visible: settings.faq[i]?.visible !== false,
     })),
+    seo: {
+      favicon_url:              g('s-seo-favicon'),
+      title:                    g('s-seo-title'),
+      description:              g('s-seo-desc'),
+      og_title:                 g('s-seo-og-title'),
+      og_description:           g('s-seo-og-desc'),
+      og_image:                 g('s-seo-og-image'),
+      og_type:                  g('s-seo-og-type'),
+      og_site_name:             g('s-seo-og-sitename'),
+      og_locale:                g('s-seo-og-locale'),
+      twitter_card:             g('s-seo-tw-card'),
+      twitter_site:             g('s-seo-tw-site'),
+      twitter_title:            g('s-seo-tw-title'),
+      twitter_image:            g('s-seo-tw-image'),
+      canonical:                g('s-seo-canonical'),
+      robots:                   g('s-seo-robots'),
+      sitemap_url:              g('s-seo-sitemap'),
+      schema_rating:            g('s-seo-schema-rating'),
+      schema_review_count:      g('s-seo-schema-count'),
+      schema_item_reviewed:     g('s-seo-schema-item'),
+      schema_best_rating:       g('s-seo-schema-best'),
+      google_site_verification: g('s-seo-gsc'),
+      bing_site_verification:   g('s-seo-bing'),
+      pinterest_site_verification: g('s-seo-pinterest'),
+      ga4_id:                   g('s-seo-ga4'),
+      gtm_id:                   g('s-seo-gtm'),
+      fb_pixel_id:              g('s-seo-fbpixel'),
+      social_instagram:         g('s-seo-social-ig'),
+      social_facebook:          g('s-seo-social-fb'),
+      social_youtube:           g('s-seo-social-yt'),
+      social_tiktok:            g('s-seo-social-tt'),
+    },
   };
 
   const res = await callSave('settings', newSettings);
@@ -1440,13 +2899,244 @@ async function callSave(file, data) {
     const r = await fetch('/.netlify/functions/save-data', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ password:adminPwd, file, data })
+      body: JSON.stringify({ email:currentUserEmail||undefined, password:adminPwd, file, data })
     });
     const j = await r.json();
     return r.ok ? {ok:true} : {ok:false, error:j.error};
   } catch(e) {
     return {ok:false, error:'Error de red: ' + e.message};
   }
+}
+
+// ── Users Management ─────────────────────────────
+async function loadUsers() {
+  try {
+    const res = await fetch('/data/users.json?_=' + Date.now());
+    if (!res.ok) return;
+    const j = await res.json();
+    usersData = j.users || [];
+    renderUsersTable();
+  } catch(e) { console.warn('users.json not found:', e.message); }
+}
+
+function renderUsersTable() {
+  const tbody = document.getElementById('users-tbody');
+  if (!tbody) return;
+  const roleLabels = { admin:'Admin', marketing:'Marketing', design:'Diseño' };
+  tbody.innerHTML = usersData.map(u => `
+    <tr>
+      <td><div class="u-avatar">${u.name.charAt(0).toUpperCase()}</div></td>
+      <td style="font-weight:600">${u.name}</td>
+      <td style="color:var(--t2)">${u.email}</td>
+      <td><span class="role-badge ${u.role}">${roleLabels[u.role]||u.role}</span></td>
+      <td><span style="font-size:.78rem;color:${u.active?'var(--success)':'var(--t3)'}">${u.active?'Activo':'Inactivo'}</span></td>
+      <td style="display:flex;gap:6px">
+        <button class="user-action-btn" onclick="openUserModal('${u.id}')">Editar</button>
+        <button class="user-action-btn danger" onclick="deleteUser('${u.id}')">Eliminar</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openUserModal(userId) {
+  const modal = document.getElementById('user-modal');
+  document.getElementById('mu-err').style.display = 'none';
+  if (userId) {
+    const u = usersData.find(x => x.id === userId);
+    if (!u) return;
+    document.getElementById('modal-title').textContent = 'Editar usuario';
+    document.getElementById('mu-id').value     = u.id;
+    document.getElementById('mu-name').value   = u.name;
+    document.getElementById('mu-email').value  = u.email;
+    document.getElementById('mu-role').value   = u.role;
+    document.getElementById('mu-active').value = String(u.active);
+    document.getElementById('mu-pwd').value    = '';
+    document.getElementById('mu-pwd-label').innerHTML = 'Nueva contraseña <span style="color:var(--t3);font-weight:400">(dejar vacío para no cambiar)</span>';
+  } else {
+    document.getElementById('modal-title').textContent = 'Agregar usuario';
+    document.getElementById('mu-id').value     = '';
+    document.getElementById('mu-name').value   = '';
+    document.getElementById('mu-email').value  = '';
+    document.getElementById('mu-role').value   = 'admin';
+    document.getElementById('mu-active').value = 'true';
+    document.getElementById('mu-pwd').value    = '';
+    document.getElementById('mu-pwd-label').innerHTML = 'Contraseña';
+  }
+  modal.style.display = 'flex';
+}
+
+function closeUserModal() {
+  document.getElementById('user-modal').style.display = 'none';
+}
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function saveUser() {
+  const errEl = document.getElementById('mu-err');
+  errEl.style.display = 'none';
+  const id     = document.getElementById('mu-id').value.trim();
+  const name   = document.getElementById('mu-name').value.trim();
+  const email  = document.getElementById('mu-email').value.trim().toLowerCase();
+  const role   = document.getElementById('mu-role').value;
+  const active = document.getElementById('mu-active').value === 'true';
+  const pwd    = document.getElementById('mu-pwd').value;
+
+  if (!name || !email) { errEl.textContent='Nombre y email son requeridos'; errEl.style.display='block'; return; }
+  if (!id && !pwd)     { errEl.textContent='La contraseña es requerida para usuarios nuevos'; errEl.style.display='block'; return; }
+  if (pwd && pwd.length < 8) { errEl.textContent='La contraseña debe tener al menos 8 caracteres'; errEl.style.display='block'; return; }
+
+  const emailExists = usersData.find(u => u.email === email && u.id !== id);
+  if (emailExists) { errEl.textContent='Este email ya está registrado'; errEl.style.display='block'; return; }
+
+  let passwordHash;
+  if (pwd) passwordHash = await sha256(pwd);
+
+  let updatedUsers;
+  if (id) {
+    updatedUsers = usersData.map(u => u.id === id
+      ? { ...u, name, email, role, active, ...(passwordHash && { passwordHash }) }
+      : u);
+  } else {
+    const newId = 'u' + Date.now();
+    updatedUsers = [...usersData, { id:newId, name, email, role, passwordHash, active }];
+  }
+
+  const res = await callSave('users', { users: updatedUsers });
+  if (!res.ok) { errEl.textContent = res.error || 'Error al guardar'; errEl.style.display='block'; return; }
+
+  usersData = updatedUsers;
+  renderUsersTable();
+  closeUserModal();
+  toast(id ? 'Usuario actualizado.' : 'Usuario creado.', 'success');
+}
+
+async function deleteUser(userId) {
+  if (!confirm('¿Eliminar este usuario? Esta acción no se puede deshacer.')) return;
+  const updatedUsers = usersData.filter(u => u.id !== userId);
+  const res = await callSave('users', { users: updatedUsers });
+  if (!res.ok) { toast(res.error || 'Error al eliminar', 'error'); return; }
+  usersData = updatedUsers;
+  renderUsersTable();
+  toast('Usuario eliminado.', 'success');
+}
+
+// ── Bulk Import ───────────────────────────────────
+let importedRows = [];
+
+function setReviewsTab(tab) {
+  const isImport = tab === 'import';
+  document.getElementById('tab-list').classList.toggle('active', !isImport);
+  document.getElementById('tab-import').classList.toggle('active', isImport);
+  document.getElementById('import-panel').classList.toggle('active', isImport);
+  document.getElementById('reviews-table').style.display = isImport ? 'none' : '';
+  document.querySelector('#v-reviews .save-bar-wrap').style.display = isImport ? 'none' : '';
+}
+
+function downloadCsvTemplate() {
+  const header = 'nombre,fecha,calificacion,texto,fuente,vehiculo,titulo,verificado,visible';
+  const row1   = '"María García","2026-06-15",5,"Excelente servicio, recibí mi suspensión en perfectas condiciones.","Trustpilot","Toyota 4Runner 2022","Muy recomendado","si","si"';
+  const row2   = '"John Smith","Jun 10, 2026",4,"Great products and fast shipping. Will buy again.","Google","Jeep Wrangler JL","Good experience","si","si"';
+  const blob   = new Blob([header + '\n' + row1 + '\n' + row2], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'mudify-reviews-template.csv'; a.click();
+}
+
+function handleImportFile(file) {
+  if (!file) return;
+  const drop = document.getElementById('import-drop');
+  drop.classList.remove('dragover');
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    parseImportCsv(text);
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function parseImportCsv(text) {
+  const lines = text.replace(/\r/g,'').split('\n').filter(l => l.trim());
+  if (lines.length < 2) { alert('El archivo está vacío o no tiene datos.'); return; }
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = csvParseLine(lines[i]);
+    const nombre = cols[0]||''; const fecha = cols[1]||''; const rating = parseInt(cols[2])||0;
+    const texto = cols[3]||''; const fuente = cols[4]||''; const vehiculo = cols[5]||'';
+    const titulo = cols[6]||''; const visible = (cols[8]||'si').toLowerCase() !== 'no';
+    const err = !nombre ? 'Falta nombre' : !texto ? 'Falta texto' : (!rating||rating<1||rating>5) ? 'Calificación 1-5' : null;
+    rows.push({ nombre, fecha, rating, texto, fuente, vehiculo, titulo, visible, err });
+  }
+  importedRows = rows;
+  renderImportPreview(rows);
+}
+
+function csvParseLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
+    else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
+    else cur += c;
+  }
+  result.push(cur.trim()); return result;
+}
+
+function renderImportPreview(rows) {
+  const valid = rows.filter(r => !r.err).length;
+  document.getElementById('import-count').textContent = `${valid} válidos / ${rows.length} total`;
+  document.getElementById('import-tbody').innerHTML = rows.slice(0, 50).map((r,i) => `
+    <tr>
+      <td style="color:var(--t3)">${i+1}</td>
+      <td>${r.nombre}</td>
+      <td style="color:var(--t2)">${r.fecha}</td>
+      <td>${'★'.repeat(r.rating)}</td>
+      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.texto}</td>
+      <td style="color:var(--t3)">${r.fuente||'—'}</td>
+      <td>${r.err ? `<span class="td-err">⚠ ${r.err}</span>` : '<span style="color:var(--success)">✓</span>'}</td>
+    </tr>`).join('');
+  if (rows.length > 50) {
+    document.getElementById('import-tbody').innerHTML += `<tr><td colspan="7" style="color:var(--t3);text-align:center;padding:8px">… y ${rows.length-50} filas más</td></tr>`;
+  }
+  document.getElementById('btn-confirm-import').textContent = `Importar ${valid} reviews`;
+  document.getElementById('import-preview').style.display = '';
+}
+
+async function confirmImport() {
+  const valid = importedRows.filter(r => !r.err);
+  if (!valid.length) { toast('No hay filas válidas para importar.', 'error'); return; }
+  document.getElementById('import-status').textContent = 'Guardando…';
+  const now = new Date();
+  const newReviews = valid.map((r, i) => ({
+    id: 'imp_' + Date.now() + '_' + i,
+    author: r.nombre,
+    initials: r.nombre.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?',
+    date: r.fecha || `${now.toLocaleString('en-US',{month:'short'})} ${now.getDate()}, ${now.getFullYear()}`,
+    rating: r.rating,
+    title: r.titulo || '',
+    text: r.texto,
+    vehicle: r.vehiculo || '',
+    category: 'general',
+    source: r.fuente || '',
+    verified: true,
+    visible: r.visible !== false,
+  }));
+  const merged = [...newReviews, ...reviews];
+  const res = await callSave('reviews', merged);
+  if (!res.ok) { document.getElementById('import-status').textContent=''; toast(res.error||'Error','error'); return; }
+  reviews = merged;
+  clearImport();
+  setReviewsTab('list');
+  renderReviews();
+  updateDashStats();
+  toast(`${newReviews.length} reviews importados correctamente.`, 'success');
+}
+
+function clearImport() {
+  importedRows = [];
+  document.getElementById('import-preview').style.display = 'none';
+  document.getElementById('import-file').value = '';
+  document.getElementById('import-status').textContent = '';
 }
 
 // ── UI helpers ───────────────────────────────────
@@ -1481,6 +3171,18 @@ document.addEventListener('DOMContentLoaded', () => {
       <button class="chip" data-f="hidden" id="rf-hid" onclick="setFilter('hidden')">Ocultos</button>
     </div>`;
   reviewsView.insertBefore(toolbar, document.getElementById('add-form'));
+
+  // Drag-and-drop for import zone
+  const drop = document.getElementById('import-drop');
+  if (drop) {
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file) handleImportFile(file);
+    });
+  }
 });
 </script>
 </body>
