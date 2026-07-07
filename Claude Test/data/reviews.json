@@ -169,7 +169,7 @@
       "badge_text": "⚡ Partially Resolved"
     },
     {
-      "published": false,
+      "published": true,
       "title": "Terrible Experience",
       "author": "Clayton C.",
       "initials": "CC",
