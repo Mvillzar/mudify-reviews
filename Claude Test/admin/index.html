@@ -95,11 +95,11 @@ a { color:var(--accent); text-decoration:none }
 .sb-logo { height:24px; }
 .sb-site-label {
   font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
-  color:#2D2D2D; padding-top:6px;
+  color:rgba(255,255,255,.45); padding-top:6px;
 }
 .sb-section-label {
   font-size:.62rem; letter-spacing:.18em; text-transform:uppercase;
-  color:#2D2D2D; padding:20px 18px 6px;
+  color:rgba(255,255,255,.38); padding:20px 18px 6px;
 }
 .sb-nav { flex:1; padding:4px 10px }
 .sb-item {
@@ -130,12 +130,12 @@ a { color:var(--accent); text-decoration:none }
 }
 .sb-footer-item:hover { color:rgba(255,255,255,.7); background:var(--sb-hover) }
 .sb-site-link {
-  font-size:.72rem; color:#2D2D2D; padding:6px 10px;
+  font-size:.72rem; color:rgba(255,255,255,.75); padding:6px 10px;
   display:flex; align-items:center; gap:7px; letter-spacing:.01em;
   transition:color .12s; white-space:nowrap; overflow:hidden;
   text-overflow:ellipsis; text-decoration:none;
 }
-.sb-site-link:hover { color:#555 }
+.sb-site-link:hover { color:#fff }
 
 /* ── MAIN ───────────────────────────────────────── */
 #main { flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden }
@@ -464,10 +464,10 @@ a { color:var(--accent); text-decoration:none }
 .sb-sub-chevron { margin-left:auto; width:12px; height:12px; color:rgba(255,255,255,.2); transition:transform .22s; flex-shrink:0 }
 .sb-item-with-sub.open .sb-sub-chevron { transform:rotate(90deg) }
 .sb-sub {
-  padding:0 10px 0 40px; overflow:hidden;
+  padding:0 10px 0 30px; overflow:hidden;
   max-height:0; transition:max-height .28s ease,opacity .22s ease; opacity:0;
 }
-.sb-sub.open { max-height:280px; opacity:1; margin-bottom:4px }
+.sb-sub.open { max-height:320px; opacity:1; margin-bottom:4px }
 .sb-sub-item {
   display:flex; align-items:center; gap:7px;
   padding:6px 10px; border-radius:4px;
@@ -477,8 +477,16 @@ a { color:var(--accent); text-decoration:none }
 }
 .sb-sub-item:hover { color:rgba(255,255,255,.72); background:rgba(255,255,255,.04) }
 .sb-sub-item.active { color:#fff }
-.sb-sub-item::before { content:''; width:0; height:4px; border-radius:2px; background:transparent; flex-shrink:0; transition:width .15s }
-.sb-sub-item.active::before { width:4px; height:4px; border-radius:50%; background:var(--accent) }
+.sb-sub-item::before { display:none }
+.sb-sub-icon { width:13px; height:13px; flex-shrink:0; stroke:currentColor; fill:none; stroke-width:1.6; color:rgba(255,255,255,.22); transition:color .12s }
+.sb-sub-item:hover .sb-sub-icon { color:rgba(255,255,255,.55) }
+.sb-sub-item.active .sb-sub-icon { color:var(--accent) }
+/* Language switch */
+.sb-lang { display:flex; align-items:center; gap:4px; padding:4px 14px 10px }
+.sb-lang-btn { background:none; border:none; color:rgba(255,255,255,.28); font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; padding:4px 8px; border-radius:5px; transition:all .12s; line-height:1 }
+.sb-lang-btn:hover { color:rgba(255,255,255,.7) }
+.sb-lang-btn.active { color:#fff; background:rgba(255,255,255,.1) }
+.sb-lang-sep { color:rgba(255,255,255,.12); font-size:.65rem; pointer-events:none }
 
 /* ── SECTION VIEWS ───────────────────────────────── */
 .sv { display:none }
@@ -783,6 +791,40 @@ a { color:var(--accent); text-decoration:none }
 .import-template-info strong { display:block; font-weight:600; color:var(--t1); margin-bottom:2px }
 .import-template-info span { color:var(--t3); font-size:.78rem }
 
+/* ── ANALYTICS ──────────────────────────────────── */
+.analytics-range { display:flex; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:3px }
+.analytics-range-btn { background:none; border:none; border-radius:calc(var(--r) - 2px); padding:5px 12px; font-size:.8rem; font-weight:500; color:var(--t2); cursor:pointer; transition:all .12s }
+.analytics-range-btn.active { background:var(--surface); color:var(--t1); box-shadow:0 1px 4px rgba(0,0,0,.08) }
+.analytics-metric-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px }
+.analytics-metric { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px 20px; box-shadow:var(--shadow) }
+.analytics-metric.secondary { background:var(--bg); box-shadow:none }
+.am-val { font-size:1.7rem; font-weight:800; color:var(--t1); letter-spacing:-.04em; line-height:1; margin-bottom:4px }
+.am-val.success { color:var(--success) }
+.am-label { font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--t3) }
+.am-trend { font-size:.74rem; color:var(--t3); margin-top:4px }
+.am-trend.up { color:var(--success) }
+.am-trend.down { color:#ef4444 }
+.analytics-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px }
+.analytics-source-row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; margin-bottom:10px }
+.analytics-source-row:last-child { margin-bottom:0 }
+.analytics-source-label { font-size:.82rem; color:var(--t2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.analytics-bar-wrap { background:var(--border); border-radius:4px; height:6px; flex:1; overflow:hidden; min-width:60px }
+.analytics-bar-fill { height:100%; border-radius:4px; background:var(--accent); transition:width .4s ease }
+.analytics-source-pct { font-size:.74rem; color:var(--t3); min-width:34px; text-align:right }
+.analytics-pages-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); font-size:.82rem }
+.analytics-pages-row:last-child { border-bottom:none }
+.analytics-pages-path { color:var(--t2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px }
+.analytics-pages-count { color:var(--t3); font-size:.75rem; flex-shrink:0 }
+.analytics-empty { text-align:center; color:var(--t3); padding:28px 0; font-size:.85rem }
+.analytics-setup { background:var(--surface); border:1.5px dashed var(--border); border-radius:var(--r); padding:28px 32px; margin-bottom:20px; text-align:center }
+.analytics-setup-icon { font-size:2rem; margin-bottom:12px }
+.analytics-setup h3 { font-size:1rem; font-weight:700; margin-bottom:8px }
+.analytics-setup p { font-size:.85rem; color:var(--t2); max-width:480px; margin:0 auto }
+.analytics-setup-steps { text-align:left; max-width:520px; margin:16px auto 0; display:flex; flex-direction:column; gap:8px; font-size:.83rem; color:var(--t2); padding-left:18px }
+.analytics-setup-steps code { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-family:monospace; font-size:.8rem }
+@media(max-width:900px) { .analytics-metric-grid { grid-template-columns:1fr 1fr } .analytics-grid-2 { grid-template-columns:1fr } }
+@media(max-width:600px) { .analytics-range { flex-wrap:wrap } .analytics-range-btn { flex:1 } }
+
 /* ── RESPONSIVE ──────────────────────────────────── */
 @media(max-width:900px) {
   #mob-menu-btn { display:flex }
@@ -849,6 +891,26 @@ a { color:var(--accent); text-decoration:none }
   /* RYNO peek */
   #ryno-peek { bottom:max(14px, env(safe-area-inset-bottom, 0px)); right:10px }
   .peek-chip { font-size:.73rem }
+
+  /* ── Users table mobile ── */
+  .u-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch }
+  .users-table th:first-child,.users-table td:first-child { display:none }
+  .users-table th:nth-child(3),.users-table td:nth-child(3) { display:none }
+  .user-action-btn { display:inline-flex; align-items:center; gap:5px; padding:5px 8px }
+  .user-action-btn .btn-label { display:none }
+  /* Modal → bottom sheet */
+  .modal-overlay { align-items:flex-end; padding:0 }
+  .modal-card { border-radius:18px 18px 0 0; max-width:100%; max-height:92vh; overflow-y:auto; animation:sheetUp .28s cubic-bezier(.32,0,.2,1) }
+  @keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  /* Import compact */
+  .import-toggle-btn { font-size:.78rem; padding:5px 6px }
+  .import-drop { padding:20px 14px }
+  .import-drop-icon { font-size:1.7rem; margin-bottom:5px }
+  .import-template-bar { padding:12px 14px; gap:10px }
+  .import-actions-row { flex-wrap:wrap }
+  /* Section head tighter */
+  .sv-head { margin-bottom:16px; gap:10px }
+  .sv-head .btn-primary { font-size:.8rem; padding:7px 12px }
 }
 </style>
 </head>
@@ -891,43 +953,70 @@ a { color:var(--accent); text-decoration:none }
             <rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/>
             <rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/>
           </svg>
-          Dashboard
+          <span data-i18n="nav.dashboard">Dashboard</span>
         </button>
         <button class="sb-item-with-sub" data-view="pagina" data-roles="admin design" onclick="nav('pagina',this)">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <rect x="3" y="2" width="14" height="16" rx="2"/>
             <line x1="6" y1="7" x2="14" y2="7"/><line x1="6" y1="10" x2="14" y2="10"/><line x1="6" y1="13" x2="11" y2="13"/>
           </svg>
-          Página
+          <span data-i18n="nav.pagina">Página</span>
           <svg class="sb-sub-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l3 3 3-3"/></svg>
         </button>
         <nav class="sb-sub" id="sub-pagina">
-          <button class="sb-sub-item active" data-sub="hero"       onclick="navSub('hero',this)">Hero</button>
-          <button class="sb-sub-item"        data-sub="about"      onclick="navSub('about',this)">About Mudify</button>
-          <button class="sb-sub-item"        data-sub="rating"     onclick="navSub('rating',this)">Puntuación General</button>
-          <button class="sb-sub-item"        data-sub="highlights" onclick="navSub('highlights',this)">Temas de Reviews</button>
-          <button class="sb-sub-item"        data-sub="staff"      onclick="navSub('staff',this)">Staff Destacado</button>
-          <button class="sb-sub-item"        data-sub="contact"    onclick="navSub('contact',this)">Información de Contacto</button>
-          <button class="sb-sub-item"        data-sub="faq"        onclick="navSub('faq',this)">Preguntas Frecuentes</button>
+          <button class="sb-sub-item active" data-sub="hero" onclick="navSub('hero',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="10" rx="1.5"/><line x1="2" y1="17" x2="18" y2="17" stroke-width="1.5"/></svg>
+            <span data-i18n="sub.hero">Hero</span>
+          </button>
+          <button class="sb-sub-item" data-sub="about" onclick="navSub('about',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 7v.5M10 10v4" stroke-linecap="round"/></svg>
+            <span data-i18n="sub.about">About Mudify</span>
+          </button>
+          <button class="sb-sub-item" data-sub="rating" onclick="navSub('rating',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><path d="M10 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" stroke-linejoin="round"/></svg>
+            <span data-i18n="sub.rating">Puntuación General</span>
+          </button>
+          <button class="sb-sub-item" data-sub="highlights" onclick="navSub('highlights',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><path d="M3 9V3.5h5.5L16 11l-5 5-8-7z" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <span data-i18n="sub.highlights">Temas de Reviews</span>
+          </button>
+          <button class="sb-sub-item" data-sub="staff" onclick="navSub('staff',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><circle cx="7" cy="6.5" r="3"/><path d="M1 17c0-2.8 2.7-5 6-5s6 2.2 6 5"/><path d="M15 5a2.5 2.5 0 010 5M18 17c0-2-1.3-3.6-3-4.3" stroke-linecap="round"/></svg>
+            <span data-i18n="sub.staff">Staff Destacado</span>
+          </button>
+          <button class="sb-sub-item" data-sub="contact" onclick="navSub('contact',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><path d="M5 3h2l1.5 4-2 1.5c1 2 3 4 5 5l1.5-2L17 13v2a1 1 0 01-1 1A13 13 0 014 4a1 1 0 011-1z" stroke-linejoin="round"/></svg>
+            <span data-i18n="sub.contact">Contacto</span>
+          </button>
+          <button class="sb-sub-item" data-sub="faq" onclick="navSub('faq',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M8 8.5a2 2 0 114 0c0 1.3-2 1.8-2 3.2" stroke-linecap="round"/><circle cx="10" cy="15" r=".7" fill="currentColor" stroke="none"/></svg>
+            <span data-i18n="sub.faq">Preguntas Frecuentes</span>
+          </button>
         </nav>
         <button class="sb-item" data-view="seo" data-roles="admin marketing" onclick="nav('seo',this)">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <circle cx="8" cy="8" r="5"/><path d="M13 13l4 4"/>
           </svg>
-          SEO
+          <span data-i18n="nav.seo">SEO</span>
         </button>
         <button class="sb-item" data-view="reviews" data-roles="admin marketing" onclick="nav('reviews',this)" id="sb-reviews">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <path d="M10 2l2.39 4.84L18 7.64l-4 3.9.94 5.46L10 14.27l-4.94 2.73L6 11.54 2 7.64l5.61-.8L10 2z"/>
           </svg>
-          Reviews
+          <span data-i18n="nav.reviews">Reviews</span>
           <span class="sb-badge" id="sb-badge">—</span>
+        </button>
+        <button class="sb-item" data-view="analytics" data-roles="admin marketing" onclick="nav('analytics',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <polyline points="2,14 7,9 11,12 18,4"/><line x1="2" y1="18" x2="18" y2="18"/>
+          </svg>
+          <span data-i18n="nav.analytics">Analytics</span>
         </button>
         <button class="sb-item" data-view="usuarios" data-roles="admin" onclick="nav('usuarios',this)">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <circle cx="7" cy="7" r="3"/><path d="M1 18c0-3.314 2.686-6 6-6"/><circle cx="14" cy="11" r="3"/><path d="M10 18c0-2.21 1.79-4 4-4s4 1.79 4 4"/>
           </svg>
-          Usuarios
+          <span data-i18n="nav.usuarios">Usuarios</span>
         </button>
       </nav>
 
@@ -939,18 +1028,23 @@ a { color:var(--accent); text-decoration:none }
           <div class="sb-user-role" id="sb-user-role"></div>
         </div>
       </div>
+      <div class="sb-lang">
+        <button class="sb-lang-btn active" id="lang-es" onclick="setLang('es')">ES</button>
+        <span class="sb-lang-sep">·</span>
+        <button class="sb-lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+      </div>
       <div class="sb-footer">
         <a href="https://mudify-reviews.netlify.app" target="_blank" class="sb-site-link">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M10 2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-6M14 2h4v4M10 10L18 2"/>
           </svg>
-          Ver el sitio
+          <span data-i18n="common.viewSite">Ver el sitio</span>
         </a>
         <button class="sb-footer-item" onclick="logout()">
           <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
             <path d="M13 3h4a1 1 0 011 1v12a1 1 0 01-1 1h-4M8 15l-4-5 4-5M4 10h10"/>
           </svg>
-          Cerrar sesión
+          <span data-i18n="common.logout">Cerrar sesión</span>
         </button>
       </div>
     </aside>
@@ -979,7 +1073,7 @@ a { color:var(--accent); text-decoration:none }
         <div id="v-dashboard" class="view active">
           <div class="dash-welcome">
             <div class="dash-welcome-text">
-              <h2>Bienvenido a Reviews Admin</h2>
+              <h2 id="dash-welcome-h2">Bienvenido, Admin</h2>
               <p id="dash-sub">Gestiona los reviews y la configuración de la página desde aquí.</p>
             </div>
             <a href="https://mudify-reviews.netlify.app" target="_blank" class="btn btn-secondary">
@@ -1008,7 +1102,7 @@ a { color:var(--accent); text-decoration:none }
             </div>
           </div>
 
-          <div style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Accesos rápidos</div>
+          <div id="dash-quick-label" style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Accesos rápidos</div>
           <div class="dash-actions-grid">
             <button class="dash-action red" onclick="nav('reviews');showAddForm()">
               <div class="dash-action-icon">
@@ -1054,6 +1148,23 @@ a { color:var(--accent); text-decoration:none }
                 <div class="dash-action-desc">Editar, ocultar, eliminar</div>
               </div>
             </button>
+          </div>
+
+          <!-- Analytics mini-summary (admin + marketing only) -->
+          <div id="dash-analytics-mini" data-roles="admin marketing" style="margin-top:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div id="dash-analytics-label" style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3)">Analytics — Últimos 7 días</div>
+              <button onclick="nav('analytics')" style="font-size:.75rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;font-weight:600" id="dash-analytics-link">Ver detalles →</button>
+            </div>
+            <div class="dash-stat-grid" id="dash-analytics-grid">
+              <div class="dash-stat"><div class="dash-stat-label" id="dma-users-lbl">Usuarios</div><div class="dash-stat-num" id="dma-users">—</div><div class="dash-stat-desc" id="dma-sessions-lbl">Sesiones: <span id="dma-sessions">—</span></div></div>
+              <div class="dash-stat"><div class="dash-stat-label" id="dma-views-lbl">Vistas de página</div><div class="dash-stat-num accent" id="dma-views">—</div><div class="dash-stat-desc" id="dma-bounce-lbl">Rebote: <span id="dma-bounce">—</span></div></div>
+              <div class="dash-stat"><div class="dash-stat-label" id="dma-duration-lbl">Duración media</div><div class="dash-stat-num" id="dma-duration">—</div><div class="dash-stat-desc" id="dma-src-lbl">Fuente principal: <span id="dma-src">—</span></div></div>
+            </div>
+            <div id="dash-analytics-setup" style="display:none;font-size:.8rem;color:var(--t3);padding:10px 14px;background:var(--bg);border:1px dashed var(--border);border-radius:8px;margin-top:6px">
+              📊 <span id="dash-analytics-setup-text">Conecta Google Analytics para ver datos reales aquí.</span>
+              <button onclick="nav('analytics')" style="margin-left:8px;font-size:.75rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;font-weight:600">Configurar →</button>
+            </div>
           </div>
         </div>
 
@@ -1215,7 +1326,7 @@ a { color:var(--accent); text-decoration:none }
               </div>
               <div>
                 <div class="sv-preview-card">
-                  <div class="sv-preview-label">En vivo</div>
+                  <div class="sv-preview-label" data-i18n="common.livePreview">En vivo</div>
                   <div class="rp-card" id="rating-live-preview">
                     <div class="rp-score">4.3</div>
                     <div class="rp-stars">★★★★☆</div>
@@ -1317,7 +1428,7 @@ a { color:var(--accent); text-decoration:none }
               <div>
                 <div style="display:flex;align-items:flex-start;gap:9px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.79rem;color:var(--t2);line-height:1.5">
                   <svg style="flex-shrink:0;margin-top:1px" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><line x1="10" y1="9" x2="10" y2="14"/><circle cx="10" cy="6.5" r=".5" fill="currentColor"/></svg>
-                  Google indexa JS dinámico — los cambios se reflejan en la próxima recrawl. El rebuild se dispara al guardar.
+                  <span id="seo-info-msg">Google indexa JS dinámico — los cambios se reflejan en la próxima recrawl. El rebuild se dispara al guardar.</span>
                 </div>
 
                 <!-- Favicon -->
@@ -1482,8 +1593,8 @@ a { color:var(--accent); text-decoration:none }
               <!-- Preview column -->
               <div>
                 <div class="sv-preview-card" style="position:sticky;top:0">
-                  <div class="sv-preview-label">Vista previa</div>
-                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Google Search</div>
+                  <div class="sv-preview-label" data-i18n="common.preview">Vista previa</div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px" data-i18n="seo.liveTitle">Google Search</div>
                   <div class="google-preview">
                     <div class="gp-header">
                       <div class="gp-favicon">M</div>
@@ -1492,7 +1603,7 @@ a { color:var(--accent); text-decoration:none }
                     <div class="gp-title" id="gp-title">Mudify Reviews 2026 – 445+ Verified…</div>
                     <div class="gp-desc" id="gp-desc">Read 445+ verified customer reviews for Mudify…</div>
                   </div>
-                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px">Open Graph / Redes Sociales</div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px" data-i18n="seo.ogLabel">Open Graph / Redes Sociales</div>
                   <div class="og-preview">
                     <div class="og-preview-img">
                       <img id="og-img-prev" src="" style="display:none;width:100%;height:100%;object-fit:cover">
@@ -1504,7 +1615,7 @@ a { color:var(--accent); text-decoration:none }
                       <div class="og-desc" id="og-desc">445+ verified reviews…</div>
                     </div>
                   </div>
-                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px">Twitter / X Card</div>
+                  <div style="font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:16px" data-i18n="seo.twitterLabel">Twitter / X Card</div>
                   <div class="og-preview">
                     <div class="og-preview-img" style="height:90px">
                       <img id="tw-img-prev" src="" style="display:none;width:100%;height:100%;object-fit:cover">
@@ -1522,7 +1633,7 @@ a { color:var(--accent); text-decoration:none }
 
           <!-- sticky save bar -->
           <div class="save-bar-wrap">
-            <button class="btn btn-primary" id="btn-save-pagina" onclick="saveSettings()">Guardar cambios</button>
+            <button class="btn btn-primary" id="btn-save-pagina" onclick="saveSettings()" data-i18n="common.save">Guardar cambios</button>
             <span class="save-status" id="st-pagina"></span>
           </div>
 
@@ -1534,18 +1645,18 @@ a { color:var(--accent); text-decoration:none }
           <!-- Add form -->
           <div class="add-form-wrap" id="add-form" style="display:none">
             <div class="add-form-header">
-              <span class="add-form-title">Nuevo review</span>
-              <button class="btn btn-ghost btn-sm" onclick="hideAddForm()">Cancelar</button>
+              <span class="add-form-title" data-i18n="reviews.addTitle">Nuevo review</span>
+              <button class="btn btn-ghost btn-sm" onclick="hideAddForm()" data-i18n="common.cancel">Cancelar</button>
             </div>
             <div class="add-form-body">
               <div class="field-row cols3">
-                <div><label class="field-label">Autor</label><input id="nf-author" class="field-input" placeholder="Jack B."></div>
-                <div><label class="field-label">Iniciales</label><input id="nf-initials" class="field-input" placeholder="JB" maxlength="3"></div>
-                <div><label class="field-label">Fecha</label><input id="nf-date" class="field-input" placeholder="Jan 12, 2026"></div>
+                <div><label class="field-label" data-i18n="reviews.addAuthor">Autor</label><input id="nf-author" class="field-input" placeholder="Jack B."></div>
+                <div><label class="field-label" data-i18n="reviews.addInitials">Iniciales</label><input id="nf-initials" class="field-input" placeholder="JB" maxlength="3"></div>
+                <div><label class="field-label" data-i18n="reviews.addDate">Fecha</label><input id="nf-date" class="field-input" placeholder="Jan 12, 2026"></div>
               </div>
               <div class="field-row cols3">
                 <div>
-                  <label class="field-label">Calificación</label>
+                  <label class="field-label" data-i18n="reviews.addRating">Calificación</label>
                   <select id="nf-rating" class="field-select">
                     <option value="5">★★★★★  5 estrellas</option>
                     <option value="4">★★★★☆  4 estrellas</option>
@@ -1555,7 +1666,7 @@ a { color:var(--accent); text-decoration:none }
                   </select>
                 </div>
                 <div>
-                  <label class="field-label">Categoría</label>
+                  <label class="field-label" data-i18n="reviews.addCategory">Categoría</label>
                   <select id="nf-category" class="field-select">
                     <option value="general">General</option>
                     <option value="suspension">Suspension / Lift Kits</option>
@@ -1566,7 +1677,7 @@ a { color:var(--accent); text-decoration:none }
                   </select>
                 </div>
                 <div>
-                  <label class="field-label">Visibilidad</label>
+                  <label class="field-label" data-i18n="reviews.addVisibility">Visibilidad</label>
                   <select id="nf-published" class="field-select">
                     <option value="true">Visible</option>
                     <option value="false">Oculto</option>
@@ -1574,7 +1685,7 @@ a { color:var(--accent); text-decoration:none }
                 </div>
               </div>
               <div class="field-row cols2">
-                <div><label class="field-label">Título del review</label><input id="nf-title" class="field-input" placeholder="Amazing Experience"></div>
+                <div><label class="field-label" data-i18n="reviews.addRevTitle">Título del review</label><input id="nf-title" class="field-input" placeholder="Amazing Experience"></div>
                 <div>
                   <label class="field-label">Badge</label>
                   <div class="field-row" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0">
@@ -1588,48 +1699,48 @@ a { color:var(--accent); text-decoration:none }
                 </div>
               </div>
               <div class="field-group">
-                <label class="field-label">Texto del review</label>
+                <label class="field-label" data-i18n="reviews.addText">Texto del review</label>
                 <textarea id="nf-text" class="field-textarea" placeholder="Describe la experiencia del cliente…"></textarea>
               </div>
-              <button class="btn btn-primary" onclick="addReview()">Agregar review</button>
+              <button class="btn btn-primary" onclick="addReview()" data-i18n="reviews.addSave">Agregar review</button>
             </div>
           </div>
 
           <!-- View toggle -->
           <div class="import-toggle" id="reviews-mode-toggle">
-            <button class="import-toggle-btn active" id="tab-list" onclick="setReviewsTab('list')">Lista de reviews</button>
-            <button class="import-toggle-btn" id="tab-import" onclick="setReviewsTab('import')">⬆️ Importar en masa</button>
+            <button class="import-toggle-btn active" id="tab-list" onclick="setReviewsTab('list')" data-i18n="import.tabList">Lista de reviews</button>
+            <button class="import-toggle-btn" id="tab-import" onclick="setReviewsTab('import')" data-i18n="import.tabImport">⬆️ Importar en masa</button>
           </div>
 
           <!-- Bulk import panel -->
           <div class="import-panel" id="import-panel">
             <div class="import-template-bar">
               <div class="import-template-info">
-                <strong>Plantilla CSV</strong>
-                <span>Descarga, completa en Excel o Google Sheets, y sube el archivo</span>
+                <strong data-i18n="import.template">Plantilla CSV</strong>
+                <span data-i18n="import.templateNote">Descarga, completa en Excel o Google Sheets, y sube el archivo</span>
               </div>
-              <button class="btn btn-secondary btn-sm" onclick="downloadCsvTemplate()">⬇ Descargar plantilla CSV</button>
+              <button class="btn btn-secondary btn-sm" onclick="downloadCsvTemplate()" data-i18n="import.download">⬇ Descargar plantilla CSV</button>
             </div>
             <div class="import-drop" id="import-drop" onclick="document.getElementById('import-file').click()">
               <input type="file" id="import-file" accept=".csv,text/csv" onchange="handleImportFile(this.files[0])">
               <div class="import-drop-icon">📂</div>
-              <div class="import-drop-title">Arrastra el CSV aquí o haz clic para seleccionar</div>
-              <div class="import-drop-sub">Formato: CSV — exporta desde Excel o Google Sheets como "CSV (UTF-8)"</div>
+              <div class="import-drop-title" data-i18n="import.dropTitle">Arrastra el CSV aquí o haz clic para seleccionar</div>
+              <div class="import-drop-sub" data-i18n="import.dropSub">Formato: CSV — exporta desde Excel o Google Sheets como "CSV (UTF-8)"</div>
             </div>
             <div class="import-preview-wrap" id="import-preview" style="display:none">
               <div class="import-preview-head">
-                <span class="import-preview-title">Vista previa</span>
+                <span class="import-preview-title" data-i18n="import.preview">Vista previa</span>
                 <span id="import-count" style="font-size:.8rem;color:var(--t3)"></span>
               </div>
               <div style="overflow-x:auto">
                 <table class="import-table">
-                  <thead><tr><th>#</th><th>Autor</th><th>Fecha</th><th>★</th><th>Texto</th><th>Fuente</th><th>Estado</th></tr></thead>
+                  <thead><tr><th>#</th><th data-i18n="import.colAuthor">Autor</th><th data-i18n="import.colDate">Fecha</th><th>★</th><th data-i18n="import.colText">Texto</th><th data-i18n="import.colSource">Fuente</th><th data-i18n="import.colStatus">Estado</th></tr></thead>
                   <tbody id="import-tbody"></tbody>
                 </table>
               </div>
               <div class="import-actions-row">
-                <button class="btn btn-primary btn-sm" id="btn-confirm-import" onclick="confirmImport()">Importar reviews</button>
-                <button class="btn btn-ghost btn-sm" onclick="clearImport()">Cancelar</button>
+                <button class="btn btn-primary btn-sm" id="btn-confirm-import" onclick="confirmImport()" data-i18n="import.importBtn">Importar reviews</button>
+                <button class="btn btn-ghost btn-sm" onclick="clearImport()" data-i18n="common.cancel">Cancelar</button>
                 <span id="import-status" style="font-size:.8rem;color:var(--t3)"></span>
               </div>
             </div>
@@ -1649,7 +1760,7 @@ a { color:var(--accent); text-decoration:none }
           </div>
 
           <div class="save-bar-wrap">
-            <button class="btn btn-primary" id="btn-save-reviews" onclick="saveReviews()">Guardar cambios</button>
+            <button class="btn btn-primary" id="btn-save-reviews" onclick="saveReviews()" data-i18n="common.save">Guardar cambios</button>
             <span class="save-status" id="st-reviews">Sin cambios pendientes</span>
           </div>
         </div>
@@ -1657,18 +1768,90 @@ a { color:var(--accent); text-decoration:none }
         <!-- ── USUARIOS ────────────────────────────── -->
         <div id="v-usuarios" class="view">
           <div class="sv-head">
-            <div><div class="sv-eyebrow">Administración</div><h1 class="sv-title">Usuarios del panel</h1></div>
-            <button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Agregar usuario</button>
+            <div><div class="sv-eyebrow">Administración</div><h1 class="sv-title" data-i18n="users.title">Usuarios del panel</h1></div>
+            <button class="btn btn-primary btn-sm" onclick="openUserModal()" data-i18n="users.addUser">+ Agregar usuario</button>
           </div>
           <div class="u-wrap">
-            <table class="users-table">
-              <thead><tr><th></th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th></th></tr></thead>
-              <tbody id="users-tbody"></tbody>
-            </table>
+            <div class="u-scroll">
+              <table class="users-table">
+                <thead><tr>
+                  <th></th>
+                  <th data-i18n="users.name">Nombre</th>
+                  <th data-i18n="users.email">Email</th>
+                  <th data-i18n="users.role">Rol</th>
+                  <th data-i18n="users.status">Estado</th>
+                  <th></th>
+                </tr></thead>
+                <tbody id="users-tbody"></tbody>
+              </table>
+            </div>
           </div>
           <div class="sv-card" style="margin-top:20px;background:rgba(233,65,65,.04);border-color:rgba(233,65,65,.18)">
             <div class="sv-card-label" style="color:var(--accent)">Contraseña inicial de todos los usuarios</div>
             <p style="font-size:.85rem;color:var(--t2);margin:0">Todos los usuarios nuevos reciben la contraseña <strong>Mudify2024!</strong> — se recomienda cambiarla en el primer acceso. Para cambiar la contraseña de un usuario, usa el botón "Editar" en la tabla.</p>
+          </div>
+        </div>
+
+        <!-- ── ANALYTICS ─────────────────────────── -->
+        <div id="v-analytics" class="view">
+          <div class="sv-head">
+            <div>
+              <div class="sv-eyebrow" data-i18n="analytics.eyebrow">Rendimiento</div>
+              <h1 class="sv-title" data-i18n="analytics.title">Analytics del sitio</h1>
+            </div>
+            <div class="analytics-range" id="analytics-range">
+              <button class="analytics-range-btn active" data-days="7" onclick="loadAnalytics(7,this)" data-i18n="analytics.7d">7 días</button>
+              <button class="analytics-range-btn" data-days="30" onclick="loadAnalytics(30,this)" data-i18n="analytics.30d">30 días</button>
+              <button class="analytics-range-btn" data-days="90" onclick="loadAnalytics(90,this)" data-i18n="analytics.90d">90 días</button>
+            </div>
+          </div>
+
+          <!-- Setup notice (shown when GA4 not configured) -->
+          <div class="analytics-setup" id="analytics-setup" style="display:none">
+            <div class="analytics-setup-icon">📊</div>
+            <h3 data-i18n="analytics.setupTitle">Conecta Google Analytics</h3>
+            <p data-i18n="analytics.setupDesc">Para ver datos reales, configura las variables de entorno en Netlify y vincula tu propiedad GA4.</p>
+            <ol class="analytics-setup-steps">
+              <li><strong>Google Cloud Console</strong> → crea un Service Account, descarga el JSON</li>
+              <li>En <strong>Netlify → Site settings → Environment variables</strong>, agrega:<br><code>GA4_PROPERTY_ID</code> y <code>GA4_SERVICE_ACCOUNT_JSON</code></li>
+              <li>En GA4 → Admin → Property Access Management → agrega el email del service account</li>
+            </ol>
+            <p style="font-size:.8rem;color:var(--t3);margin-top:12px">Mientras tanto, las métricas de reviews del panel sí están disponibles abajo.</p>
+          </div>
+
+          <!-- Metric cards -->
+          <div class="analytics-metric-grid" id="analytics-cards">
+            <div class="analytics-metric" id="am-users"><div class="am-val" id="am-users-val">—</div><div class="am-label" data-i18n="analytics.users">Usuarios</div><div class="am-trend" id="am-users-trend"></div></div>
+            <div class="analytics-metric" id="am-sessions"><div class="am-val" id="am-sessions-val">—</div><div class="am-label" data-i18n="analytics.sessions">Sesiones</div><div class="am-trend" id="am-sessions-trend"></div></div>
+            <div class="analytics-metric" id="am-views"><div class="am-val" id="am-views-val">—</div><div class="am-label" data-i18n="analytics.pageviews">Vistas de página</div><div class="am-trend" id="am-views-trend"></div></div>
+            <div class="analytics-metric" id="am-duration"><div class="am-val" id="am-duration-val">—</div><div class="am-label" data-i18n="analytics.duration">Duración media</div><div class="am-trend" id="am-duration-trend"></div></div>
+          </div>
+
+          <!-- Traffic sources + Top pages -->
+          <div class="analytics-grid-2">
+            <div class="sv-card">
+              <div class="sv-card-label" data-i18n="analytics.sourcesLabel">Fuentes de tráfico</div>
+              <div id="analytics-sources">
+                <div class="analytics-empty" data-i18n="analytics.loading">Cargando…</div>
+              </div>
+            </div>
+            <div class="sv-card">
+              <div class="sv-card-label" data-i18n="analytics.pagesLabel">Páginas más visitadas</div>
+              <div id="analytics-pages">
+                <div class="analytics-empty" data-i18n="analytics.loading">Cargando…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews metrics (always available) -->
+          <div class="sv-card" style="margin-top:0">
+            <div class="sv-card-label" data-i18n="analytics.reviewsLabel">Métricas de reviews (datos del panel)</div>
+            <div class="analytics-metric-grid" id="analytics-review-metrics" style="margin-top:12px">
+              <div class="analytics-metric secondary"><div class="am-val" id="arm-total">—</div><div class="am-label" data-i18n="analytics.armTotal">Reviews totales</div></div>
+              <div class="analytics-metric secondary"><div class="am-val" id="arm-visible">—</div><div class="am-label" data-i18n="analytics.armVisible">Visibles en sitio</div></div>
+              <div class="analytics-metric secondary"><div class="am-val success" id="arm-score">—</div><div class="am-label" data-i18n="analytics.armScore">Score promedio</div></div>
+              <div class="analytics-metric secondary"><div class="am-val" id="arm-5star">—</div><div class="am-label" data-i18n="analytics.arm5">5 estrellas</div></div>
+            </div>
           </div>
         </div>
 
@@ -1686,14 +1869,14 @@ a { color:var(--accent); text-decoration:none }
       <div class="modal-body">
         <input type="hidden" id="mu-id">
         <div class="field-row" style="margin-bottom:12px">
-          <div><label class="field-label">Nombre</label><input id="mu-name" class="field-input" placeholder="Nombre completo"></div>
+          <div><label class="field-label" data-i18n="users.name">Nombre</label><input id="mu-name" class="field-input" placeholder="Nombre completo"></div>
         </div>
         <div class="field-row" style="margin-bottom:12px">
-          <div><label class="field-label">Email</label><input id="mu-email" class="field-input" type="email" placeholder="nombre@mudify.com"></div>
+          <div><label class="field-label" data-i18n="users.email">Email</label><input id="mu-email" class="field-input" type="email" placeholder="nombre@mudify.com"></div>
         </div>
         <div class="field-row cols2" style="margin-bottom:12px">
           <div>
-            <label class="field-label">Rol</label>
+            <label class="field-label" data-i18n="users.role">Rol</label>
             <select id="mu-role" class="field-select">
               <option value="admin">Admin — Acceso completo</option>
               <option value="marketing">Marketing — SEO + Reviews</option>
@@ -1725,7 +1908,7 @@ a { color:var(--accent); text-decoration:none }
   <div id="floating-mascot">
     <button class="ryno-close" onclick="hideRyno()" title="Ocultar RYNO">×</button>
     <div class="floating-bubble" id="mascot-bubble" style="animation:bubblePop .4s cubic-bezier(.34,1.56,.64,1)">
-      <span id="mascot-msg">Bienvenido, admin. Los reviews no se clasifican solos. 🦏</span>
+      <span id="mascot-msg"></span>
     </div>
     <!-- RYNO SVG – rhino Johnny Bravo proportions, tactical vest, aviator shades, Mudify red -->
     <svg id="hat-mascot" viewBox="0 0 100 130" width="58" height="75">
@@ -1906,9 +2089,43 @@ function openApp() {
   document.getElementById('app').style.display = 'block';
   history.replaceState({view:'dashboard', sub:null}, '', '');
   applyRoleVisibility(currentUserRole);
+  applyLang();
   loadData();
   if (currentUserRole === 'admin') loadUsers();
   initMascot();
+  if (currentUserRole === 'admin' || currentUserRole === 'marketing') loadDashMiniAnalytics();
+}
+
+async function loadDashMiniAnalytics() {
+  const L = LANGS[currentLang];
+  let data;
+  try {
+    const res = await fetch('/.netlify/functions/analytics?days=7');
+    data = await res.json();
+  } catch { return; }
+
+  const setup = document.getElementById('dash-analytics-setup');
+  const grid  = document.getElementById('dash-analytics-grid');
+
+  if (data.configured === false) {
+    if (setup) setup.style.display = '';
+    if (grid)  grid.style.display  = 'none';
+    const st = document.getElementById('dash-analytics-setup-text');
+    if (st) st.textContent = L.analytics.setupTitle ? L.analytics.setupDesc : 'Conecta Google Analytics para ver datos reales aquí.';
+    return;
+  }
+  if (setup) setup.style.display = 'none';
+  if (grid)  grid.style.display  = '';
+
+  const m = data.metrics || {};
+  const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setEl('dma-users',    m.users?.val    ?? '—');
+  setEl('dma-views',    m.views?.val    ?? '—');
+  setEl('dma-duration', m.duration?.val ?? '—');
+  setEl('dma-sessions', m.sessions?.val ?? '—');
+  setEl('dma-bounce',   m.bounce?.val   ?? '—');
+  const topSrc = data.sources?.[0]?.source ?? '—';
+  setEl('dma-src', topSrc);
 }
 
 window.addEventListener('popstate', function(e) {
@@ -1923,7 +2140,7 @@ window.addEventListener('popstate', function(e) {
       vp.classList.add('active');
       const sn = document.getElementById('sub-pagina'); if (sn) sn.classList.add('open');
       const tg = document.querySelector('[data-view="pagina"]'); if (tg) tg.classList.add('active','open');
-      document.getElementById('tb-title').textContent = 'Página';
+      document.getElementById('tb-title').textContent = LANGS[currentLang].nav.pagina;
     }
     navSub(sub);
   } else {
@@ -1933,29 +2150,125 @@ window.addEventListener('popstate', function(e) {
 });
 
 function initMascot() {
-  const msgs = [
-    "Bienvenido, admin. Los reviews no se clasifican solos. Igual que el barro no se quita solo. 🦏",
-    "Dato: Los rinocerontes corren a 55 km/h. Similar a cómo llegan los pedidos de Mudify. ✈️",
-    "Pro tip: Un lift de 3\" no cubre malas decisiones de línea. Ni yo puedo ayudarte ahí. 💀",
-    "El 82% de reviews positivos. El 18% restante... tampoco tenían buen ángulo de ataque. 📐",
-    "Fun fact: El Jeep Willys nació en 1941. La suspensión original era horrible. Nada ha cambiado. 🛻",
-    "445+ reviews verificados. Eso es más votos que en algunas elecciones locales. 🗳️",
-    "Científicamente comprobado: a más lift, más personalidad. Yo tengo cuerno. Tú decides. 📊",
-    "Historia: el primer 4x4 fue un carruaje prusiano de 1758. Tampoco tenía garantía. 🎖️",
-    "Un T-rex no podría manejar un Wrangler. Brazos cortos. Yo los tengo perfectos. 💪",
-    "Dato inútil: un rinoceronte pesa ~2.300 kg. Un RAM 2500 con accesorios Mudify: casi lo mismo. 🐛",
-    "Las abejas ven ultravioleta. Yo veo reviews falsos a 50 metros. Diferentes superpoderes. 🐝",
-    "¿Torque wrench o intuición? Pregunta trampa. Aquí se usan herramientas. 🔩",
-    "Aquí para ayudar. O para juzgar tus decisiones de suspensión. Probablemente ambos. 🔧",
-    "La Luna se aleja 3.8 cm al año. Igual que tus neumáticos originales en barro real. 🌙",
+  const RYNO_MSGS = [
+    `Bienvenido, ${currentUserName}. Los reviews no se clasifican solos. Igual que el barro. 🦏`,
+    "Pro tip: Un cliente que da 3 estrellas probablemente esperaba 2-day shipping en un Toyota 4Runner completo. Lógica cuestionable. 📦",
+    "Los rinocerontes grises pueden dormir parados. Yo no duermo. Solo monitoreo dashboards. 👁️",
+    "El 82% de reviews positivos acá. El promedio de Yelp es 3.5 estrellas. Somos objetivamente mejores. 📊",
+    "Las estrellas de mar no tienen cerebro. Curiosamente, algunos reviews de una estrella tampoco. 🌟",
+    "Historia: El primer off-road organizado fue en 1907, París-Pekín. Cero lift kits. Todos sufrieron. 🏁",
+    "445+ reviews verificados. Más opiniones que en algunas elecciones municipales de Miami. 🗳️",
+    "El Everest mide 8,849 metros. Con el lift kit correcto y un Tacoma, técnicamente es solo un problema de tracción. 🏔️",
+    "Vine de África. Me establecí en Miami. Ahora gestiono SEO. La línea de carrera más random del universo. 🌍",
+    "Un T-rex no podría manejar un Wrangler. Brazos cortos. Problema de alcance. Yo los tengo perfectos. 💪",
+    "Las hormigas no tienen pulmones. Respiran por la piel. Diferente a los clientes que escriben en MAYÚSCULAS. Esos sí respiran fuerte. 🐜",
+    "Cleopatra vivió más cerca de la llegada del hombre a la Luna que de la construcción de las pirámides. Los reviews de hace 3 años también envejecen. 📸",
+    "Los tiburones existen desde antes que los árboles. 450 millones de años. La suspensión de hojas también parece de esa época. 🦈",
+    "El 89% de las compras online se ven influenciadas por reviews. El 11% restante compra el lift kit equivocado y luego deja un review. 🛒",
+    "Oxford University es más vieja que el Imperio Azteca. La garantía de algunos shocks también parece de esa era. 📚",
+    "Las pulgas pueden saltar 150 veces su altura. Si los Jeep pudieran hacer lo mismo, los lift kits estarían de sobra. 🐛",
+    "El wombat produce caca cúbica. Único animal en hacerlo. Sin relación con nada, solo necesitaba que lo supieras. 🟫",
+    "La Torre Eiffel crece hasta 15 cm en verano. La suspensión de tu camioneta debería crecer más que eso. Por eso existe Mudify. 🗼",
+    "Un día en Venus dura más que un año en Venus. Relativamente parecido a esperar aprobación de un cliente para un review. 🪐",
+    "Los humanos compartimos 60% de ADN con los plátanos. Eso explica muchas cosas sobre los comentarios de internet. 🍌",
+    "Las mariposas saborean con los pies. Imagínate pedir el menú así. Igual que los clientes que 'prueban' la garantía sin leer. 🦋",
+    "El nombre completo de Los Ángeles tiene 11 palabras. Nadie tiene tiempo para eso, igual que nadie lee el FAQ completo. 📋",
+    "Los cuervos reconocen caras humanas y guardan rencor. Si tuviéramos cuervos de seguridad, los trolls estarían en problemas. 🐦‍⬛",
+    "Los mamuts aún vivían cuando se terminó la Gran Pirámide. La historia es básicamente una simulación mal programada. 🦣",
+    "Un pulpo tiene 3 corazones, 8 tentáculos y sangre azul. Más glamoroso que yo. Pero ninguno gestiona reviews. 🐙",
+    "Las huellas dactilares de los koalas son casi idénticas a las humanas. Si un koala deja un mal review... buena suerte identificándolo. 🐨",
+    "La miel nunca caduca. Encontraron miel de 3,000 años en Egipto. Los reviews de hace 3 años sí envejecen. Con o sin foto. 🍯",
+    "Los grupos de flamencos se llaman 'flamboyance'. Los grupos de reviews negativos sin contexto se llaman 'problema grave'. 🦩",
+    "El Muro Chino no se ve desde el espacio. Otro mito popular. Como 'el cliente siempre tiene razón'. 🏯",
+    "Los osos polares tienen piel negra bajo el pelaje blanco. Hype vs realidad. Lección de branding cortesía de la naturaleza. 🐻‍❄️",
+    "El sonido más alto que ha hecho un ser humano fue 129 dB. El segundo fue alguien viendo su primera factura de un build completo. 🔊",
+    "Los árboles se comunican entre sí por las raíces. La red social más antigua. Sin algoritmos que te cobren por alcance. 🌳",
+    "La Gran Barrera de Coral es visible desde el espacio. Tu sitio también debería serlo desde Google. Por eso existe el SEO. 🪸",
+    "Los caracoles pueden dormir hasta 3 años. No sé si lo admiro o lo envidio. Igual, los reviews no se escriben solos esperando 3 años. 🐌",
+    "Las ardillas olvidan dónde esconden el 50% de sus nueces. Así nacen los bosques. Los reviews olvidados también plantan algo, pero es confusión. 🐿️",
+    "El primer email fue enviado en 1971. Y aún hay clientes que no saben cómo dejar un review. La evolución es inconsistente. 📧",
+    "El Monte Olimpo en Marte mide 21 km. Casi 3 Everests. Con el lift kit correcto... no, ni así llegas. 🔴",
+    "Las jirafas no tienen cuerdas vocales. Comunican con infrasónicos. Yo tampoco hablo mucho. Prefiero los datos. 🦒",
+    "El océano tiene más zonas sin mapear que la superficie de la Luna. Similar a los metadatos SEO que nadie ha tocado aún. 🌊",
+    "La primera foto de un humano fue tomada en 1838. Diez minutos de exposición. Hoy un review con foto llega en segundos. Progreso real. 📷",
+    "Las palomas pueden reconocer su reflejo. Muy pocos animales lo logran. Pocos dueños de negocio leen sus propios reviews. Conecta los puntos. 🕊️",
+    "El término 'robot' viene del checo 'robota', trabajo forzado. Yo trabajo pero no soy robot. Tengo cuerno. Eso me diferencia. 🤖",
+    "Los flamencos son naturalmente blancos. Su color viene de los camarones que comen. Tú eres lo que consumes. Mudify consume calidad. 🦩",
+    "Nikola Tesla memorizaba libros enteros. Yo memorizo cada review de Mudify. Ambos somos ligeramente obsesivos. ⚡",
+    "El Coliseo Romano tardó 8 años. La landing de Mudify tardó menos. Prioridades claras. 🏛️",
+    "Las nutrias marinas se toman de la mano para no separarse mientras duermen. El sitio y los buenos reviews deben mantenerse igual de juntos. 🦦",
+    "En Islandia no hay mosquitos. Es básicamente el paraíso. También tienen muy buena presencia digital. ¿Coincidencia? No lo creo. 🇮🇸",
+    "Los delfines duermen con un ojo abierto. Yo monitoreo analytics así también. Nunca dormido del todo. 🐬",
+    "La luciérnaga convierte el 95% de su energía en luz. Un panel solar apenas el 20%. Igualito que un sitio sin SEO: ineficiente. ✨",
+    "El chocolate era originalmente una bebida amarga de los Mayas. Sin azúcar. Como los reviews de 2 estrellas. ☕",
+    "Las palomas de guerra ganaron medallas militares en la Primera y Segunda Guerra. Más condecoraciones que algunos bots de reviews. 🕊️",
+    "Los peces koi pueden vivir más de 200 años. Tu reputación online puede vivir aún más. Cuídala igual. 🐟",
+    "El primer videojuego fue 'Tennis for Two' en 1958. Antes de eso los humanos se aburrían. Ahora dejan reviews aburridos. 🎮",
+    "Los icebergs son 10% visible y 90% bajo el agua. Exactamente como los metadatos de un buen SEO. Nunca juzgues lo que no ves. 🧊",
+    "El primer mapa tiene 25,000 años. Desde entonces los humanos necesitan saber dónde están. Los reviews también son un tipo de mapa. 🗺️",
+    "Un estudio dice que el 93% de consumidores leen reviews antes de comprar. El 7% restante compra el lift equivocado y deja el review después. 📊",
+    "Los pingüinos proponen matrimonio con una piedra. El más romántico del reino animal. Yo propongo un buen SEO. Menos romántico, más rentable. 🐧",
+    "Yo, RYNO, soy técnicamente un conjunto de píxeles con actitud. Pero con más coherencia que varios algoritmos de redes sociales. 🎨",
+    "Las bacterias existieron 3 mil millones de años antes que los animales. El SEO también requiere paciencia. Pero no tanto. 🦠",
+    "El término 'quiz' fue inventado en Dublín en 1791 como palabra sin significado. El marketing a veces funciona así. Spoiler: funciona. 🎯",
+    "En Alaska es ilegal despertar a un oso para tomarse una foto. Aquí, ignorar un review negativo tiene consecuencias similares. Ambos muerden. 🐻",
+    "Se estima que hay más árboles en la Tierra que estrellas en la Vía Láctea. Cuídalos tanto como cuidas tus reviews verificados. 🌲",
+    "El Rubik's Cube fue inventado por un arquitecto húngaro. Le tomó un mes resolverlo. Si algo tarda más que eso en este panel, hay un UX problem. 🟧",
+    "Los gatos no pueden saborear lo dulce. Por eso son indiferentes a todo. Igual que los managers que ignoran el SEO. 🐱",
+    "El primer hashtag fue en Twitter en 2007. Antes era solo el símbolo de número. La historia de los símbolos es más emocionante de lo que parece. #Mudify 🔖",
+    "Beethoven compuso su 9ª Sinfonía completamente sordo. Limitaciones físicas, resultados extraordinarios. No hay excusa para no optimizar los metadatos. 🎵",
+    "Los canguros no pueden caminar hacia atrás. Solo hacia adelante. Pura actitud. Filosofía de vida y de builds off-road serios. 🦘",
+    "Las tortugas gigantes de Galápagos viven más de 150 años. Con el mantenimiento correcto tu suspensión también puede durar décadas. 🐢",
+    "El primer GPS satelital fue lanzado en 1978. Antes usaban mapas y bravura. Solo bravura. 🛰️",
+    "El promedio de atención humana es 8 segundos. Los peces tienen 9. Tus reviews tienen 8 segundos para convencer. Úsalos bien. 🐟",
+    "Los pulpos usan herramientas. Recogen conchas como escudos. Inteligencia sin escuela formal. Respeto total. 🐙",
+    "La bandera de Nepal es la única no rectangular del mundo. Ser diferente tiene historia. Mudify también. 🇳🇵",
+    "El 40% del agua potable viene de glaciares. El 40% de la reputación online viene de reviews. Ambos se derriten si no los cuidas. ❄️",
+    "Estás revisando este panel. Eso ya dice mucho de ti. La mayoría no llega hasta aquí. 👏",
+    "Dato de diseño: el rojo que ves en mí (#E94141) fue elegido por alguien con muy buen gusto. Soy imparcial al opinar. 🔴",
+    "Si este panel carga lento, no es mi culpa. Yo proceso en tiempo de rinoceronte. Rapidísimo. 🦏",
+    "El botón de guardar no es decorativo. Lo digo por experiencia ajena. 💾",
+    "Los reviews no importan hasta que importan. Y cuando importan, ya debiste haberlos gestionado. Sabiduría gratuita de mi parte. 📌",
+    "Hace calor en Miami. No en este servidor. El servidor está bien. 🌡️",
+    "Siete secciones editables, un sistema de reviews, analytics y dos idiomas. Construido por píxeles con actitud. O sea, yo. 🏗️",
+    "Si la suspensión original fuera suficiente, Mudify no existiría. Si el tráfico orgánico fuera automático, el SEO no existiría. Paralelos. 🔩",
+    "El cuerno de un rinoceronte está hecho de queratina. Como las uñas humanas. Ahora no puedes no pensar en eso. De nada. 🦏",
+    "Pro tip gratuito: Un review con foto vale 3 veces más que uno sin foto, según estudios que no voy a citar pero son reales. 📸",
+    "En este panel viven 445 historias de clientes satisfechos. Cada una es un argumento de venta. No los desperdicies. 💡",
   ];
+
+  // No-repeat logic — track shown messages in localStorage per week
+  function getWeekKey() {
+    const d = new Date();
+    return `_ryno_w_${d.getFullYear()}_${Math.floor((d.getDate() + d.getDay()) / 7)}`;
+  }
+  function getShownSet() {
+    try { return new Set(JSON.parse(localStorage.getItem(getWeekKey()) || '[]')); } catch { return new Set(); }
+  }
+  function saveShown(set) {
+    localStorage.setItem(getWeekKey(), JSON.stringify([...set]));
+  }
+  function nextMsgIdx(current) {
+    let shown = getShownSet();
+    if (shown.size >= RYNO_MSGS.length) { shown = new Set(); saveShown(shown); }
+    let idx;
+    do { idx = Math.floor(Math.random() * RYNO_MSGS.length); } while (shown.has(idx));
+    shown.add(idx);
+    saveShown(shown);
+    return idx;
+  }
+
+  const msgs = RYNO_MSGS;
+  // Set initial bubble text
+  const initMsgEl = document.getElementById('mascot-msg');
+  if (initMsgEl) initMsgEl.textContent = msgs[0]; // index 0 is the personalized welcome
   const peekMsgs = [
     "¿Necesitas consejo técnico?",
     "RYNO tiene algo que decirte...",
     "¿Sin lift kit ni mascota? Arriesgado.",
     "Reviews esperando revisión 👀",
   ];
-  let msgIdx = 0;
+  let msgIdx = nextMsgIdx(-1);
   let peekIdx = 0;
   let talkTimer = null;
   let talkOpen = false;
@@ -1985,7 +2298,7 @@ function initMascot() {
   }
 
   function cycleMsg() {
-    msgIdx = (msgIdx + 1) % msgs.length;
+    msgIdx = nextMsgIdx(msgIdx);
     const bubble = document.getElementById('mascot-bubble');
     const msg = document.getElementById('mascot-msg');
     if (!bubble || !msg) return;
@@ -2006,7 +2319,7 @@ function initMascot() {
   }, 5000);
 
   startTalking();
-  setInterval(cycleMsg, 6000);
+  setInterval(cycleMsg, 35000);
 
   // Run-in animation from the right
   const fm = document.getElementById('floating-mascot');
@@ -2139,7 +2452,7 @@ function nav(view, btn) {
     document.getElementById('v-pagina').classList.add('active');
     const navBtn = btn || document.querySelector('[data-view="seo"]');
     if (navBtn) navBtn.classList.add('active');
-    document.getElementById('tb-title').textContent = 'SEO & Metadatos';
+    document.getElementById('tb-title').textContent = LANGS[currentLang].seo.title || 'SEO';
     const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = '';
     document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
     document.getElementById('sv-seo')?.classList.add('active');
@@ -2153,7 +2466,8 @@ function nav(view, btn) {
   document.getElementById('v-' + view).classList.add('active');
   const navBtn = btn || document.querySelector('[data-view="' + view + '"]');
   if (navBtn) navBtn.classList.add('active');
-  const titles = { dashboard:'Dashboard', pagina:'Página', reviews:'Reviews', usuarios:'Usuarios' };
+  const L = LANGS[currentLang];
+  const titles = { dashboard:'Dashboard', pagina:L.nav.pagina, seo:'SEO', reviews:'Reviews', analytics:L.nav.analytics, usuarios:L.nav.usuarios };
   document.getElementById('tb-title').textContent = titles[view] || view;
   const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = '';
   const subNav = document.getElementById('sub-pagina');
@@ -2162,7 +2476,10 @@ function nav(view, btn) {
   if (subNav) subNav.classList.toggle('open', isPag);
   if (toggle && isPag) toggle.classList.add('open');
   if (view === 'reviews') {
-    actions.innerHTML = '<button class="btn btn-primary" onclick="showAddForm()"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg> Nuevo review</button>';
+    actions.innerHTML = `<button class="btn btn-primary" onclick="showAddForm()"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg> ${L.reviews?.addTitle || 'Nuevo review'}</button>`;
+  }
+  if (view === 'analytics') {
+    loadAnalytics(7);
   }
   if (isPag) {
     document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
@@ -2188,7 +2505,8 @@ function navSub(section, el) {
   if (sv) sv.classList.add('active');
   const sBtn = el || document.querySelector('.sb-sub-item[data-sub="' + section + '"]');
   if (sBtn) sBtn.classList.add('active');
-  const lbls = { hero:'Hero', stats:'Estadísticas', about:'About Mudify', rating:'Puntuación General', highlights:'Temas de Reviews', staff:'Staff Destacado', contact:'Contacto', faq:'Preguntas Frecuentes', seo:'SEO & Metadatos' };
+  const Ls = LANGS[currentLang].sub;
+  const lbls = { hero:Ls.hero, about:Ls.about, rating:Ls.rating, highlights:Ls.highlights, staff:Ls.staff, contact:Ls.contact, faq:Ls.faq, seo:'SEO' };
   const sub = document.getElementById('tb-sub'); if (sub) sub.textContent = lbls[section] || section;
   const sb = document.querySelector('#v-pagina .save-bar-wrap');
   if (sb) sb.classList.remove('save-hidden');
@@ -2283,6 +2601,127 @@ function updateDashboard() {
   document.getElementById('d-hidden').textContent = hidden;
   document.getElementById('d-total').textContent = reviews.length;
   document.getElementById('sb-badge').textContent = active;
+}
+
+// ── Analytics ────────────────────────────────────
+let analyticsLoaded = { days: null };
+
+async function loadAnalytics(days, btn) {
+  const L = LANGS[currentLang].analytics;
+  // Update active range button
+  if (btn) {
+    document.querySelectorAll('.analytics-range-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    const defBtn = document.querySelector(`.analytics-range-btn[data-days="${days}"]`);
+    if (defBtn) {
+      document.querySelectorAll('.analytics-range-btn').forEach(b => b.classList.remove('active'));
+      defBtn.classList.add('active');
+    }
+  }
+
+  // Always update review metrics from local data
+  const active = reviews.filter(r => r.published !== false);
+  const fiveStars = reviews.filter(r => (r.rating || r.stars) === 5);
+  const avgScore = reviews.length
+    ? (reviews.reduce((s, r) => s + (r.rating || r.stars || 0), 0) / reviews.length).toFixed(1)
+    : '—';
+  document.getElementById('arm-total').textContent   = reviews.length;
+  document.getElementById('arm-visible').textContent = active.length;
+  document.getElementById('arm-score').textContent   = avgScore;
+  document.getElementById('arm-5star').textContent   = fiveStars.length;
+
+  // Show loading state
+  const setCardVal = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setCardVal('am-users-val', L.loading);
+  setCardVal('am-sessions-val', '');
+  setCardVal('am-views-val', '');
+  setCardVal('am-duration-val', '');
+  document.getElementById('analytics-sources').innerHTML = `<div class="analytics-empty">${L.loading}</div>`;
+  document.getElementById('analytics-pages').innerHTML   = `<div class="analytics-empty">${L.loading}</div>`;
+
+  let data;
+  try {
+    const res = await fetch(`/.netlify/functions/analytics?days=${days}`);
+    data = await res.json();
+  } catch(e) {
+    setCardVal('am-users-val', L.error);
+    document.getElementById('analytics-sources').innerHTML = `<div class="analytics-empty" style="color:var(--danger)">${L.error}</div>`;
+    document.getElementById('analytics-pages').innerHTML   = `<div class="analytics-empty" style="color:var(--danger)">${L.error}</div>`;
+    return;
+  }
+
+  // Show setup notice if not configured
+  const setup = document.getElementById('analytics-setup');
+  const cards = document.getElementById('analytics-cards');
+  if (data.configured === false) {
+    if (setup) setup.style.display = '';
+    if (cards) cards.style.opacity = '0.4';
+    setCardVal('am-users-val', '—');
+    setCardVal('am-sessions-val', '—');
+    setCardVal('am-views-val', '—');
+    setCardVal('am-duration-val', '—');
+    document.getElementById('analytics-sources').innerHTML = `<div class="analytics-empty">${L.noData}</div>`;
+    document.getElementById('analytics-pages').innerHTML   = `<div class="analytics-empty">${L.noData}</div>`;
+    return;
+  }
+  if (setup) setup.style.display = 'none';
+  if (cards) cards.style.opacity = '';
+
+  // Render metric cards
+  function renderTrend(t) {
+    if (!t) return '';
+    const arrow = t.dir === 'up' ? '↑' : '↓';
+    const col = t.dir === 'up' ? 'var(--success)' : 'var(--danger)';
+    return `<span style="color:${col};font-size:.75rem;font-weight:600">${arrow} ${Math.abs(t.pct)}%</span>`;
+  }
+  const m = data.metrics || {};
+  setCardVal('am-users-val',    m.users?.val    ?? '—');
+  setCardVal('am-sessions-val', m.sessions?.val ?? '—');
+  setCardVal('am-views-val',    m.views?.val    ?? '—');
+  setCardVal('am-duration-val', m.duration?.val ?? '—');
+  document.getElementById('am-users-trend').innerHTML    = renderTrend(m.users?.trend);
+  document.getElementById('am-sessions-trend').innerHTML = renderTrend(m.sessions?.trend);
+  document.getElementById('am-views-trend').innerHTML    = renderTrend(m.views?.trend);
+  document.getElementById('am-duration-trend').innerHTML = renderTrend(m.duration?.trend);
+
+  // Render sources
+  const srcEl = document.getElementById('analytics-sources');
+  if ((data.sources || []).length === 0) {
+    srcEl.innerHTML = `<div class="analytics-empty">${L.noData}</div>`;
+  } else {
+    const maxSessions = Math.max(...data.sources.map(s => s.sessions), 1);
+    srcEl.innerHTML = data.sources.map(s => `
+      <div class="analytics-source-row">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:.83rem;font-weight:500">${s.source}</span>
+          <span style="font-size:.78rem;color:var(--t2)">${s.sessions.toLocaleString()} ${L.sessions_short}</span>
+        </div>
+        <div style="background:var(--border);border-radius:4px;height:5px;overflow:hidden">
+          <div class="analytics-bar-fill" style="width:${Math.round((s.sessions/maxSessions)*100)}%"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Render pages
+  const pagesEl = document.getElementById('analytics-pages');
+  if ((data.pages || []).length === 0) {
+    pagesEl.innerHTML = `<div class="analytics-empty">${L.noData}</div>`;
+  } else {
+    const maxViews = Math.max(...data.pages.map(p => p.views), 1);
+    pagesEl.innerHTML = data.pages.map(p => `
+      <div class="analytics-pages-row">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:.83rem;font-weight:500;word-break:break-all">${p.path}</span>
+          <span style="font-size:.78rem;color:var(--t2);white-space:nowrap;margin-left:8px">${p.views.toLocaleString()} ${L.views}</span>
+        </div>
+        <div style="background:var(--border);border-radius:4px;height:5px;overflow:hidden">
+          <div class="analytics-bar-fill" style="width:${Math.round((p.views/maxViews)*100)}%;background:var(--accent)"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  analyticsLoaded.days = days;
 }
 
 // ── Settings (Página) ────────────────────────────
@@ -2759,26 +3198,28 @@ function setFilter(f) {
 // ── Save ─────────────────────────────────────────
 async function saveReviews() {
   const btn = document.getElementById('btn-save-reviews');
+  const Ls = LANGS[currentLang];
   btn.disabled = true;
-  setStatus('reviews', 'Guardando…', 'saving');
+  setStatus('reviews', Ls.common.saving, 'saving');
 
   const res = await callSave('reviews', { reviews });
   btn.disabled = false;
 
   if (res.ok) {
     dirtyReviews = false;
-    setStatus('reviews', '✓ Publicado', 'ok');
-    toast('Reviews guardados. El sitio se actualiza en ~30 segundos.', 'success');
+    setStatus('reviews', '✓ ' + Ls.common.saved, 'ok');
+    toast(currentLang === 'en' ? 'Reviews saved. Site updates in ~30 seconds.' : 'Reviews guardados. El sitio se actualiza en ~30 segundos.', 'success');
   } else {
     setStatus('reviews', '✗ ' + (res.error||'Error'), 'err');
-    toast(res.error || 'Error al guardar', 'error');
+    toast(res.error || (currentLang === 'en' ? 'Save error' : 'Error al guardar'), 'error');
   }
 }
 
 async function saveSettings() {
   const btn = document.getElementById('btn-save-pagina');
+  const Ls = LANGS[currentLang];
   btn.disabled = true;
-  setStatus('pagina', 'Guardando…', 'saving');
+  setStatus('pagina', Ls.common.saving, 'saving');
 
   const g = id => document.getElementById(id)?.value || '';
   const sc = (settings.stats || []).length;
@@ -2886,12 +3327,349 @@ async function saveSettings() {
 
   if (res.ok) {
     settings = newSettings;
-    setStatus('pagina', '✓ Publicado', 'ok');
-    toast('Configuración guardada. El sitio se actualiza en ~30 segundos.', 'success');
+    setStatus('pagina', '✓ ' + Ls.common.saved, 'ok');
+    toast(currentLang === 'en' ? 'Settings saved. Site updates in ~30 seconds.' : 'Configuración guardada. El sitio se actualiza en ~30 segundos.', 'success');
   } else {
     setStatus('pagina', '✗ ' + (res.error||'Error'), 'err');
-    toast(res.error || 'Error al guardar', 'error');
+    toast(res.error || (currentLang === 'en' ? 'Save error' : 'Error al guardar'), 'error');
   }
+}
+
+// ── i18n ─────────────────────────────────────────
+const LANGS = {
+  es: {
+    nav: { dashboard:'Dashboard', pagina:'Página', seo:'SEO', reviews:'Reviews', analytics:'Analytics', usuarios:'Usuarios' },
+    sub: { hero:'Hero', about:'About Mudify', rating:'Puntuación General', highlights:'Temas de Reviews', staff:'Staff Destacado', contact:'Contacto', faq:'FAQ' },
+    common: { save:'Guardar cambios', cancel:'Cancelar', edit:'Editar', delete:'Eliminar', logout:'Cerrar sesión', viewSite:'Ver el sitio', saving:'Guardando…', saved:'Guardado', saveChanges:'Guardar cambios', add:'Agregar', close:'Cerrar', livePreview:'En vivo', preview:'Vista previa' },
+    login: { label:'Panel de administración', submit:'Iniciar sesión' },
+    dash: { welcomeH2:'Bienvenido,', sub:'Gestiona los reviews y la configuración de la página desde aquí.', viewSite:'Ver el sitio', quickAccess:'Accesos rápidos', active:'Reviews activos', hidden:'Reviews ocultos', total:'Total', activeDesc:'Visibles en la página', hiddenDesc:'No visibles para visitantes', totalDesc:'En la base de datos', newReview:'Nuevo review', newReviewDesc:'Agregar a la colección', editHero:'Editar hero', editHeroDesc:'Descripción y botón CTA', stats:'Estadísticas', statsDesc:'Números y etiquetas', manageReviews:'Gestionar reviews', manageDesc:'Editar, ocultar, eliminar' },
+    pagina: { eyebrow:'Página', editTitle:'¿Qué quieres editar?', sectionEyebrow:'Página · Sección', descCard:'Descripción principal', descHint:'Texto debajo del título en el hero de la página.', ctaCard:'Botón de acción (CTA)', ctaBtnLabel:'Texto del botón', ctaUrlLabel:'URL / Anchor', statsCard:'Estadísticas — métricas del hero', aboutCard:'Descripción de la empresa', aboutP1:'Párrafo 1', aboutP1Hint:'— ¿Quiénes son?', aboutP2:'Párrafo 2', aboutP2Hint:'— Marcas y servicios', aboutExtraCard:'Datos adicionales', brandsLabel:'Marcas autorizadas', brandsSub:'(separadas por coma)', vehiclesLabel:'Plataformas de vehículos', vehiclesSub:'(separadas por coma)', ratingCard:'Score y total', scoreLabel:'Score', totalLabel:'Total de reviews', starsCard:'Distribución de estrellas', starsCardDesc:'edita los % y las barras se actualizan', summaryCard:'Tarjetas de resumen', posLabel:'✓ Positivo', critLabel:'⚠ Crítico', mixLabel:'◎ Mixto', staffHeadCard:'Encabezado de sección', eyebrowLabel:'Eyebrow', titleLabel:'Título', subtitleLabel:'Subtítulo', staffCard:'Miembros del equipo', staffCardDesc:'foto, nombre, rol, cita', contactCard:'Campos de contacto', phoneLabel:'Teléfono', noteLabel:'Nota', websiteLabel:'Website', locationLabel:'Ubicación', finLabel:'Financiamiento', faqCard:'Preguntas y respuestas', faviconCard:'Favicon', faviconLabel:'URL del Favicon', faviconHint:'PNG, ICO o SVG · recomendado 32×32 o 64×64px', pickerHeroDesc:'Descripción principal, estadísticas y CTA', pickerAboutDesc:'Historia, marcas y plataformas de vehículos', pickerRatingDesc:'Score, barras de rating y resúmenes', pickerHighDesc:'Highlights y categorías más mencionadas', pickerStaffDesc:'Equipo mencionado en reviews de clientes', pickerContactDesc:'Teléfono, website, ubicación y financiamiento', pickerFaqDesc:'FAQ visible en la página pública' },
+    seo: { eyebrow:'SEO', title:'SEO & Metadatos', titleTag:'Title tag', titleHint:'Aparece en la pestaña del navegador y resultados de búsqueda', descTag:'Meta description', descHint:'Resumen de 150–160 caracteres', ogTitle:'Open Graph title', ogDesc:'Open Graph description', ogImage:'Imagen Open Graph (URL)', ogImageHint:'1200×630px recomendado — previsualización en redes sociales', canonical:'URL canónica', canonicalHint:'URL completa — evita contenido duplicado', schema:'Marcado Schema.org (JSON-LD)', schemaHint:'Structured data para Google Reviews · no modifiques a menos que sepas JSON-LD', livePreview:'Previsualización en buscadores', liveTitle:'Google Search', liveDesc:'Descripción', liveChars:'caracteres', ogLabel:'Open Graph / Redes Sociales', twitterLabel:'Twitter / X Card' },
+    reviews: { eyebrow:'Reviews', title:'Gestión de Reviews', filterAll:'Todos', filterActive:'Activos', filterHidden:'Ocultos', addTitle:'Nuevo review', addAuthor:'Autor', addInitials:'Iniciales', addVehicle:'Vehículo', addRating:'Calificación', addCategory:'Categoría', addVisibility:'Visibilidad', addRevTitle:'Título del review', addDate:'Fecha', addText:'Texto del review', addSave:'Agregar review', colAuthor:'Autor / Título', colStars:'Estrellas', colCatDate:'Categoría · Fecha', colStatus:'Estado', visible:'Visible', hidden:'Oculto', edit:'Editar', hide:'Ocultar', show:'Mostrar', delete:'Eliminar', tabList:'Lista de reviews', tabImport:'⬆️ Importar en masa' },
+    import: { tabList:'Lista de reviews', tabImport:'⬆️ Importar en masa', template:'Plantilla CSV', templateNote:'Descarga, completa en Excel o Google Sheets, y sube el archivo', download:'⬇ Descargar plantilla CSV', dropTitle:'Arrastra el CSV aquí o haz clic para seleccionar', dropSub:'Formato: CSV — exporta desde Excel o Google Sheets como "CSV (UTF-8)"', preview:'Vista previa', importBtn:'Importar reviews', colAuthor:'Autor', colDate:'Fecha', colText:'Texto', colSource:'Fuente', colStatus:'Estado', saving:'Guardando…' },
+    users: { title:'Usuarios del panel', addUser:'+ Agregar usuario', name:'Nombre', email:'Email', role:'Rol', status:'Estado', active:'Activo', inactive:'Inactivo', saveUser:'Guardar usuario', newPwd:'Nueva contraseña', pwdNote:'(dejar vacío para no cambiar)', pwd:'Contraseña', roleAdmin:'Admin — Acceso completo', roleMarketing:'Marketing — SEO + Reviews', roleDesign:'Diseño — Solo Página' },
+    analytics: { eyebrow:'Rendimiento', title:'Analytics del sitio', '7d':'7 días', '30d':'30 días', '90d':'90 días', users:'Usuarios', sessions:'Sesiones', pageviews:'Vistas de página', duration:'Duración media', sourcesLabel:'Fuentes de tráfico', pagesLabel:'Páginas más visitadas', reviewsLabel:'Métricas de reviews (datos del panel)', loading:'Cargando…', setupTitle:'Conecta Google Analytics', setupDesc:'Para ver datos reales, configura las variables de entorno en Netlify y vincula tu propiedad GA4.', armTotal:'Reviews totales', armVisible:'Visibles en sitio', armScore:'Score promedio', arm5:'5 estrellas', noData:'Sin datos disponibles', error:'Error al cargar', views:'vistas', sessions_short:'sesiones' },
+  },
+  en: {
+    nav: { dashboard:'Dashboard', pagina:'Page', seo:'SEO', reviews:'Reviews', analytics:'Analytics', usuarios:'Users' },
+    sub: { hero:'Hero', about:'About Mudify', rating:'Overall Rating', highlights:'Review Topics', staff:'Featured Staff', contact:'Contact', faq:'FAQ' },
+    common: { save:'Save changes', cancel:'Cancel', edit:'Edit', delete:'Delete', logout:'Sign out', viewSite:'View site', saving:'Saving…', saved:'Saved', saveChanges:'Save changes', add:'Add', close:'Close', livePreview:'Live', preview:'Preview' },
+    login: { label:'Admin panel', submit:'Sign in' },
+    dash: { welcomeH2:'Welcome,', sub:'Manage reviews and page content from here.', viewSite:'View site', quickAccess:'Quick access', active:'Active reviews', hidden:'Hidden reviews', total:'Total', activeDesc:'Visible on the page', hiddenDesc:'Not visible to visitors', totalDesc:'In the database', newReview:'New review', newReviewDesc:'Add to collection', editHero:'Edit hero', editHeroDesc:'Description and CTA button', stats:'Statistics', statsDesc:'Numbers and labels', manageReviews:'Manage reviews', manageDesc:'Edit, hide, delete' },
+    pagina: { eyebrow:'Page', editTitle:'What do you want to edit?', sectionEyebrow:'Page · Section', descCard:'Main description', descHint:'Text below the title in the hero section.', ctaCard:'Action button (CTA)', ctaBtnLabel:'Button text', ctaUrlLabel:'URL / Anchor', statsCard:'Statistics — hero metrics', aboutCard:'Company description', aboutP1:'Paragraph 1', aboutP1Hint:'— Who are they?', aboutP2:'Paragraph 2', aboutP2Hint:'— Brands and services', aboutExtraCard:'Additional data', brandsLabel:'Authorized brands', brandsSub:'(comma-separated)', vehiclesLabel:'Vehicle platforms', vehiclesSub:'(comma-separated)', ratingCard:'Score and total', scoreLabel:'Score', totalLabel:'Total reviews', starsCard:'Star distribution', starsCardDesc:'edit the % and bars update live', summaryCard:'Summary cards', posLabel:'✓ Positive', critLabel:'⚠ Critical', mixLabel:'◎ Mixed', staffHeadCard:'Section header', eyebrowLabel:'Eyebrow', titleLabel:'Title', subtitleLabel:'Subtitle', staffCard:'Team members', staffCardDesc:'photo, name, role, quote', contactCard:'Contact fields', phoneLabel:'Phone', noteLabel:'Note', websiteLabel:'Website', locationLabel:'Location', finLabel:'Financing', faqCard:'Questions and answers', faviconCard:'Favicon', faviconLabel:'Favicon URL', faviconHint:'PNG, ICO or SVG · recommended 32×32 or 64×64px', pickerHeroDesc:'Main description, statistics and CTA', pickerAboutDesc:'History, brands and vehicle platforms', pickerRatingDesc:'Score, rating bars and summaries', pickerHighDesc:'Highlights and most-mentioned categories', pickerStaffDesc:'Team mentioned in customer reviews', pickerContactDesc:'Phone, website, location and financing', pickerFaqDesc:'FAQ visible on the public page' },
+    seo: { eyebrow:'SEO', title:'SEO & Metadata', titleTag:'Title tag', titleHint:'Appears in browser tab and search results', descTag:'Meta description', descHint:'150–160 character summary', ogTitle:'Open Graph title', ogDesc:'Open Graph description', ogImage:'Open Graph image (URL)', ogImageHint:'1200×630px recommended — social media preview', canonical:'Canonical URL', canonicalHint:'Full URL — prevents duplicate content', schema:'Schema.org markup (JSON-LD)', schemaHint:'Structured data for Google Reviews · do not modify unless you know JSON-LD', livePreview:'Search engine preview', liveTitle:'Google Search', liveDesc:'Description', liveChars:'characters', ogLabel:'Open Graph / Social', twitterLabel:'Twitter / X Card' },
+    reviews: { eyebrow:'Reviews', title:'Reviews Management', filterAll:'All', filterActive:'Active', filterHidden:'Hidden', addTitle:'New review', addAuthor:'Author', addInitials:'Initials', addVehicle:'Vehicle', addRating:'Rating', addCategory:'Category', addVisibility:'Visibility', addRevTitle:'Review title', addDate:'Date', addText:'Review text', addSave:'Add review', colAuthor:'Author / Title', colStars:'Stars', colCatDate:'Category · Date', colStatus:'Status', visible:'Visible', hidden:'Hidden', edit:'Edit', hide:'Hide', show:'Show', delete:'Delete', tabList:'Reviews list', tabImport:'⬆️ Bulk import' },
+    import: { tabList:'Reviews list', tabImport:'⬆️ Bulk import', template:'CSV template', templateNote:'Download, fill in Excel or Google Sheets, then upload', download:'⬇ Download CSV template', dropTitle:'Drag CSV here or click to select', dropSub:'Format: CSV — export as "CSV (UTF-8)" from Excel or Google Sheets', preview:'Preview', importBtn:'Import reviews', colAuthor:'Author', colDate:'Date', colText:'Text', colSource:'Source', colStatus:'Status', saving:'Saving…' },
+    users: { title:'Panel users', addUser:'+ Add user', name:'Name', email:'Email', role:'Role', status:'Status', active:'Active', inactive:'Inactive', saveUser:'Save user', newPwd:'New password', pwdNote:'(leave blank to keep current)', pwd:'Password', roleAdmin:'Admin — Full access', roleMarketing:'Marketing — SEO + Reviews', roleDesign:'Design — Page only' },
+    analytics: { eyebrow:'Performance', title:'Site analytics', '7d':'7 days', '30d':'30 days', '90d':'90 days', users:'Users', sessions:'Sessions', pageviews:'Page views', duration:'Avg. duration', sourcesLabel:'Traffic sources', pagesLabel:'Top pages', reviewsLabel:'Reviews metrics (panel data)', loading:'Loading…', setupTitle:'Connect Google Analytics', setupDesc:'To see real data, set the Netlify environment variables and link your GA4 property.', armTotal:'Total reviews', armVisible:'Visible on site', armScore:'Avg. score', arm5:'5-star reviews', noData:'No data available', error:'Error loading data', views:'views', sessions_short:'sessions' },
+  }
+};
+let currentLang = localStorage.getItem('_lang') || 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('_lang', lang);
+  applyLang();
+}
+
+function applyLang() {
+  const L = LANGS[currentLang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = key.split('.').reduce((o,k) => o?.[k], L);
+    if (val !== undefined) el.textContent = val;
+  });
+  // Role select options
+  const muRole = document.getElementById('mu-role');
+  if (muRole) {
+    muRole.options[0].text = L.users.roleAdmin;
+    muRole.options[1].text = L.users.roleMarketing;
+    muRole.options[2].text = L.users.roleDesign;
+  }
+  // Save/cancel modal buttons
+  const muSave = document.querySelector('#user-modal .btn-primary');
+  if (muSave) muSave.textContent = L.users.saveUser;
+  const muCancel = document.querySelector('#user-modal .btn-ghost');
+  if (muCancel) muCancel.textContent = L.common.cancel;
+  // Password label
+  const pwdLbl = document.getElementById('mu-pwd-label');
+  const muId = document.getElementById('mu-id');
+  if (pwdLbl && muId) {
+    const isEdit = muId.value !== '';
+    pwdLbl.innerHTML = isEdit
+      ? `${L.users.newPwd} <span style="color:var(--t3);font-weight:400">${L.users.pwdNote}</span>`
+      : L.users.pwd;
+  }
+  // Login placeholders
+  const emailIn = document.getElementById('login-email');
+  if (emailIn) emailIn.placeholder = currentLang === 'en' ? 'you@mudify.com' : 'tu@mudify.com';
+  const pwdIn = document.getElementById('pwd');
+  if (pwdIn) pwdIn.placeholder = currentLang === 'en' ? 'Password' : 'Contraseña';
+  // Gate label + button
+  const gateLabel = document.querySelector('.gate-label');
+  if (gateLabel) gateLabel.textContent = L.login.label;
+  const gateBtn = document.getElementById('gate-btn');
+  if (gateBtn) gateBtn.textContent = L.login.submit;
+  // Lang button states
+  ['es','en'].forEach(l => document.getElementById('lang-'+l)?.classList.toggle('active', l === currentLang));
+  // Welcome h2 with dynamic username
+  const wh2 = document.getElementById('dash-welcome-h2');
+  if (wh2) wh2.textContent = `${L.dash.welcomeH2} ${currentUserName || 'Admin'}`;
+  const dsub = document.getElementById('dash-sub');
+  if (dsub) dsub.textContent = L.dash.sub;
+  // Dashboard view-site button
+  const dsView = document.querySelector('.dash-welcome .btn-secondary');
+  if (dsView) {
+    const svgEl = dsView.querySelector('svg');
+    dsView.textContent = L.common.viewSite;
+    if (svgEl) dsView.prepend(svgEl);
+  }
+  // Dashboard stat labels
+  const dStatLabels = document.querySelectorAll('.dash-stat-label');
+  const dStatDescs  = document.querySelectorAll('.dash-stat-desc');
+  const dKeys = [['active','activeDesc'],['hidden','hiddenDesc'],['total','totalDesc']];
+  dKeys.forEach(([lk,dk], i) => {
+    if (dStatLabels[i]) dStatLabels[i].textContent = L.dash[lk];
+    if (dStatDescs[i])  dStatDescs[i].textContent  = L.dash[dk];
+  });
+  // Dashboard quick access label
+  const qaLabel = document.getElementById('dash-quick-label');
+  if (qaLabel) qaLabel.textContent = L.dash.quickAccess;
+  // Dashboard action labels
+  const dActionLabels = document.querySelectorAll('.dash-action-label');
+  const dActionDescs  = document.querySelectorAll('.dash-action-desc');
+  const dActions = [['newReview','newReviewDesc'],['editHero','editHeroDesc'],['stats','statsDesc'],['manageReviews','manageDesc']];
+  dActions.forEach(([lk,dk], i) => {
+    if (dActionLabels[i]) dActionLabels[i].textContent = L.dash[lk];
+    if (dActionDescs[i])  dActionDescs[i].textContent  = L.dash[dk];
+  });
+  // Reviews new-review toolbar button if visible
+  const rvBtn = document.querySelector('#tb-actions .btn-primary');
+  if (rvBtn && rvBtn.textContent.includes('review')) {
+    const svgTbEl = rvBtn.querySelector('svg');
+    rvBtn.textContent = L.reviews.addTitle || 'Nuevo review';
+    if (svgTbEl) rvBtn.prepend(svgTbEl);
+  }
+  // Dashboard analytics mini labels
+  const dalabel = document.getElementById('dash-analytics-label');
+  if (dalabel) dalabel.textContent = (currentLang === 'en' ? 'Analytics — Last 7 days' : 'Analytics — Últimos 7 días');
+  const dalink = document.getElementById('dash-analytics-link');
+  if (dalink) dalink.textContent = (currentLang === 'en' ? 'View details →' : 'Ver detalles →');
+  setElText('dma-users-lbl',    L.analytics.users);
+  setElText('dma-views-lbl',    L.analytics.pageviews);
+  setElText('dma-duration-lbl', L.analytics.duration);
+  const dmasess = document.getElementById('dma-sessions-lbl');
+  if (dmasess) { const sp = dmasess.querySelector('span'); dmasess.firstChild.textContent = L.analytics.sessions + ': '; }
+  const dmabounce = document.getElementById('dma-bounce-lbl');
+  if (dmabounce) { const lbl = currentLang === 'en' ? 'Bounce: ' : 'Rebote: '; if (dmabounce.firstChild) dmabounce.firstChild.textContent = lbl; }
+  const dmasrc = document.getElementById('dma-src-lbl');
+  if (dmasrc) { const lbl = currentLang === 'en' ? 'Top source: ' : 'Fuente principal: '; if (dmasrc.firstChild) dmasrc.firstChild.textContent = lbl; }
+
+  // ── Página: picker home
+  const ph = document.getElementById('sv-pagina-home');
+  if (ph) {
+    const ey = ph.querySelector('.sv-eyebrow'); if (ey) ey.textContent = L.pagina.eyebrow;
+    const tt = ph.querySelector('.sv-title');   if (tt) tt.textContent = L.pagina.editTitle;
+    const cards = ph.querySelectorAll('.pagina-picker-card');
+    const picks = [
+      [L.sub.hero,      L.pagina.pickerHeroDesc],
+      ['About Mudify',  L.pagina.pickerAboutDesc],
+      [L.sub.rating,    L.pagina.pickerRatingDesc],
+      [L.sub.highlights,L.pagina.pickerHighDesc],
+      [L.sub.staff,     L.pagina.pickerStaffDesc],
+      [L.sub.contact,   L.pagina.pickerContactDesc],
+      [L.sub.faq,       L.pagina.pickerFaqDesc],
+    ];
+    cards.forEach((c, i) => {
+      if (!picks[i]) return;
+      const nm = c.querySelector('.pagina-picker-name'); if (nm) nm.textContent = picks[i][0];
+      const dc = c.querySelector('.pagina-picker-desc'); if (dc) dc.textContent = picks[i][1];
+    });
+  }
+
+  // ── Página: section eyebrows + titles (shared pattern)
+  const secEyebrow = L.pagina.sectionEyebrow;
+  [
+    ['sv-hero',      'Hero'],
+    ['sv-about',     'About Mudify'],
+    ['sv-rating',    L.sub.rating],
+    ['sv-highlights',L.sub.highlights],
+    ['sv-staff',     L.sub.staff],
+    ['sv-contact',   L.sub.contact],
+    ['sv-faq',       L.sub.faq],
+  ].forEach(([id, title]) => {
+    const el = document.getElementById(id); if (!el) return;
+    const ey = el.querySelector('.sv-head .sv-eyebrow'); if (ey) ey.textContent = secEyebrow;
+    const tt = el.querySelector('.sv-head .sv-title');   if (tt) tt.textContent = title;
+  });
+
+  // ── sv-hero card labels + field labels
+  const svHero = document.getElementById('sv-hero');
+  if (svHero) {
+    const cl = svHero.querySelectorAll('.sv-card-label');
+    if (cl[0]) cl[0].textContent = L.pagina.descCard;
+    if (cl[1]) cl[1].textContent = L.pagina.ctaCard;
+    if (cl[2]) cl[2].textContent = L.pagina.statsCard;
+    const fh = svHero.querySelector('.field-hint'); if (fh) fh.textContent = L.pagina.descHint;
+    const fl = svHero.querySelectorAll('.field-label');
+    if (fl[0]) fl[0].textContent = L.pagina.ctaBtnLabel;
+    if (fl[1]) fl[1].textContent = L.pagina.ctaUrlLabel;
+  }
+
+  // ── sv-about card labels + field labels (with HTML hint spans)
+  const svAbout = document.getElementById('sv-about');
+  if (svAbout) {
+    const cl = svAbout.querySelectorAll('.sv-card-label');
+    if (cl[0]) cl[0].textContent = L.pagina.aboutCard;
+    if (cl[1]) cl[1].textContent = L.pagina.aboutExtraCard;
+    const fl = svAbout.querySelectorAll('.field-label');
+    if (fl[0]) fl[0].innerHTML = `${L.pagina.aboutP1} <span style="font-weight:400;color:var(--t3)">${L.pagina.aboutP1Hint}</span>`;
+    if (fl[1]) fl[1].innerHTML = `${L.pagina.aboutP2} <span style="font-weight:400;color:var(--t3)">${L.pagina.aboutP2Hint}</span>`;
+    if (fl[2]) fl[2].innerHTML = `${L.pagina.brandsLabel} <span style="font-weight:400;color:var(--t3)">${L.pagina.brandsSub}</span>`;
+    if (fl[3]) fl[3].innerHTML = `${L.pagina.vehiclesLabel} <span style="font-weight:400;color:var(--t3)">${L.pagina.vehiclesSub}</span>`;
+  }
+
+  // ── sv-rating card labels + field labels
+  const svRating = document.getElementById('sv-rating');
+  if (svRating) {
+    const cl = svRating.querySelectorAll('.sv-card-label');
+    if (cl[0]) cl[0].textContent = L.pagina.ratingCard;
+    if (cl[1]) cl[1].textContent = `${L.pagina.starsCard} — ${L.pagina.starsCardDesc}`;
+    if (cl[2]) cl[2].textContent = L.pagina.summaryCard;
+    const fl = svRating.querySelectorAll('.field-label');
+    if (fl[0]) fl[0].textContent = L.pagina.scoreLabel;
+    if (fl[1]) fl[1].textContent = L.pagina.totalLabel;
+    // Summary card labels
+    const sumPos = svRating.querySelector('#sum-card-pos .sum-card-header .field-label');
+    if (sumPos) sumPos.textContent = L.pagina.posLabel;
+    const sumCrit = svRating.querySelector('#sum-card-crit .sum-card-header .field-label');
+    if (sumCrit) sumCrit.textContent = L.pagina.critLabel;
+    const sumMix = svRating.querySelector('#sum-card-mix .sum-card-header .field-label');
+    if (sumMix) sumMix.textContent = L.pagina.mixLabel;
+  }
+
+  // ── sv-highlights
+  const svHl = document.getElementById('sv-highlights');
+  if (svHl) {
+    const cl = svHl.querySelector('.sv-card-label');
+    if (cl) cl.textContent = currentLang === 'en'
+      ? '4 cards · edit emoji, title, description and tag directly'
+      : '4 tarjetas · edita el emoji, título, descripción y tag directamente';
+  }
+
+  // ── sv-staff
+  const svStaff = document.getElementById('sv-staff');
+  if (svStaff) {
+    const cl = svStaff.querySelectorAll('.sv-card-label');
+    if (cl[0]) cl[0].textContent = L.pagina.staffHeadCard;
+    if (cl[1]) cl[1].textContent = L.pagina.staffCard + ' · ' + L.pagina.staffCardDesc;
+    const fl = svStaff.querySelectorAll('.field-label');
+    if (fl[0]) fl[0].textContent = L.pagina.eyebrowLabel;
+    if (fl[1]) fl[1].textContent = L.pagina.titleLabel;
+    if (fl[2]) fl[2].textContent = L.pagina.subtitleLabel;
+    const addBtn = svStaff.querySelector('.btn-secondary');
+    if (addBtn) { const svgE = addBtn.querySelector('svg'); addBtn.textContent = currentLang === 'en' ? 'Add member' : 'Agregar miembro'; if (svgE) addBtn.prepend(svgE); }
+  }
+
+  // ── sv-contact
+  const svContact = document.getElementById('sv-contact');
+  if (svContact) {
+    const cl = svContact.querySelector('.sv-card-label');
+    if (cl) cl.textContent = L.pagina.contactCard;
+    const fl = svContact.querySelectorAll('.field-label');
+    const contactFields = ['phoneLabel','noteLabel','websiteLabel','noteLabel','locationLabel','noteLabel','finLabel','noteLabel'];
+    fl.forEach((lbl, i) => { if (contactFields[i]) lbl.textContent = L.pagina[contactFields[i]] || lbl.textContent; });
+  }
+
+  // ── sv-faq
+  const svFaq = document.getElementById('sv-faq');
+  if (svFaq) {
+    const cl = svFaq.querySelector('.sv-card-label');
+    if (cl) cl.textContent = L.pagina.faqCard;
+    const addBtn = svFaq.querySelector('.btn-secondary');
+    if (addBtn) { const svgE = addBtn.querySelector('svg'); addBtn.textContent = currentLang === 'en' ? 'Add question' : 'Agregar pregunta'; if (svgE) addBtn.prepend(svgE); }
+  }
+
+  // ── sv-seo
+  const svSeo = document.getElementById('sv-seo');
+  if (svSeo) {
+    const tt = svSeo.querySelector('.sv-title');
+    if (tt) tt.textContent = L.seo.title;
+    const cl = svSeo.querySelectorAll('.sv-card-label');
+    const seoCardLabels = [
+      L.pagina.faviconCard,
+      currentLang === 'en' ? 'Search Engine' : 'Search Engine',
+      'Open Graph — Facebook, LinkedIn, WhatsApp',
+      'Twitter / X Card',
+      currentLang === 'en' ? 'Technical & Indexing' : 'Técnico & Indexación',
+      currentLang === 'en' ? 'Schema.org — Structured Data' : 'Schema.org — Datos estructurados',
+      currentLang === 'en' ? 'Site Ownership Verification' : 'Verificación de propietario del sitio',
+      'Analytics & Tracking',
+      currentLang === 'en' ? 'Social Profiles' : 'Perfiles Sociales',
+    ];
+    cl.forEach((el, i) => { if (seoCardLabels[i]) el.textContent = seoCardLabels[i]; });
+    const faviconLbl = svSeo.querySelector('label[for="s-seo-favicon"], label.field-label');
+    const allHints = svSeo.querySelectorAll('.field-hint');
+    // SEO title field label + hints
+    // Info message
+    const seoInfoMsg = document.getElementById('seo-info-msg');
+    if (seoInfoMsg) seoInfoMsg.textContent = currentLang === 'en'
+      ? 'Google indexes dynamic JS — changes appear on the next recrawl. Rebuild triggers on save.'
+      : 'Google indexa JS dinámico — los cambios se reflejan en la próxima recrawl. El rebuild se dispara al guardar.';
+    // Favicon field label
+    const favLabel = svSeo.querySelector('.sv-card label.field-label');
+    if (favLabel) favLabel.innerHTML = currentLang === 'en'
+      ? `Favicon URL <span class="field-hint" style="display:inline">— PNG, ICO or SVG · recommended 32×32 or 64×64px</span>`
+      : `URL del Favicon <span class="field-hint" style="display:inline">— PNG, ICO o SVG · recomendado 32×32 o 64×64px</span>`;
+    // Title/desc hints
+    if (allHints[0]) allHints[0].textContent = currentLang === 'en'
+      ? 'Ideal: 50–70 chars · Shown in browser tab and Google results'
+      : 'Ideal: 50–70 chars · Se muestra en la pestaña del navegador y resultados de Google';
+    if (allHints[1]) allHints[1].textContent = currentLang === 'en'
+      ? 'Ideal: 120–160 chars · Appears in the Google snippet'
+      : 'Ideal: 120–160 chars · Aparece en el snippet de Google';
+  }
+
+  // ── v-reviews section labels
+  const svRevHead = document.querySelector('#v-reviews .sv-head');
+  if (svRevHead) {
+    const ey = svRevHead.querySelector('.sv-eyebrow'); if (ey) ey.textContent = L.reviews.eyebrow;
+    const tt = svRevHead.querySelector('.sv-title');   if (tt) tt.textContent = L.reviews.title;
+  }
+  // Reviews filter buttons (dynamically injected, so target by data-filter)
+  const filterBtns = document.querySelectorAll('.filter-bar button[data-filter]');
+  filterBtns.forEach(btn => {
+    const f = btn.getAttribute('data-filter');
+    if (f === 'all')    btn.textContent = L.reviews.filterAll;
+    if (f === 'active') btn.textContent = L.reviews.filterActive;
+    if (f === 'hidden') btn.textContent = L.reviews.filterHidden;
+  });
+
+  // Users section
+  const svUsHead = document.querySelector('#v-usuarios .sv-head');
+  if (svUsHead) {
+    const ey = svUsHead.querySelector('.sv-eyebrow');
+    if (ey) ey.textContent = currentLang === 'en' ? 'Admin' : 'Administración';
+  }
+  const addUserBtn = document.querySelector('#v-usuarios .btn-primary');
+  if (addUserBtn && !addUserBtn.closest('form') && !addUserBtn.closest('#user-modal')) {
+    const svgE = addUserBtn.querySelector('svg');
+    addUserBtn.textContent = L.users.addUser;
+    if (svgE) addUserBtn.prepend(svgE);
+  }
+
+  // Users table headers
+  const uThs = document.querySelectorAll('#users-table thead th');
+  const uThKeys = ['', 'name', 'email', 'role', 'status', ''];
+  uThs.forEach((th, i) => { if (uThKeys[i]) th.textContent = L.users[uThKeys[i]] || th.textContent; });
+
+  // Re-render users table if loaded
+  if (usersData.length) renderUsersTable();
+}
+
+function setElText(id, v) {
+  const el = document.getElementById(id);
+  if (el && v !== undefined) el.textContent = v;
 }
 
 async function callSave(file, data) {
@@ -2922,17 +3700,20 @@ async function loadUsers() {
 function renderUsersTable() {
   const tbody = document.getElementById('users-tbody');
   if (!tbody) return;
-  const roleLabels = { admin:'Admin', marketing:'Marketing', design:'Diseño' };
+  const L = LANGS[currentLang];
+  const roleLabels = { admin:'Admin', marketing:'Marketing', design: currentLang === 'en' ? 'Design' : 'Diseño' };
+  const editIcon  = `<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5l4 4-9 9H2v-4L11 5z"/><path d="M14 3l3 3"/></svg>`;
+  const trashIcon = `<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M8 6V4h4v2M6 6l1 11h6l1-11"/></svg>`;
   tbody.innerHTML = usersData.map(u => `
     <tr>
       <td><div class="u-avatar">${u.name.charAt(0).toUpperCase()}</div></td>
       <td style="font-weight:600">${u.name}</td>
       <td style="color:var(--t2)">${u.email}</td>
       <td><span class="role-badge ${u.role}">${roleLabels[u.role]||u.role}</span></td>
-      <td><span style="font-size:.78rem;color:${u.active?'var(--success)':'var(--t3)'}">${u.active?'Activo':'Inactivo'}</span></td>
+      <td><span style="font-size:.78rem;color:${u.active?'var(--success)':'var(--t3)'}">${u.active ? L.users.active : L.users.inactive}</span></td>
       <td style="display:flex;gap:6px">
-        <button class="user-action-btn" onclick="openUserModal('${u.id}')">Editar</button>
-        <button class="user-action-btn danger" onclick="deleteUser('${u.id}')">Eliminar</button>
+        <button class="user-action-btn" onclick="openUserModal('${u.id}')">${editIcon}<span class="btn-label">${L.common.edit}</span></button>
+        <button class="user-action-btn danger" onclick="deleteUser('${u.id}')">${trashIcon}<span class="btn-label">${L.common.delete}</span></button>
       </td>
     </tr>`).join('');
 }
@@ -2940,19 +3721,20 @@ function renderUsersTable() {
 function openUserModal(userId) {
   const modal = document.getElementById('user-modal');
   document.getElementById('mu-err').style.display = 'none';
+  const Lm = LANGS[currentLang];
   if (userId) {
     const u = usersData.find(x => x.id === userId);
     if (!u) return;
-    document.getElementById('modal-title').textContent = 'Editar usuario';
+    document.getElementById('modal-title').textContent = currentLang === 'en' ? 'Edit user' : 'Editar usuario';
     document.getElementById('mu-id').value     = u.id;
     document.getElementById('mu-name').value   = u.name;
     document.getElementById('mu-email').value  = u.email;
     document.getElementById('mu-role').value   = u.role;
     document.getElementById('mu-active').value = String(u.active);
     document.getElementById('mu-pwd').value    = '';
-    document.getElementById('mu-pwd-label').innerHTML = 'Nueva contraseña <span style="color:var(--t3);font-weight:400">(dejar vacío para no cambiar)</span>';
+    document.getElementById('mu-pwd-label').innerHTML = `${Lm.users.newPwd} <span style="color:var(--t3);font-weight:400">${Lm.users.pwdNote}</span>`;
   } else {
-    document.getElementById('modal-title').textContent = 'Agregar usuario';
+    document.getElementById('modal-title').textContent = currentLang === 'en' ? 'Add user' : 'Agregar usuario';
     document.getElementById('mu-id').value     = '';
     document.getElementById('mu-name').value   = '';
     document.getElementById('mu-email').value  = '';
@@ -3158,6 +3940,9 @@ function toast(msg, type='info') {
 
 // Initialize filter chips for Reviews view after DOM ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Apply saved language on load (affects login form too)
+  applyLang();
+
   // Inject filter bar before table in v-reviews
   const reviewsView = document.getElementById('v-reviews');
   const table = document.getElementById('reviews-table');

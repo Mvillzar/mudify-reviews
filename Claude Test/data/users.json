@@ -5,7 +5,7 @@
       "name": "David",
       "email": "david@mudify.com",
       "role": "admin",
-      "passwordHash": "Mudify2024!",
+      "passwordHash": "28230d1bb270bd19cfe2f8d4a155319ae4fe2b9eca3ecca5c12ae5770a9d08d4",
       "active": true
     },
     {
@@ -13,7 +13,7 @@
       "name": "Joel",
       "email": "joel@mudify.com",
       "role": "admin",
-      "passwordHash": "Mudify2024!",
+      "passwordHash": "28230d1bb270bd19cfe2f8d4a155319ae4fe2b9eca3ecca5c12ae5770a9d08d4",
       "active": true
     },
     {
@@ -21,7 +21,7 @@
       "name": "Alicia",
       "email": "alicia@mudify.com",
       "role": "marketing",
-      "passwordHash": "5c06eb3d5a05a19f49476d694ca81a36344660e9d5b98e3d6a6630f31c2422e7",
+      "passwordHash": "28230d1bb270bd19cfe2f8d4a155319ae4fe2b9eca3ecca5c12ae5770a9d08d4",
       "active": true
     },
     {
@@ -29,7 +29,7 @@
       "name": "Carlos",
       "email": "carlos@mudify.com",
       "role": "marketing",
-      "passwordHash": "Mudify2024!",
+      "passwordHash": "28230d1bb270bd19cfe2f8d4a155319ae4fe2b9eca3ecca5c12ae5770a9d08d4",
       "active": true
     }
   ]
