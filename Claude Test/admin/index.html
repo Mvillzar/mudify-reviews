@@ -2320,6 +2320,26 @@ function setRynoPose(pose) {
   const el = document.getElementById('hat-mascot');
   if (el && RYNO_POSES[pose]) el.src = RYNO_POSES[pose];
 }
+// Pose de descanso segun contexto: reposo (idle) / trabajando (working) / saludando (greeting)
+window._rynoCtx = 'idle';
+window._rynoSayTimer = null;
+function setRynoCtx(pose) {
+  window._rynoCtx = pose;
+  clearTimeout(window._rynoSayTimer);
+  setRynoPose(pose);
+}
+// RYNO habla -> pose "hablando". hold=true la mantiene (respuestas del chat);
+// si no, vuelve a su pose de contexto tras unos segundos (consejos de la burbuja).
+function rynoSay(hold) {
+  clearTimeout(window._rynoSayTimer);
+  setRynoPose('talking');
+  if (!hold) {
+    window._rynoSayTimer = setTimeout(function () {
+      if (window._rynoChatOpen) return;
+      setRynoPose(window._rynoCtx);
+    }, 4200);
+  }
+}
 
 function initMascot() {
     const RYNO_MSGS = [
@@ -2480,6 +2500,7 @@ function initMascot() {
     bubble.style.animation = 'bubblePop .4s cubic-bezier(.34,1.56,.64,1)';
     msg.textContent = msgs[msgIdx];
     startTalking();
+    rynoSay(false);
   }
 
   setInterval(() => {
@@ -2492,6 +2513,7 @@ function initMascot() {
   }, 5000);
 
   startTalking();
+  rynoSay(false);
   setInterval(cycleMsg, 35000);
 
   // Run-in animation from the right
@@ -2706,16 +2728,8 @@ function getRynoContext() {
   return vid;
 }
 
-function openRynoChat() {
-  setRynoPose('greeting');
-  const ctx = getRynoContext();
+function populateRynoChat(ctx) {
   const chat = RYNO_CHAT[ctx] || RYNO_CHAT['dashboard'];
-  document.getElementById('mascot-bubble').style.display = 'none';
-  const panel = document.getElementById('ryno-chat');
-  panel.style.display = 'block';
-  panel.style.animation = 'none';
-  panel.offsetHeight; // reflow
-  panel.style.animation = 'chatSlide .25s cubic-bezier(.34,1.4,.64,1)';
   document.getElementById('rc-q').textContent = chat.opener;
   const optsEl = document.getElementById('rc-opts');
   optsEl.innerHTML = '';
@@ -2729,7 +2743,44 @@ function openRynoChat() {
   });
   document.getElementById('rc-resp').style.display = 'none';
   document.getElementById('rc-back').style.display = 'none';
+}
+
+// Pantallas "operativas" (gestion/datos) -> trabajando; home/pickers -> reposo
+function rynoViewPose(view) {
+  return ['reviews','analytics','usuarios'].indexOf(view) >= 0 ? 'working' : 'idle';
+}
+// Pose de descanso segun la pantalla actual (vista + sub-vista activa)
+function rynoRestPose() {
+  var av = document.querySelector('.view.active');
+  var vid = av && av.id ? av.id.replace('v-','') : 'dashboard';
+  if (rynoViewPose(vid) === 'working') return 'working';
+  var sv = av ? av.querySelector('.sv.active') : null;   // editando una sub-seccion (no el picker "home")
+  if (sv && sv.id && sv.id.indexOf('-home') < 0) return 'working';
+  return 'idle';
+}
+
+function openRynoChat() {
+  setRynoCtx('greeting');
+  document.getElementById('mascot-bubble').style.display = 'none';
+  const panel = document.getElementById('ryno-chat');
+  panel.style.display = 'block';
+  panel.style.animation = 'none';
+  panel.offsetHeight; // reflow
+  panel.style.animation = 'chatSlide .25s cubic-bezier(.34,1.4,.64,1)';
+  populateRynoChat(getRynoContext());
   window._rynoChatOpen = true;
+}
+
+// Cambiaste de pantalla con el chat abierto -> refresca las preguntas al nuevo contexto.
+// RYNO se queda en su sitio; solo "presenta" la nueva pantalla.
+function refreshRynoChat() {
+  if (!window._rynoChatOpen) return;
+  populateRynoChat(getRynoContext());
+  setRynoPose('talking');
+  clearTimeout(window._rynoSayTimer);
+  window._rynoSayTimer = setTimeout(function () {
+    if (window._rynoChatOpen) setRynoPose('greeting');
+  }, 2200);
 }
 
 function rynoSelect(ctx, key) {
@@ -2741,16 +2792,18 @@ function rynoSelect(ctx, key) {
   respEl.textContent = resp;
   respEl.style.display = 'block';
   document.getElementById('rc-back').style.display = 'inline-block';
+  rynoSay(true);
 }
 
 function rynoBack() {
   document.getElementById('rc-resp').style.display = 'none';
   document.getElementById('rc-opts').style.display = 'flex';
   document.getElementById('rc-back').style.display = 'none';
+  setRynoPose('greeting');
 }
 
 function closeRynoChat() {
-  setRynoPose('idle');
+  setRynoCtx(rynoRestPose());
   document.getElementById('ryno-chat').style.display = 'none';
   const bubble = document.getElementById('mascot-bubble');
   bubble.style.display = 'block';
@@ -2854,7 +2907,8 @@ function isMobile() { return window.innerWidth <= 900; }
 let currentSub = 'hero';
 
 function nav(view, btn) {
-  setRynoPose('idle');
+  if (window._rynoChatOpen) setTimeout(refreshRynoChat, 0);
+  else setRynoCtx(rynoViewPose(view));
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.sb-item,.sb-item-with-sub').forEach(b => b.classList.remove('active','open'));
   document.querySelectorAll('.sb-sub').forEach(n => n.classList.remove('open'));
@@ -2933,8 +2987,8 @@ function nav(view, btn) {
 
 function navSub(section, el) {
   currentSub = section;
-  var _ed=['hero','about','rating','highlights','staff','contact','faq','seo-basico','seo-redes','seo-tecnico'];
-  setRynoPose(_ed.indexOf(section)>=0?'working':'idle');
+  if (window._rynoChatOpen) setTimeout(refreshRynoChat, 0);
+  else setRynoCtx('working');
   if (isMobile()) closeSidebar();
 
   const isSeoSub     = section.startsWith('seo-');
