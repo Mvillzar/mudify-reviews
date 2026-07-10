@@ -12,6 +12,7 @@
   --sb-hover: rgba(255,255,255,.06);
   --sb-active: #E94141;
   --bg: #F0EFEC;
+  --bg2: #EAE8E3;
   --surface: #FFFFFF;
   --accent: #E94141;
   --accent-d: #C73333;
@@ -1107,6 +1108,10 @@ a { color:var(--accent); text-decoration:none }
           <svg class="sb-sub-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l3 3 3-3"/></svg>
         </button>
         <nav class="sb-sub" id="sub-reviews">
+          <button class="sb-sub-item" data-roles="admin" data-sub="reviews-platforms" onclick="navSub('reviews-platforms',this)">
+            <svg class="sb-sub-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 12a3 3 0 004.2 0l2.3-2.3a3 3 0 00-4.2-4.2l-.8.8" stroke-linecap="round"/><path d="M12 8a3 3 0 00-4.2 0L5.5 10.3a3 3 0 004.2 4.2l.8-.8" stroke-linecap="round"/></svg>
+            <span data-i18n="sub.reviewsPlatforms">Plataformas</span>
+          </button>
           <button class="sb-sub-item" data-sub="reviews-list" onclick="navSub('reviews-list',this)">
             <svg class="sb-sub-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="14" height="2" rx="1"/><rect x="3" y="9" width="14" height="2" rx="1"/><rect x="3" y="13" width="9" height="2" rx="1"/></svg>
             <span data-i18n="sub.reviewsList">Gestionar</span>
@@ -1131,6 +1136,10 @@ a { color:var(--accent); text-decoration:none }
             <circle cx="7" cy="7" r="3"/><path d="M1 18c0-3.314 2.686-6 6-6"/><circle cx="14" cy="11" r="3"/><path d="M10 18c0-2.21 1.79-4 4-4s4 1.79 4 4"/>
           </svg>
           <span data-i18n="nav.usuarios">Usuarios</span>
+        </button>
+        <button class="sb-item" data-view="ayuda" onclick="nav('ayuda',this)">
+          <svg class="sb-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="8"/><path d="M7.5 8a2.5 2.5 0 114.3 1.9c-.9.7-1.8 1.2-1.8 2.4" stroke-linecap="round"/><circle cx="10" cy="15" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span data-i18n="help.nav">Ayuda</span>
         </button>
       </nav>
 
@@ -1810,6 +1819,11 @@ a { color:var(--accent); text-decoration:none }
               <div><div class="sv-eyebrow" data-i18n="nav.reviews">Reviews</div><h1 class="sv-title" data-i18n="reviews.pickerTitle">Gestión de Reviews</h1></div>
             </div>
             <div class="pagina-picker-grid">
+              <button class="pagina-picker-card" data-roles="admin" onclick="navSub('reviews-platforms')">
+                <div class="pagina-picker-icon">🔗</div>
+                <div class="pagina-picker-name" data-i18n="platforms.pickerName">Plataformas</div>
+                <div class="pagina-picker-desc" data-i18n="platforms.pickerDesc">Conecta Google, Trustpilot y SmartCustomer, y elige cuáles mostrar</div>
+              </button>
               <button class="pagina-picker-card" onclick="navSub('reviews-list')">
                 <div class="pagina-picker-icon">📋</div>
                 <div class="pagina-picker-name" data-i18n="sub.reviewsList">Gestionar</div>
@@ -1958,6 +1972,66 @@ a { color:var(--accent); text-decoration:none }
           </div>
           </div><!-- /sv-reviews-import -->
 
+          <style>
+            .ext-intro{color:var(--t2);font-size:.9rem;max-width:72ch;margin:0 0 18px;line-height:1.6}
+            .ext-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+            @media(max-width:900px){.ext-grid{grid-template-columns:1fr}}
+            .ext-card{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:10px}
+            .ext-card-head{display:flex;align-items:center;gap:10px}
+            .ext-logo{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex:0 0 34px;border:1px solid var(--border);overflow:hidden}
+            .ext-logo svg{display:block}
+            .ext-card-title{font-weight:700;font-size:.95rem;color:var(--t1)}
+            .ext-pill{font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+            .ext-on{background:#e7f3ec;color:#2e9e63}
+            .ext-off{background:var(--bg);color:var(--t3);border:1px solid var(--border)}
+            .ext-req{font-size:.8rem;color:var(--t2);line-height:1.5}
+            .ext-how summary{cursor:pointer;font-size:.78rem;color:var(--accent);font-weight:600;list-style:none}
+            .ext-how summary::-webkit-details-marker{display:none}
+            .ext-how ol{margin:8px 0 0;padding-left:18px;font-size:.78rem;color:var(--t2);line-height:1.65}
+            .ext-how code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:.92em}
+            .ext-note{font-size:.8rem;color:var(--t2);background:var(--accent-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;line-height:1.55}
+            .ext-sync-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+            .ext-sync-status{font-size:.8rem;color:var(--t3)}
+            .ext-empty{border:1.5px dashed var(--border);border-radius:12px;padding:26px;text-align:center;color:var(--t3);font-size:.86rem}
+            .ext-reviews{display:flex;flex-direction:column;gap:10px}
+            .ext-rev{border:1px solid var(--border);border-radius:10px;padding:11px 14px;display:flex;gap:11px;align-items:flex-start;background:var(--surface)}
+            .ext-rev input{margin-top:3px;flex:0 0 auto}
+            .ext-rev-body{flex:1;min-width:0}
+            .ext-rev-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+            .ext-rev-author{font-weight:700;font-size:.84rem;color:var(--t1)}
+            .ext-rev-src{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+            .ext-rev-text{font-size:.83rem;color:var(--t2);margin-top:3px;line-height:1.5}
+            .ext-save-row{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+          </style>
+
+          <!-- sv-reviews-platforms (integraciones de reseñas externas) -->
+          <div class="sv" id="sv-reviews-platforms" data-hide-save="true">
+            <div class="sv-head">
+              <div><div class="sv-eyebrow" data-i18n="platforms.eyebrow">Reviews</div><h1 class="sv-title" data-i18n="platforms.title">Plataformas externas</h1></div>
+              <button class="btn btn-ghost btn-sm" onclick="navSub('reviews-list')" data-i18n="platforms.back">Volver</button>
+            </div>
+
+            <p class="ext-intro" data-i18n="platforms.intro">Conecta las plataformas donde recibes reseñas para traerlas al panel, elegir cuáles destacar y mostrarlas en el sitio — todo desde aquí. La sincronización es manual (no en cada visita), así que no consume recursos por tráfico.</p>
+
+            <div class="ext-grid" id="ext-cards"></div>
+
+            <div class="ext-note">🔒 <span data-i18n="platforms.security">Seguridad: las llaves de API se guardan como variables de entorno en Netlify, nunca en el código. Cada tarjeta indica qué necesitas. Al conectar la cuenta y publicar (deploy), el estado pasa a Conectado y podrás sincronizar.</span></div>
+
+            <div class="ext-sync-bar">
+              <button class="btn btn-primary btn-sm" id="ext-sync-btn" onclick="syncExternalReviews()" data-i18n="platforms.sync">🔄 Sincronizar reseñas</button>
+              <span id="ext-sync-status" class="ext-sync-status"></span>
+            </div>
+
+            <div id="ext-reviews-wrap">
+              <div class="ext-empty" id="ext-empty" data-i18n="platforms.empty">Conecta al menos una plataforma y sincroniza para ver aquí las reseñas y elegir cuáles mostrar en el sitio.</div>
+              <div class="ext-reviews" id="ext-reviews"></div>
+              <div class="ext-save-row" id="ext-save-row" style="display:none">
+                <button class="btn btn-primary btn-sm" onclick="saveExternalSelection()" data-i18n="platforms.saveSel">Guardar selección y publicar</button>
+                <span id="ext-save-status" class="ext-sync-status"></span>
+              </div>
+            </div>
+          </div><!-- /sv-reviews-platforms -->
+
           <div class="save-bar-wrap save-hidden">
             <button class="btn btn-primary" id="btn-save-reviews" onclick="saveReviews()" data-i18n="common.save">Guardar cambios</button>
             <span class="save-status" id="st-reviews">Sin cambios pendientes</span>
@@ -1989,6 +2063,33 @@ a { color:var(--accent); text-decoration:none }
             <div class="sv-card-label" style="color:var(--accent)">Contraseña inicial de todos los usuarios</div>
             <p style="font-size:.85rem;color:var(--t2);margin:0">Todos los usuarios nuevos reciben la contraseña <strong>Mudify2024!</strong> — se recomienda cambiarla en el primer acceso. Para cambiar la contraseña de un usuario, usa el botón "Editar" en la tabla.</p>
           </div>
+        </div>
+
+        <!-- ── AYUDA / HELP ──────────────────────── -->
+        <div id="v-ayuda" class="view">
+          <style>
+            .help-intro{color:var(--t2);font-size:.9rem;max-width:70ch;margin:0 0 16px}
+            .help-search{width:100%;max-width:420px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:.9rem;margin-bottom:20px;background:var(--surface);color:var(--t1)}
+            .help-cat{margin-bottom:22px}
+            .help-cat-title{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);font-weight:700;margin:0 0 10px}
+            .help-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:var(--surface);overflow:hidden}
+            .help-item summary{cursor:pointer;padding:13px 40px 13px 15px;font-weight:600;font-size:.9rem;color:var(--t1);list-style:none;position:relative}
+            .help-item summary::-webkit-details-marker{display:none}
+            .help-item summary::after{content:"+";position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:1.1rem}
+            .help-item[open] summary::after{content:"–"}
+            .help-a{padding:0 15px 14px;color:var(--t2);font-size:.86rem;line-height:1.6}
+            .help-a code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:.9em}
+            .help-empty{color:var(--t3);padding:20px;text-align:center}
+          </style>
+          <div class="sv-head">
+            <div>
+              <div class="sv-eyebrow" data-i18n="help.eyebrow">Ayuda</div>
+              <h1 class="sv-title" data-i18n="help.title">Centro de ayuda</h1>
+            </div>
+          </div>
+          <p class="help-intro" data-i18n="help.intro">Dudas frecuentes y soluciones sobre el panel, las reviews, las plataformas y la publicación. Busca o abre una categoría.</p>
+          <input type="text" id="help-search" class="help-search" oninput="renderHelp()" placeholder="Buscar…">
+          <div id="help-content"></div>
         </div>
 
         <!-- ── ANALYTICS ─────────────────────────── -->
@@ -2428,6 +2529,27 @@ function initMascot() {
     "Pro tip gratuito: Un review con foto vale 3 veces más que uno sin foto, según estudios que no voy a citar pero son reales. 📸",
     "En este panel viven 445 historias de clientes satisfechos. Cada una es un argumento de venta. No los desperdicies. 💡",
   ];
+  const RYNO_MSGS_EN = [
+    `Welcome, ${currentUserName}. Reviews do not sort themselves. Neither does mud. 🦏`,
+    "Pro tip: a customer who leaves 3 stars probably expected 2-day shipping on a fully built 4Runner. Questionable logic. 📦",
+    "Grey rhinos can sleep standing up. I do not sleep. I just monitor dashboards. 👁️",
+    "82% positive reviews here. Yelp averages 3.5 stars. We are objectively better. 📊",
+    "89% of online purchases are influenced by reviews. The other 11% buy the wrong lift kit and then leave a review. 🛒",
+    "A review with a photo is worth 3x one without, per studies I will not cite but are real. 📸",
+    "The save button is not decorative. I say this from someone else's experience. 💾",
+    "Reviews do not matter until they matter. And by then, you should have managed them already. Free wisdom. 📌",
+    "Seven editable sections, a review system, analytics and two languages. Built by pixels with attitude. That is, me. 🏗️",
+    "Hide obvious spam, keep honest criticism. Visitors expect to see a 3-star or two. It builds trust. ⚖️",
+    "A specific CTA beats a vague one every time. Tell people exactly what they get. 🎯",
+    "Outdated numbers hurt more than no numbers. Someone who knows Mudify will notice. 🔢",
+    "If traffic looks low and GA4 just connected, give it 30 days before panicking. 📈",
+    "The rhino horn is made of keratin. Like human nails. Now you cannot unthink that. You are welcome. 🦏",
+    "Octopuses have three hearts and blue blood. Fancier than me. But none of them manage reviews. 🐙",
+    "445+ verified reviews live in this panel. Each one is a sales argument. Do not waste them. 💡",
+    "If the original suspension were enough, Mudify would not exist. If organic traffic were automatic, SEO would not either. 🔩",
+    "You are reviewing this panel. That already says a lot about you. Most people never get this far. 👏",
+  ];
+  const pickMsgs = () => (currentLang === 'en' ? RYNO_MSGS_EN : RYNO_MSGS);
 
   // No-repeat logic — track shown messages in localStorage per week
   function getWeekKey() {
@@ -2442,19 +2564,23 @@ function initMascot() {
   }
   function nextMsgIdx(current) {
     let shown = getShownSet();
-    if (shown.size >= RYNO_MSGS.length) { shown = new Set(); saveShown(shown); }
+    if (shown.size >= pickMsgs().length) { shown = new Set(); saveShown(shown); }
     let idx;
-    do { idx = Math.floor(Math.random() * RYNO_MSGS.length); } while (shown.has(idx));
+    do { idx = Math.floor(Math.random() * pickMsgs().length); } while (shown.has(idx));
     shown.add(idx);
     saveShown(shown);
     return idx;
   }
 
-  const msgs = RYNO_MSGS;
-  // Set initial bubble text
+  // Set initial bubble text (idioma actual)
   const initMsgEl = document.getElementById('mascot-msg');
-  if (initMsgEl) initMsgEl.textContent = msgs[0]; // index 0 is the personalized welcome
-  const peekMsgs = [
+  if (initMsgEl) initMsgEl.textContent = pickMsgs()[0]; // index 0 is the personalized welcome
+  const peekMsgs = currentLang === 'en' ? [
+    "Need some technical advice?",
+    "RYNO has something to tell you...",
+    "No lift kit and no mascot? Risky.",
+    "Reviews waiting for review 👀",
+  ] : [
     "¿Necesitas consejo técnico?",
     "RYNO tiene algo que decirte...",
     "¿Sin lift kit ni mascota? Arriesgado.",
@@ -2498,7 +2624,7 @@ function initMascot() {
     bubble.style.animation = 'none';
     bubble.offsetHeight;
     bubble.style.animation = 'bubblePop .4s cubic-bezier(.34,1.56,.64,1)';
-    msg.textContent = msgs[msgIdx];
+    msg.textContent = pickMsgs()[msgIdx] || pickMsgs()[0];
     startTalking();
     rynoSay(false);
   }
@@ -2514,6 +2640,7 @@ function initMascot() {
 
   startTalking();
   rynoSay(false);
+  window._rynoCycle = cycleMsg;
   setInterval(cycleMsg, 35000);
 
   // Run-in animation from the right
@@ -2544,7 +2671,7 @@ function showRyno() {
 // ── RYNO Interactive Chat ─────────────────────────
 window._rynoChatOpen = false;
 
-const RYNO_CHAT = {
+const RYNO_CHAT_ES = {
   dashboard: {
     opener: "Ah, el dashboard. La pantalla de 'todo parece bien'. ¿Hay algo que realmente necesites saber o solo viniste a verme?",
     opts: [
@@ -2714,7 +2841,207 @@ const RYNO_CHAT = {
       remove: "Para revocar: desactiva al usuario en lugar de eliminar — así conservas historial. Si alguien dejó la empresa, hazlo de inmediato. No esperes. El acceso de ex-colaboradores a herramientas de gestión es un riesgo que nunca vale la pena.",
     },
   },
+  ayuda: {
+    opener: "El centro de ayuda. Donde vienes cuando algo no cuadra. ¿Qué necesitas — gestionar reviews, conectar plataformas, o publicar cambios?",
+    opts: [
+      { key:'reviews', label:'¿Cómo gestiono los reviews?' },
+      { key:'connect', label:'¿Cómo conecto una plataforma?' },
+      { key:'publish', label:'Guardé algo y no aparece' },
+    ],
+    responses: {
+      reviews: "En Reviews → Gestionar editas, ocultas o muestras cada uno. En Agregar cargas uno manual. En Importar CSV subes muchos de golpe. Ocultar no borra: solo lo quita del sitio.",
+      connect: "Ve a Reviews → Plataformas. Cada tarjeta dice qué llaves necesitas; se ponen en Netlify, no aquí. Al desplegar, el estado pasa a Conectado, sincronizas y eliges cuáles publicar.",
+      publish: "Al guardar, el sitio se reconstruye en ~30s. Si no aparece: revisa que el deploy de Netlify no esté en pausa por créditos, y recarga limpiando caché. Todo lo demás está en las tarjetas de esta página.",
+    },
+  },
 };
+
+const RYNO_CHAT_EN = {
+  dashboard: {
+    opener: "Ah, the dashboard. The 'everything looks fine' screen. Is there something you actually need to know, or did you just come to see me?",
+    opts: [
+      { key:'stats',   label:'What do the numbers tell me?' },
+      { key:'next',    label:'What should I do now?' },
+      { key:'nothing', label:'Just passing by...' },
+    ],
+    responses: {
+      stats:   "Active Reviews = visible on the site. Hidden = saved but not shown. If active is low vs total, you have unpublished material. If the score is under 4.5, check which reviews got hidden by accident.",
+      next:    "If there are good hidden reviews, publish them. If the score is low, add real reviews you have not uploaded yet. If analytics shows low traffic, work on SEO. If everything looks fine... leave it alone. Really.",
+      nothing: "Smart move. Dashboards are better visited than edited. I will keep watching from here. 👁️",
+    },
+  },
+  pagina: {
+    opener: "The Page section. Seven editable sections. Do you know which one needs attention, or are you exploring with no destination?",
+    opts: [
+      { key:'which',  label:'Which section should I edit first?' },
+      { key:'risk',   label:'What should I not touch?' },
+      { key:'browse', label:'Just browsing' },
+    ],
+    responses: {
+      which:  "Priority if unsure: Hero first (first impression), then Rating (visible numbers), then About (trust copy). The rest — FAQ, Staff, Contact — only if something is outdated. Highlights and reviews are the most dynamic.",
+      risk:   "Do not edit the Hero if it is converting well. Do not change the Rating score without checking the real average. Do not touch About if the positioning works. Basically: if it works, do not improve it without a reason.",
+      browse: "Fine. Click any section in the left menu to enter. When you are editing something specific, talk to me again and I will give you context for that section. 🦏",
+    },
+  },
+  hero: {
+    opener: "The Hero section. The site's first impact. Do you have a good reason to edit this, or is your cursor just free?",
+    opts: [
+      { key:'what', label:'What should I change here?' },
+      { key:'cta',  label:'The CTA button is weak' },
+      { key:'safe', label:'What should I not touch?' },
+    ],
+    responses: {
+      what: "Change it if: the tagline does not reflect the real offer, the CTA points to the wrong place, or the description is outdated. If the current copy has been stable for months and conversions are fine — leave it. Good heroes do not improve themselves, they get ruined.",
+      cta:  "A specific CTA converts better: 'See 445 verified reviews' beats 'See more'. Tell the visitor exactly what they will find. Also check the button link goes where it should and that active reviews are visible on arrival.",
+      safe: "Do not change the headline without data showing the current one fails. Do not change the CTA link without testing the destination URL. No cosmetic changes without a concrete reason — every edit risks breaking something that works.",
+    },
+  },
+  about: {
+    opener: "About Mudify. The 'who we are'. Did something change in the company, or do you just have an editing itch?",
+    opts: [
+      { key:'update', label:'There is outdated info' },
+      { key:'tone',   label:'How should this sound?' },
+      { key:'nums',   label:'Are the numbers still valid?' },
+    ],
+    responses: {
+      update: "Prioritize: number of reviews (must match the database), years in operation, geographic coverage. Keep the tone confident and direct. Do not promise what the site cannot deliver yet.",
+      tone:   "About should sound like someone who knows off-road without being pretentious. Technical when needed, accessible always. Avoid: 'industry leaders', 'innovative solutions', 'trusted'. Say what you do, for whom, and why it matters.",
+      nums:   "Numbers must reflect current reality. If it says '400+ reviews' but there are 500, update it. Outdated numbers hurt more than none — a visitor who already knows Mudify will notice.",
+    },
+  },
+  rating: {
+    opener: "The rating section. Numbers from real people. How sure are you that you need to touch this?",
+    opts: [
+      { key:'what',  label:'What do I control here?' },
+      { key:'score', label:'The score does not match the reviews' },
+      { key:'leave', label:'Better not touch anything' },
+    ],
+    responses: {
+      what:  "Here you control the number of reviews shown, the visible average score and descriptive labels. These numbers are manual — not auto-calculated. They must match what is in the database. Do not inflate them.",
+      score: "The shown score is manual. To fix it: go to Reviews, compute the real average (sum of stars / total), and update here. If it is 4.7, show 4.7. Lying about the score costs credibility when someone reads the individual reviews.",
+      leave: "Wise call. The numbers are fine. I watch them anyway. 📊",
+    },
+  },
+  highlights: {
+    opener: "Review topics. The feedback categories. Do you need to add, remove, or just browse?",
+    opts: [
+      { key:'add',    label:'When should I add a new topic?' },
+      { key:'remove', label:'When should I remove one?' },
+      { key:'order',  label:'Does the order matter?' },
+    ],
+    responses: {
+      add:    "Add a topic when you have 5+ reviews mentioning that specific category. A topic with few reviews looks empty. Good topics: Installation, Product Quality, Delivery Times, Communication. Bad: 'Other' — too vague.",
+      remove: "Remove a topic if it no longer reflects what you offer, has fewer than 3 active reviews, or overlaps too much with another. Fewer well-populated categories beat many empty ones.",
+      order:  "Yes it matters. Put topics with the most positive reviews first. The first topic anchors the visitor's expectation. If 'Product Quality' is full of 5 stars, make it first.",
+    },
+  },
+  staff: {
+    opener: "Featured Staff. The team's faces. Are there real team changes, or are you personalizing out of habit?",
+    opts: [
+      { key:'photo', label:'What makes a good photo?' },
+      { key:'bio',   label:'What goes in the bio?' },
+      { key:'order', label:'How should I order the team?' },
+    ],
+    responses: {
+      photo: "Photos: neutral background, visible face, no selfie. What matters most is consistency across everyone — same style, same framing. If you do not have consistent photos for all, better show none than a mix of qualities. Visual inconsistency erodes trust.",
+      bio:   "Short. Name, role, expertise fact. Example: 'Joel — Senior technician. 8 years on lifted suspensions for American pickups.' No hobbies or personal data. Two sentences max. The customer wants to know if that person knows their stuff.",
+      order: "Owner/manager first, senior technicians next, support last. If everyone is the same level, order by time at the company. Position implies hierarchy — use it on purpose.",
+    },
+  },
+  contact: {
+    opener: "The contact section. Where customers land when Google fails and the FAQ did not convince them. Did something change?",
+    opts: [
+      { key:'info',  label:'What info must I keep updated?' },
+      { key:'hours', label:'Hours or location changed' },
+      { key:'cta',   label:'How do I improve the CTA?' },
+    ],
+    responses: {
+      info:  "Priority: phone, main email, exact address (suite if any), hours. Anything outdated makes the customer go to the wrong place or call a dead number. Review every 3-6 months.",
+      hours: "Update hours and location immediately when they change. Nothing worse than a customer arriving when you are closed because of the website. Include the time zone if you have customers in multiple states.",
+      cta:   "The CTA should say what happens next. 'Write us' does not say when you reply. 'Reply within 24 hours' does. If you have WhatsApp, use it as the primary CTA — it converts best in this market.",
+    },
+  },
+  faq: {
+    opener: "The FAQ. The section people do not read until they already have the problem. Are you adding, editing, or just looking?",
+    opts: [
+      { key:'add',    label:'Which questions are worth adding?' },
+      { key:'format', label:'How do I write a good answer?' },
+      { key:'order',  label:'How should I order questions?' },
+    ],
+    responses: {
+      add:    "Add a question when: you have been asked 3+ times, it shows up in reviews or comments, or it is a frequent sales objection. Good questions: warranties, install times, compatibility, returns. Avoid questions nobody asks.",
+      format: "Short and direct: answer first, explanation after. Do not start with 'Great question'. If it needs more than 3 sentences, simplify. If there is a process, use numbering. If there is an important exception, mention it.",
+      order:  "Most frequent first. If you do not know which, put the ones with the biggest impact on the buying decision first: price, warranty, install time. Logistics go last.",
+    },
+  },
+  seo: {
+    opener: "SEO. The invisible world that decides whether Google finds you or ignores you. Do you know what you are doing here?",
+    opts: [
+      { key:'title', label:'How do I write a good title tag?' },
+      { key:'meta',  label:'What is the meta description for?' },
+      { key:'og',    label:'What is Open Graph?' },
+    ],
+    responses: {
+      title: "Ideal format: 'Main Keyword | Brand Name'. Max 60 characters or Google cuts it. For Mudify include city, service and brand. Example: 'Lift Kits Miami | Mudify Off-Road'. No all-caps. No period at the end.",
+      meta:  "The meta description does not directly affect ranking but it does affect clicks in results. 150-160 characters max. Answer: what does the site do? why click? Include a soft call-to-action. Update it if the main offer changes.",
+      og:    "Open Graph controls how your link looks when shared on social. Without it, Facebook/Instagram pick the image themselves — badly. Ideal image: 1200×630px, logo visible. The OG title can differ from the Google one — use that.",
+    },
+  },
+  reviews: {
+    opener: "Reviews. The heart of it. What are we doing — adding, filtering, or the 'hiding counts too' type?",
+    opts: [
+      { key:'hide',  label:'When should I hide a review?' },
+      { key:'add',   label:'How do I add a quality one?' },
+      { key:'score', label:'How do I improve the overall score?' },
+    ],
+    responses: {
+      hide:  "Hide when: it is obvious spam, contains personal data, or the customer clearly confused the business. Do NOT hide honest criticism even if it stings — visitors expect to see some 3-star reviews. Hiding everything negative looks suspicious and hurts credibility.",
+      add:   "A well-added review has: a real name (not just initials), a specific vehicle, a rating justified by the text, and a recent date. Reviews with photos are worth 3x in perception. Categorize well to enrich the Highlights.",
+      score: "To raise the score: first publish good reviews that are hidden by mistake. Second, upload real reviews from satisfied customers still pending. The score rises with more good reviews, not by hiding the average ones.",
+    },
+  },
+  analytics: {
+    opener: "Analytics. Data nobody asked for but everybody needs. What worries you — that the numbers are low, or that you do not understand them?",
+    opts: [
+      { key:'low',     label:'Traffic looks low' },
+      { key:'bounce',  label:'What is bounce rate?' },
+      { key:'sources', label:'Which source should dominate?' },
+    ],
+    responses: {
+      low:     "Low traffic can be: a new site (Google takes 3-6 months), weak SEO (check title tags and meta), or an unpromoted site. If GA4 was just connected, you need 30 days of data to judge fairly. Do not panic before that.",
+      bounce:  "Bounce = someone arrived and left without interacting. For a single-page site, a high bounce can be normal — they came, read reviews, left convinced. It is bad if high bounce + short duration (under 30 seconds): that means something scared the visitor off.",
+      sources: "For Mudify, growing organic (Google) is ideal. Direct is a good sign — users who remember the URL. Referral (Yelp, GMB, etc.) is gold because it comes with intent. Social depends on whether you invest there. If it is all Direct and little Organic, work on SEO.",
+    },
+  },
+  usuarios: {
+    opener: "Panel users. Management access. Are you adding someone, removing, or checking who has access to your stuff?",
+    opts: [
+      { key:'roles',  label:'What can each role do?' },
+      { key:'add',    label:'I am going to add a user' },
+      { key:'remove', label:'I need to revoke access' },
+    ],
+    responses: {
+      roles:  "Admin: everything. Marketing: edit content + reviews + analytics, no user management. Design: edit page content only. If unsure what role to give someone, start with the least privilege — you can always raise it, lowering it is awkward.",
+      add:    "When adding: use a work email, not personal. Assign the minimum role needed. Share the password through a secure channel, not here in the panel. The user should change it on their first session.",
+      remove: "To revoke: deactivate the user instead of deleting — that keeps history. If someone left the company, do it immediately. Do not wait. Ex-collaborator access to management tools is a risk that is never worth it.",
+    },
+  },
+  ayuda: {
+    opener: "The help center. Where you come when something does not add up. What do you need — managing reviews, connecting platforms, or publishing changes?",
+    opts: [
+      { key:'reviews', label:'How do I manage reviews?' },
+      { key:'connect', label:'How do I connect a platform?' },
+      { key:'publish', label:'I saved something and it does not show' },
+    ],
+    responses: {
+      reviews: "In Reviews → Manage you edit, hide or show each one. In Add you upload one manually. In Import CSV you upload many at once. Hiding does not delete: it just removes it from the site.",
+      connect: "Go to Reviews → Platforms. Each card says which keys you need; they go in Netlify, not here. After deploy, the status turns Connected, you sync and choose which to publish.",
+      publish: "When you save, the site rebuilds in ~30s. If it does not show: check the Netlify deploy is not paused for credits, and reload clearing cache. Everything else is in the cards on this page.",
+    },
+  },
+};
+
+function getRynoChat() { return currentLang === 'en' ? RYNO_CHAT_EN : RYNO_CHAT_ES; }
 
 function getRynoContext() {
   const activeView = document.querySelector('.view.active');
@@ -2729,7 +3056,7 @@ function getRynoContext() {
 }
 
 function populateRynoChat(ctx) {
-  const chat = RYNO_CHAT[ctx] || RYNO_CHAT['dashboard'];
+  const chat = getRynoChat()[ctx] || getRynoChat()['dashboard'];
   document.getElementById('rc-q').textContent = chat.opener;
   const optsEl = document.getElementById('rc-opts');
   optsEl.innerHTML = '';
@@ -2784,7 +3111,7 @@ function refreshRynoChat() {
 }
 
 function rynoSelect(ctx, key) {
-  const chat = RYNO_CHAT[ctx] || RYNO_CHAT['dashboard'];
+  const chat = getRynoChat()[ctx] || getRynoChat()['dashboard'];
   const resp = chat.responses[key];
   if (!resp) return;
   document.getElementById('rc-opts').style.display = 'none';
@@ -2942,7 +3269,7 @@ function nav(view, btn) {
   document.getElementById('v-' + view).classList.add('active');
   const navBtn = btn || document.querySelector('[data-view="' + view + '"]');
   if (navBtn) navBtn.classList.add('active');
-  const titles = { dashboard:'Dashboard', pagina:L.nav.pagina, seo:'SEO', reviews:L.nav.reviews, analytics:L.nav.analytics, usuarios:L.nav.usuarios };
+  const titles = { dashboard:'Dashboard', pagina:L.nav.pagina, seo:'SEO', reviews:L.nav.reviews, analytics:L.nav.analytics, usuarios:L.nav.usuarios, ayuda:(L.help&&L.help.nav)||'Ayuda' };
   document.getElementById('tb-title').textContent = titles[view] || view;
   const subEl = document.getElementById('tb-sub'); if (subEl) subEl.textContent = '';
 
@@ -2962,6 +3289,7 @@ function nav(view, btn) {
   if (view === 'analytics') {
     loadAnalytics(7);
   }
+  if (view === 'ayuda') renderHelp();
   if (isPag) {
     document.querySelectorAll('.sv').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.sb-sub-item').forEach(b => b.classList.remove('active'));
@@ -3026,6 +3354,7 @@ function navSub(section, el) {
     'reviews-list':   Ls.reviewsList   || 'Gestionar',
     'reviews-add':    Ls.reviewsAdd    || 'Agregar',
     'reviews-import': Ls.reviewsImport || 'Importar CSV',
+    'reviews-platforms': Ls.reviewsPlatforms || 'Plataformas',
   };
   const tbSub = document.getElementById('tb-sub'); if (tbSub) tbSub.textContent = lbls[section] || section;
 
@@ -3043,6 +3372,7 @@ function navSub(section, el) {
 
   if (section === 'rating') liveRating();
   if (section === 'seo-basico' || section === 'seo-redes') liveSeo();
+  if (section === 'reviews-platforms') loadIntegrations();
 
   const pushView = isSeoSub ? 'seo' : isReviewsSub ? 'reviews' : 'pagina';
   if (!window._isPopping) history.pushState({view: pushView, sub: section}, '', '');
@@ -3138,6 +3468,144 @@ function updateDashboard() {
 
 // ── Analytics ────────────────────────────────────
 let analyticsLoaded = { days: null };
+
+// ── Integraciones de reseñas externas (Google, Trustpilot, SmartCustomer) ──
+const EXT_LOGOS = {
+  google: '<svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>',
+  trustpilot: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#00B67A" d="M12 2l2.9 6.9L22 9.5l-5.4 4.65L18.2 21 12 17.3 5.8 21l1.6-6.85L2 9.5l7.1-.6z"/></svg>',
+  smartcustomer: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" fill="#2f6fed"/><path d="M8 12.5l2.5 2.5 5.5-5.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+const EXT_PLATFORMS = [
+  { key:'google', name:'Google Reviews', bg:'#ffffff' },
+  { key:'trustpilot', name:'Trustpilot', bg:'#eafaf1' },
+  { key:'smartcustomer', name:'SmartCustomer', bg:'#eef3fe' },
+];
+let _extConnected = {};
+let _extReviews = [];
+function _pl() { return (LANGS[currentLang] && LANGS[currentLang].platforms) || LANGS.es.platforms; }
+
+function renderExtCards() {
+  const wrap = document.getElementById('ext-cards');
+  if (!wrap) return;
+  const P = _pl();
+  const reqKey  = { google:'reqGoogle', trustpilot:'reqTrustpilot', smartcustomer:'reqSmart' };
+  const stepKey = { google:'stepsGoogle', trustpilot:'stepsTrustpilot', smartcustomer:'stepsSmart' };
+  wrap.innerHTML = EXT_PLATFORMS.map(p => {
+    const on = !!_extConnected[p.key];
+    const steps = (P[stepKey[p.key]] || []).map(s => `<li>${s}</li>`).join('');
+    return `<div class="ext-card">
+      <div class="ext-card-head">
+        <div class="ext-logo" style="background:${p.bg}">${EXT_LOGOS[p.key] || ''}</div>
+        <div class="ext-card-title">${p.name}</div>
+        <span class="ext-pill ${on?'ext-on':'ext-off'}" style="margin-left:auto">${on?P.connected:P.notConnected}</span>
+      </div>
+      <div class="ext-req">${P[reqKey[p.key]] || ''}</div>
+      <details class="ext-how"><summary>${P.howConnect}</summary>
+        <ol>${steps}</ol>
+      </details>
+    </div>`;
+  }).join('');
+}
+
+async function loadIntegrations() {
+  renderExtCards();
+  try {
+    const res = await fetch('/.netlify/functions/sync-reviews?status=1');
+    const data = await res.json();
+    _extConnected = data.connected || {};
+  } catch(e) {
+    _extConnected = {}; // función aún no desplegada -> todo "no conectado"
+  }
+  renderExtCards();
+}
+
+async function syncExternalReviews() {
+  const btn = document.getElementById('ext-sync-btn');
+  const status = document.getElementById('ext-sync-status');
+  if (btn) btn.disabled = true;
+  if (status) status.textContent = _pl().syncing;
+  try {
+    const res = await fetch('/.netlify/functions/sync-reviews');
+    const data = await res.json();
+    _extConnected = data.connected || _extConnected;
+    _extReviews = (data.reviews || []).map(r => ({ ...r, show: false }));
+    renderExtCards();
+    renderExtReviews();
+    const P = _pl();
+    if (status) status.textContent = _extReviews.length ? (_extReviews.length + ' ' + P.syncDone) : P.syncNone;
+  } catch(e) {
+    if (status) status.textContent = _pl().syncOffline;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function renderExtReviews() {
+  const empty = document.getElementById('ext-empty');
+  const list  = document.getElementById('ext-reviews');
+  const saveRow = document.getElementById('ext-save-row');
+  if (!list) return;
+  if (!_extReviews.length) {
+    if (empty) { empty.style.display = ''; empty.textContent = _pl().empty; }
+    if (saveRow) saveRow.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  if (saveRow) saveRow.style.display = 'flex';
+  const badge = { google:['Google','#e7f3ec','#2e9e63'], trustpilot:['Trustpilot','#eafaf1','#1a9e5f'], smartcustomer:['SmartCustomer','#e8effb','#1d5aa8'] };
+  list.innerHTML = _extReviews.map((r,i) => {
+    const b = badge[r.source] || [r.source||'Externo','#eee','#666'];
+    const stars = '★'.repeat(Math.max(0,Math.min(5, r.rating||0)));
+    return `<div class="ext-rev">
+      <input type="checkbox" ${r.show?'checked':''} onchange="_extReviews[${i}].show=this.checked">
+      <div class="ext-rev-body">
+        <div class="ext-rev-top">
+          <span class="ext-rev-author">${esc(r.author||'Anónimo')} · <span style="color:var(--accent)">${stars}</span></span>
+          <span class="ext-rev-src" style="background:${b[1]};color:${b[2]}">${b[0]}</span>
+        </div>
+        <div class="ext-rev-text">${esc(r.text||'')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function extToReview(r) {
+  const author = r.author || 'Anónimo';
+  const initials = author.split(/\s+/).map(w => w[0] || '').join('').slice(0,2).toUpperCase();
+  const srcLabel = { google:'Google', trustpilot:'Trustpilot', smartcustomer:'SmartCustomer' }[r.source] || 'Externo';
+  return {
+    published: true,
+    title: r.title || srcLabel,
+    author, initials,
+    rating: r.rating || 5,
+    category: 'general',
+    date: r.date || '',
+    text: r.text || '',
+    badge_type: 'pos',
+    badge_text: '✓ ' + srcLabel,
+    source: r.source || 'external',
+    external_id: r.id ? String(r.id) : undefined,
+  };
+}
+
+async function saveExternalSelection() {
+  const status = document.getElementById('ext-save-status');
+  const P = _pl();
+  const chosen = _extReviews.filter(r => r.show);
+  if (!chosen.length) { if (status) status.textContent = P.selectOne; return; }
+  const existing = new Set(reviews.map(r => r.external_id).filter(Boolean));
+  let added = 0;
+  chosen.forEach(r => { const id = r.id ? String(r.id) : null; if (!id || !existing.has(id)) { reviews.push(extToReview(r)); added++; } });
+  if (typeof dirtyReviews !== 'undefined') dirtyReviews = true;
+  if (status) status.textContent = P.publishing;
+  try {
+    await saveReviews(); // reutiliza el flujo existente: guarda en GitHub + rebuild
+    if (status) status.textContent = added + ' ' + P.added;
+  } catch(e) {
+    if (status) status.textContent = 'Error: ' + (e.message || e);
+  }
+}
 
 async function loadAnalytics(days, btn) {
   const L = LANGS[currentLang].analytics;
@@ -3880,7 +4348,7 @@ async function saveSettings() {
 const LANGS = {
   es: {
     nav: { dashboard:'Dashboard', pagina:'Página', seo:'SEO', reviews:'Reviews', analytics:'Analytics', usuarios:'Usuarios' },
-    sub: { hero:'Hero', about:'About Mudify', rating:'Puntuación General', highlights:'Temas de Reviews', staff:'Staff Destacado', contact:'Contacto', faq:'FAQ', seoBasico:'Básico', seoRedes:'Redes Sociales', seoTecnico:'Técnico', reviewsList:'Gestionar', reviewsAdd:'Agregar', reviewsImport:'Importar CSV' },
+    sub: { hero:'Hero', about:'About Mudify', rating:'Puntuación General', highlights:'Temas de Reviews', staff:'Staff Destacado', contact:'Contacto', faq:'FAQ', seoBasico:'Básico', seoRedes:'Redes Sociales', seoTecnico:'Técnico', reviewsList:'Gestionar', reviewsAdd:'Agregar', reviewsImport:'Importar CSV', reviewsPlatforms:'Plataformas' },
     common: { save:'Guardar cambios', cancel:'Cancelar', edit:'Editar', delete:'Eliminar', logout:'Cerrar sesión', viewSite:'Ver el sitio', saving:'Guardando…', saved:'Guardado', saveChanges:'Guardar cambios', add:'Agregar', close:'Cerrar', livePreview:'En vivo', preview:'Vista previa' },
     login: { label:'Panel de administración', submit:'Iniciar sesión' },
     dash: { welcomeH2:'Bienvenido,', sub:'Gestiona los reviews y la configuración de la página desde aquí.', viewSite:'Ver el sitio', quickAccess:'Accesos rápidos', active:'Reviews activos', hidden:'Reviews ocultos', total:'Total', activeDesc:'Visibles en la página', hiddenDesc:'No visibles para visitantes', totalDesc:'En la base de datos', newReview:'Nuevo review', newReviewDesc:'Agregar a la colección', editHero:'Editar hero', editHeroDesc:'Descripción y botón CTA', stats:'Estadísticas', statsDesc:'Números y etiquetas', manageReviews:'Gestionar reviews', manageDesc:'Editar, ocultar, eliminar' },
@@ -3890,10 +4358,12 @@ const LANGS = {
     import: { tabList:'Lista de reviews', tabImport:'⬆️ Importar en masa', template:'Plantilla CSV', templateNote:'Descarga, completa en Excel o Google Sheets, y sube el archivo', download:'⬇ Descargar plantilla CSV', dropTitle:'Arrastra el CSV aquí o haz clic para seleccionar', dropSub:'Formato: CSV — exporta desde Excel o Google Sheets como "CSV (UTF-8)"', preview:'Vista previa', importBtn:'Importar reviews', colAuthor:'Autor', colDate:'Fecha', colText:'Texto', colSource:'Fuente', colStatus:'Estado', saving:'Guardando…' },
     users: { title:'Usuarios del panel', addUser:'+ Agregar usuario', name:'Nombre', email:'Email', role:'Rol', status:'Estado', active:'Activo', inactive:'Inactivo', saveUser:'Guardar usuario', newPwd:'Nueva contraseña', pwdNote:'(dejar vacío para no cambiar)', pwd:'Contraseña', roleAdmin:'Admin — Acceso completo', roleMarketing:'Marketing — SEO + Reviews', roleDesign:'Diseño — Solo Página' },
     analytics: { eyebrow:'Rendimiento', title:'Analytics del sitio', '7d':'7 días', '30d':'30 días', '90d':'90 días', users:'Usuarios', sessions:'Sesiones', pageviews:'Vistas de página', duration:'Duración media', sourcesLabel:'Fuentes de tráfico', qualityLabel:'Calidad de sesión', reviewsLabel:'Métricas de reviews (datos del panel)', loading:'Cargando…', setupTitle:'Conecta Google Analytics', setupDesc:'Para ver datos reales, configura las variables de entorno en Netlify y vincula tu propiedad GA4.', armTotal:'Reviews totales', armVisible:'Visibles en sitio', armScore:'Score promedio', arm5:'5 estrellas', noData:'Sin datos disponibles', error:'Error al cargar', views:'vistas', sessions_short:'sesiones', bounceLabel:'Rebote', durationLabel:'Duración media', qualityGood:'Visitantes comprometidos 🟢', qualityMid:'Tráfico moderado 🟡', qualityLow:'Mayoría de paso 🔴', bounceNote:'Un rebote alto en sitio de una página puede ser normal.' },
+    platforms: { eyebrow:'Reviews', title:'Plataformas externas', pickerName:'Plataformas', pickerDesc:'Conecta Google, Trustpilot y SmartCustomer, y elige cuáles mostrar', intro:'Conecta las plataformas donde recibes reseñas para traerlas al panel, elegir cuáles destacar y mostrarlas en el sitio — todo desde aquí. La sincronización es manual (no en cada visita), así que no consume recursos por tráfico.', connected:'Conectado', notConnected:'No conectado', howConnect:'Cómo conectar →', security:'Seguridad: las llaves de API se guardan como variables de entorno en Netlify, nunca en el código. Cada tarjeta indica qué necesitas. Al conectar la cuenta y publicar (deploy), el estado pasa a Conectado y podrás sincronizar.', sync:'🔄 Sincronizar reseñas', syncing:'Sincronizando…', syncOffline:'Aún no disponible: conecta una plataforma y publica los cambios (deploy) para activar la sincronización.', syncNone:'Sin reseñas nuevas. ¿Ya conectaste alguna plataforma?', syncDone:'reseñas traídas. Elige cuáles mostrar.', empty:'Conecta al menos una plataforma y sincroniza para ver aquí las reseñas y elegir cuáles mostrar en el sitio.', saveSel:'Guardar selección y publicar', publishing:'Publicando…', selectOne:'Selecciona al menos una reseña.', added:'reseña(s) agregada(s). El sitio se actualiza en ~30s.', back:'Volver', reqGoogle:'Perfil de Google Business verificado (60+ días) y acceso aprobado a la Business Profile API.', reqTrustpilot:'Plan de pago de Trustpilot con acceso a la API (Enterprise o add-on Connect).', reqSmart:'Cuenta de SmartCustomer (ex-Sitejabber) con la API habilitada.', stepsGoogle:['Verifica tu Google Business Profile y solicita acceso a la Business Profile API.','Crea credenciales OAuth en Google Cloud y obtén un refresh token.','En Netlify añade GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN y GOOGLE_LOCATION_ID.'], stepsTrustpilot:['Solicita acceso a la API en tu cuenta de negocio de Trustpilot.','Obtén tu API key y tu Business Unit ID.','En Netlify añade TRUSTPILOT_API_KEY y TRUSTPILOT_BUSINESS_UNIT_ID.'], stepsSmart:['Genera tus credenciales en apidocs.smartcustomer.com.','Copia tu API key y tu Business ID.','En Netlify añade SMARTCUSTOMER_API_KEY y SMARTCUSTOMER_BUSINESS_ID.'] },
+    help: { nav:'Ayuda', eyebrow:'Ayuda', title:'Centro de ayuda', intro:'Dudas frecuentes y soluciones sobre el panel, las reviews, las plataformas y la publicación. Busca o abre una categoría.', searchPh:'Buscar…', empty:'Sin resultados.' },
   },
   en: {
     nav: { dashboard:'Dashboard', pagina:'Page', seo:'SEO', reviews:'Reviews', analytics:'Analytics', usuarios:'Users' },
-    sub: { hero:'Hero', about:'About Mudify', rating:'Overall Rating', highlights:'Review Topics', staff:'Featured Staff', contact:'Contact', faq:'FAQ', seoBasico:'Basic', seoRedes:'Social Media', seoTecnico:'Technical', reviewsList:'Manage', reviewsAdd:'Add', reviewsImport:'Import CSV' },
+    sub: { hero:'Hero', about:'About Mudify', rating:'Overall Rating', highlights:'Review Topics', staff:'Featured Staff', contact:'Contact', faq:'FAQ', seoBasico:'Basic', seoRedes:'Social Media', seoTecnico:'Technical', reviewsList:'Manage', reviewsAdd:'Add', reviewsImport:'Import CSV', reviewsPlatforms:'Platforms' },
     common: { save:'Save changes', cancel:'Cancel', edit:'Edit', delete:'Delete', logout:'Sign out', viewSite:'View site', saving:'Saving…', saved:'Saved', saveChanges:'Save changes', add:'Add', close:'Close', livePreview:'Live', preview:'Preview' },
     login: { label:'Admin panel', submit:'Sign in' },
     dash: { welcomeH2:'Welcome,', sub:'Manage reviews and page content from here.', viewSite:'View site', quickAccess:'Quick access', active:'Active reviews', hidden:'Hidden reviews', total:'Total', activeDesc:'Visible on the page', hiddenDesc:'Not visible to visitors', totalDesc:'In the database', newReview:'New review', newReviewDesc:'Add to collection', editHero:'Edit hero', editHeroDesc:'Description and CTA button', stats:'Statistics', statsDesc:'Numbers and labels', manageReviews:'Manage reviews', manageDesc:'Edit, hide, delete' },
@@ -3903,14 +4373,128 @@ const LANGS = {
     import: { tabList:'Reviews list', tabImport:'⬆️ Bulk import', template:'CSV template', templateNote:'Download, fill in Excel or Google Sheets, then upload', download:'⬇ Download CSV template', dropTitle:'Drag CSV here or click to select', dropSub:'Format: CSV — export as "CSV (UTF-8)" from Excel or Google Sheets', preview:'Preview', importBtn:'Import reviews', colAuthor:'Author', colDate:'Date', colText:'Text', colSource:'Source', colStatus:'Status', saving:'Saving…' },
     users: { title:'Panel users', addUser:'+ Add user', name:'Name', email:'Email', role:'Role', status:'Status', active:'Active', inactive:'Inactive', saveUser:'Save user', newPwd:'New password', pwdNote:'(leave blank to keep current)', pwd:'Password', roleAdmin:'Admin — Full access', roleMarketing:'Marketing — SEO + Reviews', roleDesign:'Design — Page only' },
     analytics: { eyebrow:'Performance', title:'Site analytics', '7d':'7 days', '30d':'30 days', '90d':'90 days', users:'Users', sessions:'Sessions', pageviews:'Page views', duration:'Avg. duration', sourcesLabel:'Traffic sources', qualityLabel:'Session quality', reviewsLabel:'Reviews metrics (panel data)', loading:'Loading…', setupTitle:'Connect Google Analytics', setupDesc:'To see real data, set the Netlify environment variables and link your GA4 property.', armTotal:'Total reviews', armVisible:'Visible on site', armScore:'Avg. score', arm5:'5-star reviews', noData:'No data available', error:'Error loading data', views:'views', sessions_short:'sessions', bounceLabel:'Bounce rate', durationLabel:'Avg. duration', qualityGood:'Engaged visitors 🟢', qualityMid:'Moderate traffic 🟡', qualityLow:'Mostly passing through 🔴', bounceNote:'A high bounce rate can be normal for single-page sites.' },
+    platforms: { eyebrow:'Reviews', title:'External platforms', pickerName:'Platforms', pickerDesc:'Connect Google, Trustpilot and SmartCustomer, and choose which to show', intro:'Connect the platforms where you receive reviews to bring them into the panel, choose which to feature and show them on the site — all from here. Syncing is manual (not on every visit), so it does not consume resources per traffic.', connected:'Connected', notConnected:'Not connected', howConnect:'How to connect →', security:'Security: API keys are stored as environment variables in Netlify, never in the code. Each card tells you what you need. Once you connect the account and deploy, the status turns to Connected and you can sync.', sync:'🔄 Sync reviews', syncing:'Syncing…', syncOffline:'Not available yet: connect a platform and publish the changes (deploy) to enable syncing.', syncNone:'No new reviews. Have you connected a platform yet?', syncDone:'reviews fetched. Choose which to show.', empty:'Connect at least one platform and sync to see reviews here and choose which to show on the site.', saveSel:'Save selection and publish', publishing:'Publishing…', selectOne:'Select at least one review.', added:'review(s) added. The site updates in ~30s.', back:'Back', reqGoogle:'Verified Google Business Profile (60+ days) and approved access to the Business Profile API.', reqTrustpilot:'Paid Trustpilot plan with API access (Enterprise or the Connect add-on).', reqSmart:'SmartCustomer (formerly Sitejabber) account with the API enabled.', stepsGoogle:['Verify your Google Business Profile and request access to the Business Profile API.','Create OAuth credentials in Google Cloud and get a refresh token.','In Netlify add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN and GOOGLE_LOCATION_ID.'], stepsTrustpilot:['Request API access in your Trustpilot business account.','Get your API key and Business Unit ID.','In Netlify add TRUSTPILOT_API_KEY and TRUSTPILOT_BUSINESS_UNIT_ID.'], stepsSmart:['Generate your credentials at apidocs.smartcustomer.com.','Copy your API key and Business ID.','In Netlify add SMARTCUSTOMER_API_KEY and SMARTCUSTOMER_BUSINESS_ID.'] },
+    help: { nav:'Help', eyebrow:'Help', title:'Help center', intro:'Frequent questions and solutions about the panel, reviews, platforms and publishing. Search or open a category.', searchPh:'Search…', empty:'No results.' },
   }
 };
 let currentLang = localStorage.getItem('_lang') || 'es';
+
+// ── Centro de ayuda (FAQ bilingüe) ────────────────
+const HELP_CONTENT = {
+  es: [
+    { cat:`Acceso y navegación`, items:[
+      { q:`¿Cómo inicio sesión?`, a:`Entra con tu correo (@mudify.com) y contraseña. Si no tienes acceso, pídele a un admin que te cree un usuario en <strong>Usuarios</strong>.` },
+      { q:`¿Cómo cambio el idioma del panel?`, a:`Con el botón <strong>ES/EN</strong> abajo a la izquierda. Todo se traduce al instante, incluido RYNO.` },
+      { q:`¿Cómo me muevo entre secciones?`, a:`Usa el menú lateral. Las secciones con flecha (Página, SEO, Reviews) se despliegan en subsecciones. En móvil, el menú se abre con el botón ☰.` },
+      { q:`¿Cómo oculto o traigo de vuelta a RYNO?`, a:`Pasa el cursor sobre él y pulsa la <strong>✕</strong>. Queda un chip abajo a la derecha para traerlo de vuelta. También puedes hacerle clic para pedirle ayuda según la pantalla.` },
+    ]},
+    { cat:`Gestionar reviews`, items:[
+      { q:`¿Cómo agrego una reseña?`, a:`<strong>Reviews → Agregar</strong>: llena autor, calificación, texto y fecha, y guarda.` },
+      { q:`¿Cómo edito, oculto o elimino una reseña?`, a:`<strong>Reviews → Gestionar</strong>: cada fila tiene <strong>Editar</strong>, <strong>Ocultar/Mostrar</strong> y <strong>Eliminar</strong>. Ocultar la quita del sitio sin borrarla.` },
+      { q:`¿Cómo filtro las reseñas?`, a:`En Gestionar usa los filtros <strong>Todos / Activos / Ocultos</strong> para encontrar rápido lo que buscas.` },
+      { q:`¿Cómo subo muchas de una vez?`, a:`<strong>Reviews → Importar CSV</strong>: descarga la plantilla, complétala en Excel/Sheets, súbela y confirma.` },
+    ]},
+    { cat:`Plataformas externas`, items:[
+      { q:`¿Dónde conecto Google, Trustpilot o SmartCustomer?`, a:`<strong>Reviews → Plataformas</strong> (primera opción). Cada tarjeta muestra el estado y, en "Cómo conectar", los pasos y las variables que van en Netlify.` },
+      { q:`¿Cómo traigo las reseñas de esas plataformas?`, a:`Con la plataforma conectada, pulsa <strong>Sincronizar reseñas</strong>. Aparecen en la lista para elegir.` },
+      { q:`¿Cómo elijo cuáles se muestran en el sitio?`, a:`Marca las casillas de las que quieras y pulsa <strong>Guardar selección y publicar</strong>. Salen en el sitio con el badge de su fuente.` },
+      { q:`¿Por qué no veo la sección Plataformas?`, a:`Es solo para el rol <strong>admin</strong>. Marketing y Design no la ven.` },
+    ]},
+    { cat:`Editar la página y SEO`, items:[
+      { q:`¿Cómo edito el contenido de la página?`, a:`<strong>Página</strong> → elige la sección (Hero, About, Rating, Staff, FAQ, etc.), edita y guarda. La vista previa te acompaña mientras editas.` },
+      { q:`¿Cómo cambio el favicon, título o metadatos?`, a:`<strong>SEO</strong> → Básico (favicon, título, meta), Redes (Open Graph/Twitter) o Técnico. Edita y guarda.` },
+      { q:`¿Por qué no aparece el botón de guardar?`, a:`Solo aparece cuando hay cambios sin guardar. Si no editaste nada, no se muestra — es normal.` },
+    ]},
+    { cat:`Analítica y usuarios`, items:[
+      { q:`¿Cómo veo las visitas del sitio?`, a:`<strong>Analytics</strong>: métricas de tráfico y de reviews. Cambia el rango con 7 / 30 / 90 días.` },
+      { q:`¿Cómo agrego o desactivo un usuario?`, a:`<strong>Usuarios</strong> (solo admin): <strong>+ Agregar usuario</strong>, o <strong>Editar</strong> para cambiar rol, contraseña o desactivar. Mejor desactivar que eliminar (conserva historial).` },
+      { q:`¿Cómo cambio la contraseña de alguien?`, a:`En <strong>Usuarios → Editar</strong>, escribe la nueva contraseña (vacía = no cambiar) y guarda.` },
+    ]},
+    { cat:`Publicar cambios`, items:[
+      { q:`Guardé algo, ¿cuándo se ve en el sitio?`, a:`El sitio se reconstruye solo en <strong>~30 segundos</strong>. Recarga la página pública para verlo.` },
+      { q:`Guardé pero no aparece.`, a:`Espera ~1 minuto y recarga limpiando caché. Si sigue sin salir, revisa que el deploy de Netlify no esté en pausa (créditos).` },
+      { q:`¿Dónde reviso el resultado?`, a:`En la sección de reviews del sitio público. En local, con el server de preview: <code>http://localhost:4200/index.html</code>.` },
+    ]},
+    { cat:`Solución de problemas`, items:[
+      { q:`No puedo entrar / credenciales incorrectas.`, a:`Verifica correo y contraseña. La contraseña inicial de usuarios nuevos es <strong>Mudify2024!</strong>. Un admin puede restablecerla en <strong>Usuarios → Editar</strong>.` },
+      { q:`Sale un error al guardar.`, a:`Suele ser configuración en Netlify (token o variables). Reintenta; si persiste, avísale a quien administra Netlify.` },
+      { q:`"Sincronizar" dice que no está disponible.`, a:`La plataforma aún no está conectada o falta desplegar. Revisa la tarjeta en <strong>Plataformas</strong>.` },
+      { q:`Un cambio no se refleja.`, a:`Casi siempre es caché o el deploy en cola. Recarga con Ctrl/Cmd+Shift+R. Los cambios tardan ~30s en publicarse.` },
+    ]},
+  ],
+  en: [
+    { cat:`Access & navigation`, items:[
+      { q:`How do I sign in?`, a:`Use your email (@mudify.com) and password. If you do not have access, ask an admin to create a user for you under <strong>Users</strong>.` },
+      { q:`How do I change the panel language?`, a:`Use the <strong>ES/EN</strong> toggle at the bottom left. Everything translates instantly, including RYNO.` },
+      { q:`How do I move between sections?`, a:`Use the left menu. Sections with an arrow (Page, SEO, Reviews) expand into sub-sections. On mobile, open the menu with the ☰ button.` },
+      { q:`How do I hide or bring RYNO back?`, a:`Hover over him and click the <strong>✕</strong>. A small chip stays at the bottom right to bring him back. You can also click him to ask for help based on the current screen.` },
+    ]},
+    { cat:`Managing reviews`, items:[
+      { q:`How do I add a review?`, a:`<strong>Reviews → Add</strong>: fill author, rating, text and date, then save.` },
+      { q:`How do I edit, hide or delete a review?`, a:`<strong>Reviews → Manage</strong>: each row has <strong>Edit</strong>, <strong>Hide/Show</strong> and <strong>Delete</strong>. Hiding removes it from the site without deleting it.` },
+      { q:`How do I filter reviews?`, a:`In Manage use the <strong>All / Active / Hidden</strong> filters to find what you need quickly.` },
+      { q:`How do I upload many at once?`, a:`<strong>Reviews → Import CSV</strong>: download the template, fill it in Excel/Sheets, upload it and confirm.` },
+    ]},
+    { cat:`External platforms`, items:[
+      { q:`Where do I connect Google, Trustpilot or SmartCustomer?`, a:`<strong>Reviews → Platforms</strong> (first option). Each card shows its status and, under "How to connect", the steps and variables that go in Netlify.` },
+      { q:`How do I fetch reviews from those platforms?`, a:`With the platform connected, press <strong>Sync reviews</strong>. They appear in the list to choose from.` },
+      { q:`How do I choose which show on the site?`, a:`Check the boxes for the ones you want and press <strong>Save selection and publish</strong>. They appear on the site with their source badge.` },
+      { q:`Why do not I see the Platforms section?`, a:`It is <strong>admin</strong> only. Marketing and Design do not see it.` },
+    ]},
+    { cat:`Editing the page & SEO`, items:[
+      { q:`How do I edit the page content?`, a:`<strong>Page</strong> → pick the section (Hero, About, Rating, Staff, FAQ, etc.), edit and save. A live preview follows you while editing.` },
+      { q:`How do I change the favicon, title or metadata?`, a:`<strong>SEO</strong> → Basic (favicon, title, meta), Social (Open Graph/Twitter) or Technical. Edit and save.` },
+      { q:`Why is there no save button?`, a:`It only appears when there are unsaved changes. If you did not edit anything, it stays hidden — that is normal.` },
+    ]},
+    { cat:`Analytics & users`, items:[
+      { q:`How do I see site visits?`, a:`<strong>Analytics</strong>: traffic and review metrics. Change the range with 7 / 30 / 90 days.` },
+      { q:`How do I add or deactivate a user?`, a:`<strong>Users</strong> (admin only): <strong>+ Add user</strong>, or <strong>Edit</strong> to change role, password or deactivate. Prefer deactivating over deleting (keeps history).` },
+      { q:`How do I change someone's password?`, a:`In <strong>Users → Edit</strong>, type the new password (blank = keep current) and save.` },
+    ]},
+    { cat:`Publishing changes`, items:[
+      { q:`I saved something, when does it show?`, a:`The site rebuilds automatically in <strong>~30 seconds</strong>. Reload the public page to see it.` },
+      { q:`I saved but it does not appear.`, a:`Wait ~1 minute and reload clearing cache. If it still does not show, check the Netlify deploy is not paused (credits).` },
+      { q:`Where do I check the result?`, a:`In the reviews section of the public site. Locally, with the preview server: <code>http://localhost:4200/index.html</code>.` },
+    ]},
+    { cat:`Troubleshooting`, items:[
+      { q:`I cannot log in / wrong credentials.`, a:`Check email and password. The initial password for new users is <strong>Mudify2024!</strong>. An admin can reset it in <strong>Users → Edit</strong>.` },
+      { q:`I get an error when saving.`, a:`Usually a Netlify configuration issue (token or variables). Retry; if it persists, tell whoever manages Netlify.` },
+      { q:`"Sync" says it is not available.`, a:`The platform is not connected yet or a deploy is missing. Check the card in <strong>Platforms</strong>.` },
+      { q:`A change is not showing.`, a:`Almost always cache or a queued deploy. Reload with Ctrl/Cmd+Shift+R. Changes take ~30s to publish.` },
+    ]},
+  ],
+};
+
+function renderHelp() {
+  const box = document.getElementById('help-content');
+  if (!box) return;
+  const H = (LANGS[currentLang] && LANGS[currentLang].help) || LANGS.es.help;
+  const data = HELP_CONTENT[currentLang] || HELP_CONTENT.es;
+  const si = document.getElementById('help-search');
+  if (si) si.placeholder = H.searchPh;
+  const search = (si?.value || '').toLowerCase().trim();
+  let html = '';
+  data.forEach(section => {
+    const items = section.items.filter(it => !search || (it.q + ' ' + it.a).toLowerCase().includes(search));
+    if (!items.length) return;
+    html += `<div class="help-cat"><h2 class="help-cat-title">${section.cat}</h2>`;
+    items.forEach(it => {
+      html += `<details class="help-item"><summary>${it.q}</summary><div class="help-a">${it.a}</div></details>`;
+    });
+    html += `</div>`;
+  });
+  box.innerHTML = html || `<div class="help-empty">${H.empty}</div>`;
+}
 
 function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('_lang', lang);
   applyLang();
+  if (typeof renderExtCards === 'function') renderExtCards();
+  if (typeof renderExtReviews === 'function') renderExtReviews();
+  if (typeof renderHelp === 'function') renderHelp();
+  if (typeof refreshRynoChat === 'function') refreshRynoChat();
+  if (typeof window._rynoCycle === 'function' && !window._rynoChatOpen) window._rynoCycle();
 }
 
 function applyLang() {

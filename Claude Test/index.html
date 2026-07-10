@@ -240,6 +240,9 @@ h2{font-family:var(--fd);font-weight:900;font-size:clamp(1.7rem,3.2vw,2.6rem);te
 .rc-t{font-family:var(--fd);font-weight:900;font-size:.94rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);line-height:1.15}
 .rc-b{font-family:var(--fm);font-size:.87rem;font-weight:500;color:var(--mid);line-height:1.6;flex:1}
 .bdg{display:inline-flex;align-items:center;gap:3px;font-family:var(--fd);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;align-self:flex-start}
+.rc-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rc-src{display:inline-flex;align-items:center;gap:6px;font-family:var(--fd);font-weight:600;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);border:1px solid var(--border);border-radius:999px;padding:3px 9px}
+.rc-src::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sc,#888)}
 .pos{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 .neg{background:#fef0f0;border:1px solid #f5c0c0;color:#c0392b}
 .neu{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
@@ -1058,13 +1061,16 @@ async function loadReviews() {
       const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const filled = Array.from({length: r.rating},     () => '<span>★</span>').join('');
       const empty  = Array.from({length: 5 - r.rating}, () => '<span class="e">★</span>').join('');
+      const SRC = { google:['Google','#4285F4'], trustpilot:['Trustpilot','#00B67A'], smartcustomer:['SmartCustomer','#2f6fed'] };
+      const _sc = r.source && SRC[r.source];
+      const srcChip = _sc ? `<span class="rc-src" style="--sc:${_sc[1]}">${_sc[0]}</span>` : '';
       return `<article class="rc" data-rating="${r.rating}" data-products="${r.category}">
         <div class="rch"><div class="rca"><div class="av">${esc(r.initials)}</div>
         <div><div class="rc-nm">${esc(r.author)}</div><div class="rc-dt">${esc(r.date)}</div></div></div>
         <div class="rcs">${filled}${empty}</div></div>
         <div class="rc-t">${esc(r.title)}</div>
         <p class="rc-b">"${esc(r.text)}"</p>
-        <span class="bdg ${r.badge_type}">${esc(r.badge_text)}</span>
+        <div class="rc-foot"><span class="bdg ${r.badge_type}">${esc(r.badge_text)}</span>${srcChip}</div>
       </article>`;
     }).join('');
     const total = reviews.length;
