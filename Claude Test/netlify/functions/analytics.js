@@ -65,7 +65,7 @@ async function runReport(propertyId, token, body) {
 }
 
 function fmtDate(d) {
-  return d.toISOString().slice(0, 10).replace(/-/g, '');
+  return d.toISOString().slice(0, 10);
 }
 
 function daysBefore(n) {
