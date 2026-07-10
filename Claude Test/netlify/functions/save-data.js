@@ -123,11 +123,9 @@ exports.handler = async (event) => {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Network error updating GitHub: ' + e.message }) };
   }
 
-  // Trigger rebuild (skip for users file — no frontend rebuild needed)
-  if (file !== 'users') {
-    const buildHook = process.env.NETLIFY_BUILD_HOOK;
-    if (buildHook) await fetch(buildHook, { method: 'POST' }).catch(() => {});
-  }
+  // El rebuild lo dispara SOLO el commit a GitHub de arriba (auto-deploy de Netlify).
+  // NO usamos build hook aquí: disparaba un segundo deploy que Netlify cancelaba
+  // como duplicado (los "Canceled" del historial). Un guardado = un solo deploy.
 
   return {
     statusCode: 200,
