@@ -3151,14 +3151,20 @@ if (_s) {
 
 // ── Data ─────────────────────────────────────────
 async function loadData() {
+  // Lee del REPO (GitHub) para reflejar el último guardado al instante, sin esperar el deploy.
+  // Si falla (rate limit / red), cae al sitio desplegado.
+  const GH = 'https://api.github.com/repos/Mvillzar/mudify-reviews/contents/Claude%20Test/data/';
+  async function getJSON(file) {
+    try {
+      const r = await fetch(GH + file + '?ref=main&t=' + Date.now(), { headers: { Accept: 'application/vnd.github.raw' } });
+      if (r.ok) return await r.json();
+    } catch(e) {}
+    return (await fetch('/data/' + file + '?t=' + Date.now())).json();
+  }
   try {
-    const [rr, sr] = await Promise.all([
-      fetch('/data/reviews.json?t=' + Date.now()),
-      fetch('/data/settings.json?t=' + Date.now())
-    ]);
-    const rd = await rr.json();
+    const [rd, sd] = await Promise.all([getJSON('reviews.json'), getJSON('settings.json')]);
     reviews = rd.reviews || [];
-    settings = await sr.json().catch(() => defaultSettings());
+    settings = sd || defaultSettings();
   } catch(e) {
     reviews = [];
     settings = defaultSettings();
