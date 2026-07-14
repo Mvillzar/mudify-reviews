@@ -68,9 +68,9 @@
       "visible": true
     },
     {
-      "icon": "⚠️",
-      "title": "Stock Delays",
-      "body": "A minority flag inventory gaps or fulfillment delays. Most cases were resolved, though resolution times vary.",
+      "icon": "🏆",
+      "title": "Frequently praised",
+      "body": "Buyers frequently highlight the breadth of inventory, making it easy to source both common and hard-to-find parts.",
       "tag": "~10% of reviews",
       "visible": true
     }
