@@ -892,91 +892,35 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
       </div>
 
       <!-- Leave a Review Form -->
-      <div class="review-form-box" role="form" aria-label="Leave a review">
+      <!-- Leave a Review — botones directos a cada plataforma -->
+      <div class="review-form-box" role="region" aria-label="Leave a review">
         <div class="rf-header">
           <h3>Leave Your Review</h3>
-          <p>Share your experience — your review is copied to clipboard, then you choose where to post it.</p>
+          <p>Loved working with us? Share your experience directly on your favorite platform — one click and you're in the review box.</p>
         </div>
         <div class="rf-body">
-          <!-- Step indicator -->
-          <div class="rf-steps" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" id="rf-progress">
-            <div class="rf-step-dot active" id="sd1">1</div>
-            <div style="flex:1;height:1px;background:var(--divider);margin:0 8px"></div>
-            <div class="rf-step-dot" id="sd2">2</div>
-            <div style="flex:1;height:1px;background:var(--divider);margin:0 8px"></div>
-            <div class="rf-step-dot" id="sd3">3</div>
-            <span class="rf-step-label" id="rf-step-label">Write Review</span>
-          </div>
-
-          <!-- STEP 1: Write -->
-          <div id="rf-step1">
-            <div class="star-input-wrap">
-              <label>Your Rating *</label>
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-                <div class="star-input" id="rf-stars" role="radiogroup" aria-label="Star rating">
-                  <button type="button" class="s-btn" data-v="1" aria-label="1 star">★</button>
-                  <button type="button" class="s-btn" data-v="2" aria-label="2 stars">★</button>
-                  <button type="button" class="s-btn" data-v="3" aria-label="3 stars">★</button>
-                  <button type="button" class="s-btn" data-v="4" aria-label="4 stars">★</button>
-                  <button type="button" class="s-btn" data-v="5" aria-label="5 stars">★</button>
-                </div>
-                <span class="rf-rating-lbl" id="rf-rlbl">Click to rate</span>
+          <div class="platform-grid" role="list">
+            <a href="https://www.trustpilot.com/evaluate/mudify.com" target="_blank" rel="noopener" class="plat-btn tp-btn">
+              <div class="plat-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="var(--tp-green)" rx="2"/><path fill="#fff" d="M16 6l2.47 7.6H26l-6.4 4.65 2.47 7.6L16 21.2l-6.07 4.65 2.47-7.6L6 13.6h7.53z"/></svg>
               </div>
-            </div>
-            <div class="rf-field">
-              <label for="rf-name">Your Name *</label>
-              <input type="text" id="rf-name" placeholder="e.g. John D." maxlength="80" autocomplete="name">
-            </div>
-            <div class="rf-field">
-              <label for="rf-text">Your Review *</label>
-              <textarea id="rf-text" placeholder="Describe your experience with Mudify's products, service, or shipping…" rows="4" maxlength="500"></textarea>
-              <span class="rf-chars" id="rf-chars">0 / 500</span>
-            </div>
-            <div class="rf-err" id="rf-err" role="alert">Please fill in all fields and select a rating.</div>
-            <button type="button" class="btn btn-red" id="rf-next-btn" style="width:100%;justify-content:center">Continue to Post →</button>
-          </div>
-
-          <!-- STEP 2: Choose platform -->
-          <div id="rf-step2" class="hidden">
-            <div class="rf-preview" id="rf-preview"></div>
-            <div class="rf-copied-note">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              <span><strong>Copied!</strong> Your review is on your clipboard — paste it after clicking a platform below.</span>
-            </div>
-            <div class="platform-grid" role="list">
-              <a href="https://www.trustpilot.com/review/mudify.com" target="_blank" rel="noopener" class="plat-btn tp-btn" id="tp-link">
-                <div class="plat-logo">
-                  <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="var(--tp-green)" rx="2"/><path fill="#fff" d="M16 6l2.47 7.6H26l-6.4 4.65 2.47 7.6L16 21.2l-6.07 4.65 2.47-7.6L6 13.6h7.53z"/></svg>
-                </div>
-                <div class="plat-info"><span class="plat-name" style="color:var(--tp-dark)">Post on Trustpilot</span><span class="plat-note">Largest review platform globally</span></div>
-                <span class="plat-arrow">→</span>
-              </a>
-              <a href="https://www.google.com/search?q=mudify+reviews&hl=en" target="_blank" rel="noopener" class="plat-btn go-btn" id="go-link">
-                <div class="plat-logo">
-                  <svg width="32" height="32" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                </div>
-                <div class="plat-info"><span class="plat-name" style="color:var(--ink)">Post on Google</span><span class="plat-note">Google Reviews · Highly visible</span></div>
-                <span class="plat-arrow">→</span>
-              </a>
-              <a href="https://www.smartcustomer.com/reviews/mudify.com" target="_blank" rel="noopener" class="plat-btn sc-btn" id="sc-link">
-                <div class="plat-logo">
-                  <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#1a56a8" rx="2"/><path fill="#fff" d="M10 8h12c1.1 0 2 .9 2 2v3c0 1.1-.9 2-2 2h-5l-4 4v-4h-3c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2z"/></svg>
-                </div>
-                <div class="plat-info"><span class="plat-name" style="color:#1a56a8">Post on SmartCustomer</span><span class="plat-note">Formerly Sitejabber · 445+ reviews</span></div>
-                <span class="plat-arrow">→</span>
-              </a>
-            </div>
-            <button type="button" class="btn btn-ghost" id="rf-back-btn" style="width:100%;justify-content:center;margin-top:4px">← Back to Edit</button>
-          </div>
-
-          <!-- STEP 3: Success -->
-          <div id="rf-step3" class="hidden">
-            <div class="rf-success">
-              <div class="rf-success-ic">✓</div>
-              <h3>Thank You!</h3>
-              <p>Your review has been copied. Don't forget to paste it on the platform you chose. Your feedback helps other off-road enthusiasts.</p>
-              <button type="button" class="btn btn-outline" id="rf-reset-btn" style="margin:0 auto;display:flex">Write Another Review</button>
-            </div>
+              <div class="plat-info"><span class="plat-name" style="color:var(--tp-dark)">Review on Trustpilot</span><span class="plat-note">Largest review platform globally</span></div>
+              <span class="plat-arrow">→</span>
+            </a>
+            <a href="https://www.google.com/maps/place/Mudify/@25.95792,-80.1506231,17z/data=!4m8!3m7!1s0xa46521756757a975:0x816d5e97dd4a0b50!8m2!3d25.95792!4d-80.1480482!9m1!1b1!16s%2Fg%2F11rghm5btt?entry=ttu&amp;g_ep=EgoyMDI2MDcxMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="plat-btn go-btn">
+              <div class="plat-logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              </div>
+              <div class="plat-info"><span class="plat-name" style="color:var(--ink)">Review on Google</span><span class="plat-note">Google Reviews · Highly visible</span></div>
+              <span class="plat-arrow">→</span>
+            </a>
+            <a href="https://www.smartcustomer.com/online-business-review?url=mudify.com" target="_blank" rel="noopener" class="plat-btn sc-btn">
+              <div class="plat-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="#1a56a8" rx="2"/><path fill="#fff" d="M10 8h12c1.1 0 2 .9 2 2v3c0 1.1-.9 2-2 2h-5l-4 4v-4h-3c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2z"/></svg>
+              </div>
+              <div class="plat-info"><span class="plat-name" style="color:#1a56a8">Review on SmartCustomer</span><span class="plat-note">Formerly Sitejabber</span></div>
+              <span class="plat-arrow">→</span>
+            </a>
           </div>
         </div>
       </div>
@@ -1397,91 +1341,7 @@ function applyFilters() {
   document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
 }
 
-// ── Leave a Review Form ──
-let rfRating = 0;
-
-function highlightStars(n) {
-  document.querySelectorAll('.s-btn').forEach((b, i) => b.classList.toggle('active', i < n));
-}
-
-document.querySelectorAll('.s-btn').forEach((btn, i) => {
-  btn.addEventListener('mouseenter', () => highlightStars(i + 1));
-  btn.addEventListener('mouseleave', () => highlightStars(rfRating));
-  btn.addEventListener('click', () => {
-    rfRating = i + 1;
-    highlightStars(rfRating);
-    const lbl = ['Terrible','Poor','Average','Good','Excellent'];
-    document.getElementById('rf-rlbl').textContent = lbl[i];
-  });
-  btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
-});
-
-document.getElementById('rf-text').addEventListener('input', function() {
-  const len = Math.min(this.value.length, 500);
-  document.getElementById('rf-chars').textContent = `${len} / 500`;
-});
-
-function setStep(n) {
-  ['rf-step1','rf-step2','rf-step3'].forEach((id, i) => {
-    document.getElementById(id).classList.toggle('hidden', i + 1 !== n);
-  });
-  ['sd1','sd2','sd3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    el.classList.remove('active','done');
-    if (i + 1 === n) el.classList.add('active');
-    if (i + 1 < n) el.classList.add('done');
-  });
-  const labels = ['Write Review','Choose Platform','Done!'];
-  document.getElementById('rf-step-label').textContent = labels[n - 1];
-}
-
-document.getElementById('rf-next-btn').addEventListener('click', () => {
-  const name = document.getElementById('rf-name').value.trim();
-  const text = document.getElementById('rf-text').value.trim();
-  const errEl = document.getElementById('rf-err');
-  if (!rfRating || !name || !text) { errEl.style.display = 'block'; return; }
-  errEl.style.display = 'none';
-  // Build preview
-  const stars = '★'.repeat(rfRating) + '☆'.repeat(5 - rfRating);
-  document.getElementById('rf-preview').innerHTML = `
-    <div class="rfp-stars">${stars}</div>
-    <div class="rfp-name">${escHtml(name)}</div>
-    <p class="rfp-text">"${escHtml(text)}"</p>`;
-  // Copy to clipboard
-  const clip = `${stars}\n${name}\n"${text}"`;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(clip).catch(() => fallbackCopy(clip));
-  } else { fallbackCopy(clip); }
-  setStep(2);
-});
-
-document.getElementById('rf-back-btn').addEventListener('click', () => setStep(1));
-
-['tp-link','go-link','sc-link'].forEach(id => {
-  document.getElementById(id).addEventListener('click', () => {
-    setTimeout(() => setStep(3), 400);
-  });
-});
-
-document.getElementById('rf-reset-btn').addEventListener('click', () => {
-  rfRating = 0;
-  highlightStars(0);
-  document.getElementById('rf-name').value = '';
-  document.getElementById('rf-text').value = '';
-  document.getElementById('rf-chars').textContent = '0 / 500';
-  document.getElementById('rf-rlbl').textContent = 'Click to rate';
-  document.getElementById('rf-err').style.display = 'none';
-  setStep(1);
-});
-
-function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-  document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
+// ── Leave a Review: el formulario se reemplazó por botones directos a las plataformas ──
 </script>
 
 <!-- Auto-height reporter: activo solo cuando está dentro de un iframe (Wix embed) -->
