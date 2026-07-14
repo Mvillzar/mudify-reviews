@@ -84,7 +84,8 @@
     {
       "name": "Luis",
       "role": "Build Consultant",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/Luis.png?v=1784038023",
+      "mentions": "",
       "quote": "Luis mapped out my whole build and pointed me to parts that actually fit my rig — zero upsell, just straight advice.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -93,6 +94,7 @@
       "name": "Eddie",
       "role": "Customer Support · QC",
       "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/eddie_ddc1b329-30f7-4619-ad30-ed80209f4f74.png?v=1783363056",
+      "mentions": "",
       "quote": "Eddie was great to work through the QC issue with me. I would absolutely recommend working with these guys.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -100,7 +102,8 @@
     {
       "name": "Miguel",
       "role": "Fitment Specialist",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/MIGUEL.png?v=1781030261",
+      "mentions": "",
       "quote": "Miguel double-checked the fitment on my order and caught a bracket I'd have missed. Everything bolted right up.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -109,6 +112,7 @@
       "name": "Samantha",
       "role": "Customer Advisor · Sales",
       "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/sam.png?v=1783363057",
+      "mentions": "",
       "quote": "Samantha was incredibly patient helping me select exactly the right kit without any unnecessary add-ons. Felt like real, honest advice.",
       "quote_attr": "— Kevin S. · Jan 2026",
       "visible": true
@@ -116,7 +120,8 @@
     {
       "name": "David",
       "role": "Sales Specialist",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/DAVID.png?v=1784037990",
+      "mentions": "",
       "quote": "David walked me through financing and had my order placed in minutes. Smooth from start to finish.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -124,7 +129,8 @@
     {
       "name": "Hector",
       "role": "Warehouse Lead",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/HECTOR.png?v=1784038054",
+      "mentions": "",
       "quote": "Hector made sure my kit was packed right — everything showed up padded and in perfect condition.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -132,7 +138,8 @@
     {
       "name": "Brian",
       "role": "Technical Advisor",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/BRIAN.png?v=1784038074",
+      "mentions": "",
       "quote": "Brian answered every compatibility question before I bought. Clearly knows the products inside and out.",
       "quote_attr": "— Verified Customer",
       "visible": true
@@ -140,7 +147,8 @@
     {
       "name": "Daniel",
       "role": "Shipping Coordinator",
-      "photo": "",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/DANIEL.png?v=1784038096",
+      "mentions": "",
       "quote": "Daniel kept me posted on my shipment the whole way, and it arrived ahead of schedule.",
       "quote_attr": "— Verified Customer",
       "visible": true
