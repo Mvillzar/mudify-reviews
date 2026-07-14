@@ -65,6 +65,7 @@ async function runReport(propertyId, token, body) {
 }
 
 function fmtDate(d) {
+  // GA4 Data API requiere formato YYYY-MM-DD (con guiones)
   return d.toISOString().slice(0, 10);
 }
 

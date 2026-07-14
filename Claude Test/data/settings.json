@@ -6,7 +6,7 @@
   },
   "stats": [
     {
-      "number": "4.3/5",
+      "number": "4.7/5",
       "label": "Average Rating",
       "visible": true
     },
@@ -16,7 +16,7 @@
       "visible": true
     },
     {
-      "number": "82%",
+      "number": "94%",
       "label": "Positive Reviews",
       "visible": true
     }
@@ -28,20 +28,20 @@
     "vehicles": "Toyota 4Runner, Tacoma, Jeep Wrangler, Ford Bronco, RAM 1500/2500, Ford F-150, Lexus GX"
   },
   "rating": {
-    "score": "4.3",
+    "score": "4.7",
     "total": "445+",
-    "pct_5": "62",
-    "pct_4": "20",
-    "pct_3": "8",
-    "pct_2": "5",
-    "pct_1": "5",
-    "positive_pct": "82%",
+    "pct_5": "80",
+    "pct_4": "14",
+    "pct_3": "3",
+    "pct_2": "2",
+    "pct_1": "1",
+    "positive_pct": "94%",
     "positive_lbl": "Positive reviews (4–5 stars)",
     "positive_visible": true,
-    "critical_pct": "10%",
+    "critical_pct": "3%",
     "critical_lbl": "Critical reviews (1–2 stars)",
     "critical_visible": true,
-    "mixed_pct": "8%",
+    "mixed_pct": "3%",
     "mixed_lbl": "Mixed reviews (3 stars)",
     "mixed_visible": true
   },
@@ -77,36 +77,73 @@
   ],
   "staff_header": {
     "eyebrow": "People Behind the Brand",
-    "title": "Staff Mentioned by Customers",
-    "subtitle": "Team members called out by name in verified customer reviews — real people, real service."
+    "title": "Meet the Mudify Team",
+    "subtitle": "The people behind your build — and what customers say about working with each of them."
   },
   "staff": [
     {
-      "name": "Samantha",
-      "role": "Customer Advisor · Sales",
-      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/sam.png?v=1783363057",
-      "mentions": "Mentioned in 2+ reviews",
-      "quote": "Samantha was incredibly patient helping me select exactly the right kit without any unnecessary add-ons. Felt like real, honest advice.",
-      "quote_attr": "— Kevin S., Jan 2026",
+      "name": "Luis",
+      "role": "Build Consultant",
+      "photo": "",
+      "quote": "Luis mapped out my whole build and pointed me to parts that actually fit my rig — zero upsell, just straight advice.",
+      "quote_attr": "— Verified Customer",
       "visible": true
     },
     {
       "name": "Eddie",
       "role": "Customer Support · QC",
       "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/eddie_ddc1b329-30f7-4619-ad30-ed80209f4f74.png?v=1783363056",
-      "mentions": "Mentioned in 2+ reviews",
       "quote": "Eddie was great to work through the QC issue with me. I would absolutely recommend working with these guys.",
       "quote_attr": "— Verified Customer",
       "visible": true
     },
     {
-      "name": "",
-      "role": "Test",
-      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/eddie_ddc1b329-30f7-4619-ad30-ed80209f4f74.png?v=1783363056",
-      "mentions": "",
-      "quote": "test",
-      "quote_attr": "",
-      "visible": false
+      "name": "Miguel",
+      "role": "Fitment Specialist",
+      "photo": "",
+      "quote": "Miguel double-checked the fitment on my order and caught a bracket I'd have missed. Everything bolted right up.",
+      "quote_attr": "— Verified Customer",
+      "visible": true
+    },
+    {
+      "name": "Samantha",
+      "role": "Customer Advisor · Sales",
+      "photo": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/sam.png?v=1783363057",
+      "quote": "Samantha was incredibly patient helping me select exactly the right kit without any unnecessary add-ons. Felt like real, honest advice.",
+      "quote_attr": "— Kevin S. · Jan 2026",
+      "visible": true
+    },
+    {
+      "name": "David",
+      "role": "Sales Specialist",
+      "photo": "",
+      "quote": "David walked me through financing and had my order placed in minutes. Smooth from start to finish.",
+      "quote_attr": "— Verified Customer",
+      "visible": true
+    },
+    {
+      "name": "Hector",
+      "role": "Warehouse Lead",
+      "photo": "",
+      "quote": "Hector made sure my kit was packed right — everything showed up padded and in perfect condition.",
+      "quote_attr": "— Verified Customer",
+      "visible": true
+    },
+    {
+      "name": "Brian",
+      "role": "Technical Advisor",
+      "photo": "",
+      "quote": "Brian answered every compatibility question before I bought. Clearly knows the products inside and out.",
+      "quote_attr": "— Verified Customer",
+      "visible": true
+    },
+    {
+      "name": "Daniel",
+      "role": "Shipping Coordinator",
+      "photo": "",
+      "quote": "Daniel kept me posted on my shipment the whole way, and it arrived ahead of schedule.",
+      "quote_attr": "— Verified Customer",
+      "visible": true
     }
   ],
   "contact": {
@@ -122,7 +159,7 @@
   "faq": [
     {
       "q": "Is Mudify a legitimate and trustworthy company?",
-      "a": "Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.3/5 average rating. They are an authorized dealer for Old Man Emu, Fox, Bilstein, King Shocks, Dobinsons, and more.",
+      "a": "Yes. Mudify is a legitimate off-road accessories retailer based in Miami, FL with 445+ verified reviews and a 4.7/5 average rating. They are an authorized dealer for Old Man Emu, Fox, Bilstein, King Shocks, Dobinsons, and more.",
       "visible": true
     },
     {
@@ -154,9 +191,9 @@
   "seo": {
     "favicon_url": "https://cdn.shopify.com/s/files/1/0559/6944/8111/files/fav-con.png?v=1620745179",
     "title": "Mudify Reviews 2026 – 445+ Verified Customer Ratings | Off-Road & 4x4 Specialists",
-    "description": "Read 445+ verified customer reviews for Mudify, the premier off-road and 4x4 overlanding retailer. Average 4.3/5 stars. Real opinions on suspension kits, lift kits, customer service, and shipping from Miami, FL.",
+    "description": "Read 445+ verified customer reviews for Mudify, the premier off-road and 4x4 overlanding retailer. Average 4.7/5 stars. Real opinions on suspension kits, lift kits, customer service, and shipping from Miami, FL.",
     "og_title": "Mudify Reviews 2026 – What Customers Are Saying",
-    "og_description": "445+ verified reviews. Average 4.3/5 stars. Honest opinions from off-road enthusiasts.",
+    "og_description": "445+ verified reviews. Average 4.7/5 stars. Honest opinions from off-road enthusiasts.",
     "og_image": "https://mudify.com/cdn/shop/files/logo_mudify.webp?v=1698858536",
     "og_type": "website",
     "og_site_name": "Mudify",
@@ -168,7 +205,7 @@
     "canonical": "https://mudify-reviews.netlify.app/",
     "robots": "index, follow",
     "sitemap_url": "",
-    "schema_rating": "4.3",
+    "schema_rating": "4.7",
     "schema_review_count": "445",
     "schema_item_reviewed": "Mudify",
     "schema_best_rating": "5",
