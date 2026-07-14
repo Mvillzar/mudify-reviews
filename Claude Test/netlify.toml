@@ -6,6 +6,9 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  # Forzar build SIEMPRE. Evita que Netlify cancele con "no content change"
+  # (exit 1 = código distinto de 0 = Netlify SÍ construye y publica).
+  ignore = "exit 1"
 
 # ── Cache: HTML sin cache (actualizaciones instantáneas) ──────────
 [[headers]]
