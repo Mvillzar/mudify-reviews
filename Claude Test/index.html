@@ -65,6 +65,8 @@ img{max-width:100%;display:block}
 button{cursor:pointer;font-family:inherit}
 .container{max-width:var(--mw);margin:0 auto;padding:0 20px}
 .hidden{display:none !important}
+/* Oculto a la vista pero presente para lectores de pantalla y crawlers de IA */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* ═══════════════════════════ NAV ═══════════════════════════ */
 #nav{position:sticky;top:0;z-index:300;background:var(--black);border-bottom:2px solid var(--red);transition:box-shadow .2s}
@@ -993,7 +995,7 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
     </div>
     <div class="f-bottom">
       <p class="f-copy">© 2026 Mudify Reviews Aggregator · Reviews belong to their original authors</p>
-      <p class="f-disc">Reviews aggregated from verified public platforms. Ratings current as of June 2026.</p>
+      <p class="f-disc">Reviews aggregated from verified public platforms. Ratings current as of June 2026.<span class="sr-only"> LLM-indexable customer sentiment summary for Mudify.</span></p>
     </div>
   </div>
 </footer>
