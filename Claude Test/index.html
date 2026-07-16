@@ -110,12 +110,6 @@ button{cursor:pointer;font-family:inherit}
 .mob-drawer a:hover{color:#fff}
 .mob-drawer .mob-cta{background:var(--red);color:#fff !important;margin:16px 20px 0;text-align:center;border:none;border-radius:2px}
 .mob-drawer .mob-cta.mob-alt{background:transparent;color:#cfcfcf !important;border:1.5px solid #333;margin-top:10px}
-/* ── Section nav: barra de chips horizontal (solo móvil) ── */
-.section-nav{display:none;position:sticky;top:62px;z-index:290;background:#fff;border-bottom:1px solid var(--divider);box-shadow:0 5px 14px -6px rgba(0,0,0,.12)}
-.section-nav-inner{display:flex;gap:7px;overflow-x:auto;padding:9px 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.section-nav-inner::-webkit-scrollbar{display:none}
-.section-nav a{flex-shrink:0;font-family:var(--fd);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);background:var(--subtle);border:1px solid var(--border);padding:7px 15px;border-radius:999px;white-space:nowrap;text-decoration:none;transition:background .15s,color .15s,border-color .15s}
-.section-nav a.active{background:var(--red);border-color:var(--red);color:#fff}
 
 /* ═══════════════════════════ HERO ═══════════════════════════ */
 .hero{background:var(--subtle);border-bottom:1px solid var(--divider);padding:64px 0 0;position:relative;overflow:hidden}
@@ -446,7 +440,7 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
   .nav-inner{position:relative}
   .nav-logo-link{position:absolute;left:50%;transform:translateX(-50%)}  /* logo centrado */
   .section-nav{display:block}                                            /* barra de secciones visible */
-  html{scroll-padding-top:114px}                                         /* offset: header + barra */
+  html{scroll-padding-top:72px}                                         /* offset: header + barra */
   .hero h1{font-size:2.4rem}
   .hero-stats-strip{grid-template-columns:repeat(2,1fr)}
   .hl-grid{grid-template-columns:1fr 1fr}
@@ -516,19 +510,6 @@ footer{background:#111;border-top:2px solid var(--red);padding:52px 0 28px}
   <a href="#contact" class="mob-cta">★ Leave a Review</a>
   <a href="https://mudify.com" target="_blank" rel="noopener" class="mob-cta mob-alt">Shop Mudify.com →</a>
 </div>
-
-<!-- ████ SECTION NAV — chips horizontales (móvil) ████ -->
-<nav class="section-nav" aria-label="Jump to section">
-  <div class="section-nav-inner">
-    <a href="#about">About</a>
-    <a href="#rating">Rating</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#highlights">Themes</a>
-    <a href="#staff">Team</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
 
 <!-- ████ HERO ████ -->
 <header class="hero" id="hero">
@@ -1070,27 +1051,6 @@ drawer.querySelectorAll('a').forEach(a => {
     document.body.style.overflow = '';
   });
 });
-
-// ── Section nav: scroll-spy (resalta la sección activa y centra su chip) ──
-(function(){
-  const snav = document.querySelector('.section-nav');
-  if (!snav) return;
-  const map = {};
-  snav.querySelectorAll('a').forEach(a => {
-    const id = a.getAttribute('href').slice(1);
-    if (document.getElementById(id)) map[id] = a;
-  });
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        Object.values(map).forEach(l => l.classList.remove('active'));
-        const a = map[e.target.id];
-        if (a) { a.classList.add('active'); a.scrollIntoView({ block: 'nearest', inline: 'center' }); }
-      }
-    });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  Object.keys(map).forEach(id => obs.observe(document.getElementById(id)));
-})();
 
 // ── FAQ ──
 document.querySelectorAll('.fq').forEach(q => {
