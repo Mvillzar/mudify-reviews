@@ -1041,7 +1041,7 @@ hbg.addEventListener('click', () => {
   const open = drawer.classList.toggle('open');
   hbg.classList.toggle('open', open);
   hbg.setAttribute('aria-expanded', open);
-  document.body.style.overflow = open ? 'hidden' : '';
+  // Nota: NO usar body{overflow:hidden} — rompe el position:sticky del header (desaparece al scrollear).
 });
 drawer.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => {
