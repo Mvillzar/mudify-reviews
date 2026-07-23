@@ -212,7 +212,7 @@
     "twitter_image": "",
     "canonical": "https://mudify-reviews.netlify.app/",
     "robots": "index, follow",
-    "sitemap_url": "",
+    "sitemap_url": "https://mudifyreviews.com/sitemap.xml",
     "schema_rating": "4.7",
     "schema_review_count": "445",
     "schema_item_reviewed": "Mudify",
