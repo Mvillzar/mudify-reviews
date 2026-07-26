@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /mudify-reviews.html
+Disallow: /user-manual.html
+Disallow: /Manual-Panel-Mudify.html
+Disallow: /wix/
 
 Sitemap: https://mudifyreviews.com/sitemap.xml
